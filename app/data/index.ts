@@ -55,3 +55,30 @@ export const templates: Template[] = [
 ];
 
 export const tabs: TemplateCategory[] = ["All", "Free", "Premium"];
+
+export const features = [
+  {
+    title: "Manage guests",
+    description:
+      "Effortlessly organize your guest list—group attendees, track RSVPs, and manage seating with ease.",
+    image: "/guest-banner.png",
+  },
+  {
+    title: "Wishlist",
+    description:
+      "Create a personalized wish list—choose from curated gifts or cash contributions, and make it easy for guests to give.",
+    image: "/wishlist-banner.png",
+  },
+  {
+    title: "Access vendors",
+    description:
+      "Discover trusted vendors to bring your wedding vision to life.",
+    image: "/vendor-banner.png",
+  },
+  {
+    title: "To-do list",
+    description:
+      "Stay on track—visualize key milestones and tasks, ensuring every detail is planned and executed seamlessly.",
+    image: "/to-do-banner.png",
+  },
+];

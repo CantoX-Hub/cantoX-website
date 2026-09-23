@@ -24,7 +24,7 @@ export function TemplateCard({ template }: { template: Template }) {
       <div className="p-3">
         {/* Title row */}
         <div className="mb-2 flex items-center justify-between gap-2">
-          <h3 className="sm:text-[24px] font-semibold text-[#171A20]">
+          <h3 className="sm:text-[24px] text-[#171A20]">
             {template.name}
           </h3>
 
