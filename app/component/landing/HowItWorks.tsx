@@ -69,7 +69,7 @@ export default function HowItWorks() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12 items-center">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-[30%_60%] lg:grid-cols-[25%_70%] items-center justify-between">
             
             {/* Left Column: Animated Steps */}
             <div className="flex flex-col justify-center space-y-10">
@@ -111,7 +111,7 @@ export default function HowItWorks() {
             {/* Right Column: Static Image */}
             <div className="relative flex items-center justify-center">
               {/* Cream container from the design */}
-              <div className="relative w-full max-w-[600px] overflow-hidden rounded-xl bg-[#FFF6EB] p-4 md:p-8 pt-10 shadow-2xl">
+              <div className="relative w-full max-w-[900px] overflow-hidden rounded-xl bg-[#FFF6EB] p-4 md:p-8 pt-10">
                 
                 {/* Static Image Mockup */}
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg shadow-md border border-gray-100">

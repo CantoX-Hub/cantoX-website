@@ -1,5 +1,6 @@
 import Hero from "./component/landing/Hero";
 import HowItWorks from "./component/landing/HowItWorks";
+import Templates from "./component/landing/TemplatesDesign";
 import Navbar from "./component/layout/Navbar";
 
 
@@ -9,6 +10,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <HowItWorks/>
+      <Templates/>
       
     </main>
   );
