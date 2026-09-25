@@ -38,6 +38,9 @@ body {
 h1,h2,h3,h4,h5,h6{
   font-family:"Cal Sans", sans-serif;
 }
+p{
+  font-family:"DM Sans", sans-serif;
+}
 @layer utilities {
   .maxContainer {
     @apply mx-auto max-w-[1440px];

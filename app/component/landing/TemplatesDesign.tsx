@@ -24,7 +24,7 @@ export default function Templates() {
             Templates
           </span>
 
-          <h2 className="mb-3 text-[32px] leading-tight  md:text-[48px]">
+          <h2 className="mb-3 text-[24px] sm:text-[32px] leading-tight  md:text-[48px]">
             Find your perfect design
           </h2>
 
