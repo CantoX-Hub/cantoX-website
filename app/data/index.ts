@@ -1,4 +1,4 @@
-import { Template, TemplateCategory } from "../types/index.types";
+import { Template, TemplateCategory, Testimonial } from "../types/index.types";
 
 export const templates: Template[] = [
   {
@@ -80,5 +80,51 @@ export const features = [
     description:
       "Stay on track—visualize key milestones and tasks, ensuring every detail is planned and executed seamlessly.",
     image: "/to-do-banner.png",
+  },
+];
+
+
+export const testimonials: Testimonial[] = [
+  {
+    id: 1,
+    text: "I was dreading the whole invitation process. WeddingCraft made it so easy — I had my design ready in under 20 minutes. The Emerald Evening template is absolutely stunning.",
+    name: "Adeze Okonkwo",
+    location: "Lagos, Nigeria",
+    avatar: "/avatars/avatar-1.jpg",
+  },
+  {
+    id: 2,
+    text: "The custom logo was worth every kobo. They delivered three concepts the same evening I placed the order. The final design is an absolute stationery now.",
+    name: "Marcus Schnider",
+    location: "Ottawa, Canada",
+    avatar: "/avatars/avatar-2.jpg",
+  },
+  {
+    id: 3,
+    text: "I showed my mum the template and she couldn't believe I made it myself. The drag-and-drop is super intuitive and the fonts are so elegant. Highly recommend!",
+    name: "Zainab Mustapha",
+    location: "Nairobi, Kenya",
+    avatar: "/avatars/avatar-3.jpg",
+  },
+  {
+    id: 4,
+    text: "Creating our wedding invitation was surprisingly simple. Everything looked polished and professional without needing a designer.",
+    name: "Chiamaka Eze",
+    location: "Abuja, Nigeria",
+    avatar: "/avatars/avatar-4.jpg",
+  },
+  {
+    id: 5,
+    text: "I loved how quickly I could personalize everything. The colors, photos and details all came together beautifully.",
+    name: "David Williams",
+    location: "London, UK",
+    avatar: "/avatars/avatar-5.jpg",
+  },
+  {
+    id: 6,
+    text: "The template collection gave us so many beautiful options. We found exactly the style we wanted for our wedding.",
+    name: "Amara Johnson",
+    location: "Accra, Ghana",
+    avatar: "/avatars/avatar-6.jpg",
   },
 ];

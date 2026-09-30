@@ -10,3 +10,11 @@ export interface Template {
   rating: number;
   featured?: boolean;
 }
+
+export type Testimonial = {
+  id: number;
+  text: string;
+  name: string;
+  location: string;
+  avatar: string;
+};

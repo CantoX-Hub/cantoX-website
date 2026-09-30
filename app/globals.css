@@ -82,3 +82,38 @@ p{
 .marquee-track:hover {
   animation-play-state: paused;
 }
+
+@keyframes testimonial-scroll-left {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes testimonial-scroll-right {
+  from {
+    transform: translateX(-50%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+.testimonial-marquee-left {
+  animation: testimonial-scroll-left 35s linear infinite;
+  will-change: transform;
+}
+
+.testimonial-marquee-right {
+  animation: testimonial-scroll-right 40s linear infinite;
+  will-change: transform;
+}
+
+.testimonial-marquee-left:hover,
+.testimonial-marquee-right:hover {
+  animation-play-state: paused;
+}
