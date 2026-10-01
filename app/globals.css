@@ -117,3 +117,22 @@ p{
 .testimonial-marquee-right:hover {
   animation-play-state: paused;
 }
+
+@keyframes unique-logo-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.unique-logo-marquee {
+  animation: unique-logo-scroll 30s linear infinite;
+  will-change: transform;
+}
+
+.unique-logo-marquee:hover {
+  animation-play-state: paused;
+}

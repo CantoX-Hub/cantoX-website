@@ -74,7 +74,7 @@ export default function Templates() {
         {/* See More */}
         <button
           type="button"
-          className="mt-7 flex h-[34px] w-full items-center justify-center rounded-[3px] bg-[#F1F5F9] text-[14px] font-medium text-[#171A20] transition-all duration-300 hover:bg-[#E7EBEF]"
+          className="mt-7 flex h-[42px] w-full items-center justify-center rounded-[3px] bg-[#F1F5F9] text-[14px] font-semibold text-[#171A20] transition-all duration-300 hover:bg-[#E7EBEF]"
         >
           See more
         </button>
