@@ -18,3 +18,18 @@ export type Testimonial = {
   location: string;
   avatar: string;
 };
+
+export type PricingCategory = "couples" | "planners" | "vendors";
+
+export interface Plan {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  period: string;
+  features: string[];
+  theme: "light" | "dark";
+}
+
+export type PricingData = Record<PricingCategory, Plan[]>;
+

@@ -1,4 +1,4 @@
-import { Template, TemplateCategory, Testimonial } from "../types/index.types";
+import { PricingCategory, PricingData, Template, TemplateCategory, Testimonial } from "../types/index.types";
 
 export const templates: Template[] = [
   {
@@ -128,3 +128,103 @@ export const testimonials: Testimonial[] = [
     avatar: "/avatars/avatar-6.jpg",
   },
 ];
+
+
+
+export const pricingData: PricingData = {
+  couples: [
+    {
+      id: "essentials",
+      name: "Essentials",
+      description: "Best for couples with quick edits.",
+      price: "₦0",
+      period: "One-time payment",
+      features: [
+        "Unlimited free templates",
+        "Add 1st flights",
+        "Add pictures",
+        "One-time use",
+      ],
+      theme: "light",
+    },
+    {
+      id: "exclusive",
+      name: "Exclusive",
+      description: "Designed for couples with high needs.",
+      price: "₦20,000",
+      period: "One-time payment",
+      features: [
+        "Unlimited premium templates",
+        "Guest management",
+        "Verified vendors",
+        "E-rsvp request",
+        "One-time use",
+      ],
+      theme: "dark",
+    },
+  ],
+  planners: [
+    {
+      id: "starters",
+      name: "Starters",
+      description: "Best for couples with quick edits.",
+      price: "₦15,000",
+      period: "monthly payment",
+      features: [
+        "10 Premium theme access",
+        "Guest management",
+        "Verified vendors",
+        "Calendar",
+      ],
+      theme: "light",
+    },
+    {
+      id: "planner_pro",
+      name: "Planner Pro",
+      description: "Designed for couples with high needs.",
+      price: "₦35,000",
+      period: "monthly payment",
+      features: [
+        "Unlimited Premium templates",
+        "Guest management",
+        "Verified vendors",
+        "E-rsvp request",
+        "Calendar Sync (to-do)",
+      ],
+      theme: "dark",
+    },
+  ],
+  vendors: [
+    {
+      id: "vendor_basic",
+      name: "Vendor Basic",
+      description: "Best for couples with quick edits.",
+      price: "₦0",
+      period: "monthly payment",
+      features: [
+        "Business profile",
+        "Messaging",
+        "Location",
+        "Subscription",
+        "Product/Services",
+        "MCQ",
+        "Social links/Website",
+      ],
+      theme: "light",
+    },
+    {
+      id: "vendor_pro",
+      name: "Planner Pro",
+      description: "Designed for couples with high needs.",
+      price: "₦10,000",
+      period: "monthly payment",
+      features: [
+        "Premium placement",
+        "More product images",
+        "Priority search ranking",
+        "Verified badge",
+      ],
+      theme: "dark",
+    },
+  ],
+};

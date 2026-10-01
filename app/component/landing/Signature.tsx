@@ -12,7 +12,7 @@ export default function SignatureSection() {
           </span>
 
           {/* Heading */}
-          <h2 className="text-[24px] text-center sm:text-[32px] leading-tight  md:text-[48px]">
+          <h2 className="text-[24px] text-center sm:text-[32px] font-semibold leading-tight tracking-[-0.005em] md:text-[48px]">
             Your wedding deserves a signature
           </h2>
 

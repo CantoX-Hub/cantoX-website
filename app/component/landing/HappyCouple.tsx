@@ -11,7 +11,7 @@ const HappyCouple = () => {
 
           {/* Header */}
           <div className="relative z-10 text-center">
-            <h2 className="text-[24px] text-center sm:text-[32px] leading-tight md:text-[48px]">
+            <h2 className="text-[24px] text-center sm:text-[32px] font-semibold leading-tight tracking-[-0.005em] md:text-[48px]">
               Happy couples use Canto
             </h2>
 

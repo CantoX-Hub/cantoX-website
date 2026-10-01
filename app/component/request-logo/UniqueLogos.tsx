@@ -39,12 +39,12 @@ export default function UniqueLogos() {
   return (
     <section className="overflow-hidden bg-[#F8FAFC] py-20 md:py-24">
       {/* Header */}
-      <div className="mx-auto mb-10 max-w-[700px] px-[5%] text-center md:mb-14">
+      <div className="mb-10 px-[5%] text-center md:mb-14">
         <span className="mb-2 block text-[9px] font-medium uppercase tracking-[0.16em] text-[#B49455]">
           YOUR STORY, YOUR STYLE
         </span>
 
-         <h2 className="mb-3 text-[24px] sm:text-[32px] leading-tight  md:text-[48px]">
+         <h2 className="mb-3 text-[24px] font-semibold leading-tight tracking-[-0.005em] sm:text-[32px] md:text-[48px]">
           You deserve to be unique
         </h2>
 

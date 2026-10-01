@@ -61,7 +61,7 @@ export default function HowItWorks() {
             <span className="mb-3 text-xs font-semibold tracking-widest text-[#857E75]">
               HOW IT WORKS
             </span>
-            <h2 className="mb-3 text-[24px] sm:text-[32px] leading-tight  md:text-[48px] text-white">
+            <h2 className="mb-3 text-[24px] sm:text-[32px] font-semibold leading-tight tracking-[-0.005em] md:text-[48px] text-white">
               Few step and you are done
             </h2>
             <p >

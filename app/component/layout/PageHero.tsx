@@ -56,7 +56,7 @@ export default function PageHeroBanner({
       </div>
 
       {/* Hero Content */}
-      <div className="relative z-10 mx-auto flex min-h-[220px] max-w-[1200px] items-center px-[5%] pb-12">
+      <div className="relative z-10 flex min-h-[279px] max-w-[1000px] items-center px-[5%] pb-12">
         <div className="max-w-[700px]">
           <motion.h1
                       variants={itemVariants}
