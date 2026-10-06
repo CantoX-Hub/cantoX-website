@@ -74,18 +74,19 @@ export default function ChoosePlan() {
                 <div
                   key={plan.id}
                   onClick={() => setSelectedPlanId(plan.id)}
-                  className={`relative cursor-pointer overflow-hidden rounded-[16px] p-6 md:p-8 transition-all duration-200 border-2 ${
-                    isDark
-                      ? "bg-[#060D18] text-white"
-                      : "bg-gradient-to-br from-[#F8F9FB] to-[#F1F3F6] text-[#060D18]"
-                  } ${
+                  className={`relative cursor-pointer overflow-hidden rounded-[26px] p-1  transition-all duration-200 border-2 ${
                     isSelected
-                      ? "border-[#D9A05B]"
+                      ? "border-[#D9A05B] "
                       : isDark
                       ? "border-transparent"
-                      : "border-gray-200"
+                      : "border-0"
                   }`}
                 >
+                <div className={`p-6 md:p-8 rounded-[26px] border ${
+                    isDark
+                      ? "bg-[#060D18] text-white"
+                      : "bg-gradient-to-br from-[#F8F9FB] -2 to-[#F1F3F6] text-[#060D18]"
+                  }`}>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-10">
                     {/* Plan Info */}
                     <div className="flex flex-col justify-between">
@@ -138,12 +139,13 @@ export default function ChoosePlan() {
                     </div>
                   </div>
                 </div>
+                </div>
               );
             })}
           </div>
 
-          <button className="w-full mt-6 bg-[#D9A05B] text-white rounded-[8px] py-4 text-[16px] font-medium hover:bg-[#c89250] transition-colors shadow-sm">
-            Continue
+          <button className="w-full mt-6 bg-[#D9A05B] text-white rounded-[8px] py-3 font-medium hover:bg-[#c89250] transition-colors shadow-sm">
+            Get Started
           </button>
         </div>
       </div>

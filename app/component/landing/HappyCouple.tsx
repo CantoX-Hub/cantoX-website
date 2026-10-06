@@ -4,9 +4,6 @@ import Image from "next/image";
 const HappyCouple = () => {
   return (
      <section className="overflow-hidden bg-white py-20 md:py-24">
-       {/* =====================================================
-            HAPPY COUPLES
-        ====================================================== */}
         <div className="w-full flex flex-col items-center">
 
           {/* Header */}

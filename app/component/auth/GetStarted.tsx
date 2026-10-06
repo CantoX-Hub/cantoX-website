@@ -7,11 +7,27 @@ import { ArrowLeft, Apple } from "lucide-react";
 export default function GetStarted() {
   return (
     <main className="min-h-screen">
-      <div className="px-4 py-4 sm:px-6 lg:px-8">
-        <div className="relative mx-auto min-h-[calc(100vh-2rem)] max-w-[1400px] overflow-hidden rounded-sm bg-white">
-          
+      <div className="px-[5%] py-4">
+        <div className="relative min-h-[calc(100vh-2rem)] overflow-hidden rounded-sm bg-white">
           {/* Gold decorative shape */}
-          {/* <div className="pointer-events-none absolute bottom-[-100px] left-[-40px] h-[180px] w-[300px] rounded-[50%] border-[45px] border-[#C99532] opacity-90" /> */}
+        
+           {/* <div
+                        className="
+                          inset-0
+                          z-0
+                         pointer-events-none absolute bottom-0 left-0
+                          w-full
+                        "
+                      >
+                        <Image
+                          src="/stroke.svg"
+                          alt="stroke"
+                          fill
+                          priority
+                          className="w-full"
+                          sizes="100vw"
+                        />
+                      </div> */}
 
           {/* Back */}
           <Link
@@ -23,34 +39,34 @@ export default function GetStarted() {
           </Link>
 
           <div className="grid min-h-[calc(100vh-2rem)] grid-cols-1 lg:grid-cols-[45%_55%]">
-            
             {/* LEFT — FORM */}
             <section className="relative z-10 flex items-center justify-center px-6 pb-16 pt-20 sm:px-10 lg:px-14 lg:pt-10">
               <div className="w-full max-w-[390px]">
-                
                 {/* Logo */}
-                
 
                 {/* Heading */}
                 <div className="mb-7">
-                <div><div className="flex gap-1"> <h1 className="text-[24px] sm:text-[32px] font-semibold leading-tight tracking-[-0.005em]">
-                    Do more with 
-                  </h1>
-                  <Link href="/">
-                    <Image
-                      src="/logo.svg"
-                      alt="Canto"
-                      width={105}
-                      height={32}
-                      priority
-                    />
-                  </Link>
-                </div></div>
-                 
+                  <div>
+                    <div className="flex gap-1">
+                      {" "}
+                      <h1 className="text-[24px] sm:text-[32px] font-semibold leading-tight tracking-[-0.005em]">
+                        Do more with
+                      </h1>
+                      <Link href="/">
+                        <Image
+                          src="/logo.svg"
+                          alt="Canto"
+                          width={105}
+                          height={32}
+                          priority
+                        />
+                      </Link>
+                    </div>
+                  </div>
 
                   <p className="mt-2 max-w-[340px] text-[12px] leading-5 text-[#777D87]">
-                    Create beautiful wedding invitations and manage your
-                    special moments with Canto.
+                    Create beautiful wedding invitations and manage your special
+                    moments with Canto.
                   </p>
                 </div>
 
@@ -119,9 +135,7 @@ export default function GetStarted() {
                 {/* Divider */}
                 <div className="my-5 flex items-center gap-3">
                   <div className="h-px flex-1 bg-[#E5E7EB]" />
-                  <span className="text-xs text-[#9CA1A9]">
-                    or
-                  </span>
+                  <span className="text-xs text-[#9CA1A9]">or</span>
                   <div className="h-px flex-1 bg-[#E5E7EB]" />
                 </div>
 
@@ -143,13 +157,13 @@ export default function GetStarted() {
                     hover:bg-[#E9EDF2]
                   "
                 >
-                   <Image
-                      src="/google.svg"
-                      alt="google"
-                      width={18}
-                      height={18}
-                      priority
-                    />
+                  <Image
+                    src="/google.svg"
+                    alt="google"
+                    width={18}
+                    height={18}
+                    priority
+                  />
                   Continue with Google
                 </button>
 
@@ -173,12 +187,12 @@ export default function GetStarted() {
                   "
                 >
                   <Image
-                      src="/apple.svg"
-                      alt="apple"
-                      width={18}
-                      height={18}
-                      priority
-                    />
+                    src="/apple.svg"
+                    alt="apple"
+                    width={18}
+                    height={18}
+                    priority
+                  />
                   Continue with Apple
                 </button>
 
@@ -204,8 +218,7 @@ export default function GetStarted() {
             </section>
 
             {/* RIGHT — IMAGE */}
-            <section className="relative hidden h-full overflow-hidden lg:block rounded-lg">
-              
+            <section className="relative hidden h-full overflow-hidden lg:block rounded-md">
               {/* Wedding image */}
               <Image
                 src="/get-started-couple.jpg"
@@ -222,7 +235,6 @@ export default function GetStarted() {
               {/* Bottom image frame/detail */}
               <div className="absolute bottom-0 left-0 right-0 h-[30vh] bg-black/[0.07]" />
             </section>
-
           </div>
         </div>
       </div>

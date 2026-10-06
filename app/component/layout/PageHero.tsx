@@ -35,7 +35,7 @@ export default function PageHeroBanner({
 }: PageHeroBannerProps) {
   return (
     <section
-      className={`relative min-h-[300px] overflow-hidden ${className}`}
+      className={`relative min-h-[300px] px-[5%] overflow-hidden ${className}`}
     >
       {/* Background Image */}
       <Image
@@ -56,7 +56,7 @@ export default function PageHeroBanner({
       </div>
 
       {/* Hero Content */}
-      <div className="relative z-10 flex min-h-[279px] max-w-[1000px] items-center px-[5%] pb-12">
+      <div className="relative z-10 flex min-h-[279px] maxContainer items-center  pb-12">
         <div className="max-w-[700px]">
           <motion.h1
                       variants={itemVariants}
