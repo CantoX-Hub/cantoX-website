@@ -51,9 +51,9 @@ export default function HowItWorks() {
   });
 
   return (
-    <section ref={containerRef} className="relative h-[300vh] bg-[#0A0D14] pt-16 px-[5%] pb-24">
+    <section ref={containerRef} className="relative min-h-screen bg-[#0A0D14] pt-16 px-[5%] pb-12 md:pb-24">
       {/* Sticky container stays pinned for 300vh */}
-      <div className="sticky top-0 flex h-screen w-full flex-col items-center justify-center overflow-hidden ">
+      <div className="sticky top-0 flex min-h-screen w-full flex-col items-center justify-center overflow-hidden ">
         <div className="maxContainer w-full ">
           
           {/* Header */}
@@ -64,7 +64,7 @@ export default function HowItWorks() {
             <h2 className="mb-3 text-[24px] sm:text-[32px] font-semibold leading-tight tracking-[-0.005em] md:text-[48px] text-white">
               Few step and you are done
             </h2>
-            <p >
+            <p className="text-white">
               From free to premium templates, personalize it to fully express yourself.
             </p>
           </div>

@@ -41,7 +41,7 @@ export default function Hero() {
         >
           <motion.h1
             variants={itemVariants}
-            className="text-5xl lg:text-[3.5rem] leading-[1.1] mb-6 text-[#0F0F0F]"
+            className="text-4xl sm:text-5xl lg:text-[3.5rem] leading-[1.1] mb-6 text-[#0F0F0F]"
           >
             Design your perfect day, <br className="hidden md:block" /> without
             the stress.
@@ -71,14 +71,14 @@ export default function Hero() {
           {/* Stats Section */}
           <motion.div
             variants={itemVariants}
-            className="flexStart gap-10 md:gap-16"
+            className="flex gap-5 md:gap-12"
           >
             {stats.map((stat, index) => (
               <div key={index} className="flex flex-col">
                 <span className="text-2xl md:text-3xl font-bold text-[#0F0F0F] mb-1">
                   {stat.value}
                 </span>
-                <span className="text-sm text-[var(--text-muted)]">
+                <span className="text-sm text-center text-[var(--text-muted)]">
                   {stat.label}
                 </span>
               </div>

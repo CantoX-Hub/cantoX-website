@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function SignatureSection() {
   return (
-    <section className="overflow-hidden bg-white px-[5%] py-20 md:py-24">
+    <section className="overflow-hidden bg-white px-[5%] py-12 sm:py-20 md:py-24">
       <div className="w-full">
         <div className="maxContainer flex flex-col items-center  ">
           {/* Eyebrow */}
@@ -17,7 +17,7 @@ export default function SignatureSection() {
           </h2>
 
           {/* Description */}
-          <p className="mt-2 text-center leading-relaxed text-[#060D18] text-[14px] sm:text-base">
+          <p className="mt-1 text-center leading-relaxed text-[#060D18] text-[14px] sm:text-base">
             Delivered in 48 hours, expected formats are PNG, JPEG and PDF
             format.
           </p>

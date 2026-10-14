@@ -55,12 +55,12 @@ export default function GetStarted() {
 
           <div className="grid min-h-[calc(100vh-2rem)] grid-cols-1 lg:grid-cols-[45%_55%]">
             {/* LEFT — FORM */}
-            <section className="relative z-10 flex items-center justify-center px-6 pb-16 pt-20 sm:px-10 lg:px-14 lg:pt-10">
+            <section className="relative z-10 flex items-center px-6 pb-16 pt-20 sm:px-10 lg:pt-10">
               <div className="w-full max-w-[390px]">
                 {/* Heading */}
                 <div className="mb-7">
                   <div className="flex items-center gap-1.5">
-                    <h1 className="text-[24px] font-semibold leading-tight tracking-[-0.005em] sm:text-[32px]">
+                    <h1 className="text-[24px] leading-tight tracking-[-0.005em] sm:text-[32px]">
                       Do more with
                     </h1>
                     <Link href="/">
