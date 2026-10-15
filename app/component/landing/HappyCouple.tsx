@@ -17,14 +17,14 @@ const HappyCouple = () => {
       </div>
 
       {/* Image and full-width decorative stroke */}
-      <div className="relative mt-8 sm:min-h-[600px] w-full">
+      <div className="relative mt-8 sm:min-h-[700px] w-full">
         {/* Full viewport-width SVG */}
         <div
           className="
             pointer-events-none
             absolute
             left-1/2
-            top-1/2
+            top-1/3
             z-0
             w-screen
             max-w-none
@@ -37,10 +37,10 @@ const HappyCouple = () => {
           <Image
             src="/stroke.svg"
             alt=""
-            width={1740}
-            height={561}
+            width={1400}
+            height={700}
             priority
-            className="block h-auto w-full"
+            className="block h-[700px] w-full"
             sizes="100vw"
           />
         </div>
