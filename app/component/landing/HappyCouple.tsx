@@ -47,7 +47,7 @@ const HappyCouple = () => {
 
         {/* Couple image stays constrained */}
         <div className="relative z-10 mx-auto w-full max-w-[1022px]">
-          <div className="relative min-h-[240px] w-full overflow-hidden rounded-[8px] bg-white shadow-sm sm:min-h-[320px] md:min-h-[440px] md:max-h-[579px]">
+          <div className="relative min-h-[240px] w-full overflow-hidden rounded-[8px] bg-white shgitadow-sm sm:min-h-[320px] md:min-h-[440px] md:max-h-[579px]">
             <Image
               src="/couple-banner.png"
               alt="Happy couple celebrating their wedding"
