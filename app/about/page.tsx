@@ -1,4 +1,3 @@
-import HappyCouple from "../component/landing/HappyCouple";
 import Footer from "../component/layout/Footer";
 import PageHeroBanner from "../component/layout/PageHero";
 
