@@ -1,10 +1,47 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
+
+const CAROUSEL_SLIDES = [
+  {
+    id: 1,
+    src: "/couple-banner.png",
+    alt: "Adeola x Joshua - 2026",
+  },
+  {
+    id: 2,
+    src: "/couple-banner-2.png",
+    alt: "Adebisi x Muyiwa - 2026",
+  },
+  {
+    id: 3,
+    src: "/couple-banner-3.png",
+    alt: "Itunu x Stephen - 2026",
+  },
+  {
+    id: 4,
+    src: "/couple-banner-4.png",
+    alt: "La’Posh Events - 2026",
+  },
+];
+
+const SLIDE_DURATION = 5000;
 
 const HappyCouple = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % CAROUSEL_SLIDES.length);
+    }, SLIDE_DURATION);
+
+    return () => window.clearInterval(interval);
+  }, []);
+
   return (
-    <section className="relative isolate overflow-hidden bg-white py-12 px-[5%] sm:py-20 md:py-24">
+    <section className="relative isolate overflow-hidden bg-white px-[5%] py-12 sm:py-20 md:py-24">
       {/* Header */}
       <div className="relative z-10 flex flex-col items-center text-center">
         <h2 className="mb-3 text-[24px] font-semibold leading-tight tracking-[-0.005em] sm:text-[32px] md:text-[48px]">
@@ -16,46 +53,83 @@ const HappyCouple = () => {
         </p>
       </div>
 
-      {/* Image and full-width decorative stroke */}
-      <div className="relative mt-8 sm:min-h-[700px] w-full">
-        {/* Full viewport-width SVG */}
-        <div
-          className="
-            pointer-events-none
-            absolute
-            left-1/2
-            top-1/3
-            z-0
-            w-screen
-            max-w-none
-            -translate-x-1/2
-            -translate-y-1/2
-            rotate-[-7deg]
-          "
-          aria-hidden="true"
-        >
-          <Image
-            src="/stroke.svg"
-            alt=""
-            width={1400}
-            height={700}
-            priority
-            className="block h-[700px] w-full"
-            sizes="100vw"
-          />
-        </div>
-
-        {/* Couple image stays constrained */}
+      {/* Carousel */}
+      <div className="relative mt-8 w-full">
         <div className="relative z-10 mx-auto w-full max-w-[1022px]">
-          <div className="relative min-h-[240px] w-full overflow-hidden rounded-[8px] bg-white shgitadow-sm sm:min-h-[320px] md:min-h-[440px] md:max-h-[579px]">
-            <Image
-              src="/couple-banner.png"
-              alt="Happy couple celebrating their wedding"
-              fill
-              priority
-              className="object-cover"
-              sizes="(max-width: 768px) 90vw, 1022px"
-            />
+          <div
+            className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-[#EAF0F5] shadow-sm sm:aspect-[16/9]"
+            role="region"
+            aria-roledescription="carousel"
+            aria-label="Happy couples using Canto"
+          >
+            {/* Sliding image track */}
+            <div
+              className="flex h-full w-full transition-transform duration-1000 ease-in-out motion-reduce:transition-none"
+              style={{
+                transform: `translateX(-${currentSlide * 100}%)`,
+              }}
+            >
+              {CAROUSEL_SLIDES.map((slide, index) => (
+                <div
+                  key={slide.id}
+                  className="relative h-full w-full flex-shrink-0"
+                  aria-hidden={currentSlide !== index}
+                >
+                  <Image
+                    src={slide.src}
+                    alt={slide.alt}
+                    fill
+                    priority={index === 0}
+                    sizes="(max-width: 768px) 90vw, 1022px"
+                    className="object-cover object-center"
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Bottom gradient for caption readability */}
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-32 bg-gradient-to-t from-black/75 via-black/35 to-transparent sm:h-40" />
+
+            {/* Animated bottom-left caption */}
+            <div
+              className="pointer-events-none absolute bottom-10 left-5 z-20 max-w-[80%] sm:bottom-12 sm:left-8 md:left-10"
+              aria-live="polite"
+              aria-atomic="true"
+            >
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={CAROUSEL_SLIDES[currentSlide].id}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className="text-sm font-medium leading-relaxed text-white drop-shadow-md sm:text-base "
+                >
+                  {CAROUSEL_SLIDES[currentSlide].alt}
+                </motion.p>
+              </AnimatePresence>
+            </div>
+
+            {/* Slide indicators */}
+            <div
+              className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2"
+              aria-label="Choose a wedding image"
+            >
+              {CAROUSEL_SLIDES.map((slide, index) => (
+                <button
+                  key={slide.id}
+                  type="button"
+                  onClick={() => setCurrentSlide(index)}
+                  aria-label={`Show image ${index + 1} of ${CAROUSEL_SLIDES.length}`}
+                  aria-current={currentSlide === index ? "true" : undefined}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    currentSlide === index
+                      ? "w-12 bg-[#C99532]"
+                      : "w-6 bg-white/30 hover:bg-white"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
