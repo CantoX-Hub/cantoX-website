@@ -1,82 +1,82 @@
 "use client";
-import Image from "next/image";
+import { motion, MotionConfig, type Variants } from "framer-motion";
 import Navbar from "./Navbar";
-import { motion } from "framer-motion";
+
 interface PageHeroBannerProps {
+  /** Small gold label above the title, e.g. "Templates" */
+  eyebrow?: string;
   title: string;
   description?: string;
-  backgroundImage: string;
   className?: string;
   children?: React.ReactNode;
 }
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 },
-  },
+  visible: { opacity: 1, transition: { staggerChildren: 0.12 } },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
   },
 };
+
 export default function PageHeroBanner({
+  eyebrow,
   title,
   description,
-  backgroundImage,
   className = "",
   children,
 }: PageHeroBannerProps) {
   return (
-    <section
-      className={`relative min-h-[350px] px-[5%] overflow-hidden ${className}`}
-    >
-      {/* Background Image */}
-      <Image
-        src={backgroundImage}
-        alt="page_hero"
-        fill
-        priority
-        className="object-cover object-center"
-        sizes="100vw"
-      />
+    <section className={`bg-white px-[5%] ${className}`}>
+      <Navbar />
 
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-[#07101C]/25" />
+      <MotionConfig reducedMotion="user">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="maxContainer pb-12 pt-14 md:pb-16 md:pt-20 lg:pt-24"
+        >
+          <div className="max-w-[1022px]">
+            {eyebrow && (
+              <motion.p
+                variants={itemVariants}
+                className="mb-3 text-sm font-medium text-[#C99532] md:mb-4"
+              >
+                {eyebrow}
+              </motion.p>
+            )}
 
-      {/* Navbar */}
-      <div className="relative z-20">
-        <Navbar />
-      </div>
+            <motion.h1
+              variants={itemVariants}
+              className="text-[32px] leading-[1.15] tracking-[-0.01em] text-[#060D18] sm:text-[40px] lg:text-[48px]"
+            >
+              {title}
+            </motion.h1>
 
-      {/* Hero Content */}
-      <div className="relative z-10 flex min-h-[350px] maxContainer items-center  pb-12">
-        <div className="max-w-[700px]">
-          <motion.h1
-                      variants={itemVariants}
-                      className="text-5xl lg:text-[3.5rem] leading-[1.1] mb-6 text-white"
-                    >
-            {title}
-          </motion.h1>
+            {description && (
+              <motion.p
+                variants={itemVariants}
+                className="mt-4 max-w-[560px] text-[15px] leading-relaxed text-[#4B5563] md:mt-5 md:text-base"
+              >
+                {description}
+              </motion.p>
+            )}
 
-          {description && (
-            <motion.p
-                        variants={itemVariants}
-                        className="text-[14px] md:text-base text-white/75 mb-10 leading-relaxed "
-                      >
-              {description}
-            </motion.p>
-          )}
-
-          {children}
-        </div>
-      </div>
+            {children && (
+              <motion.div variants={itemVariants} className="mt-8">
+                {children}
+              </motion.div>
+            )}
+          </div>
+        </motion.div>
+      </MotionConfig>
     </section>
   );
 }

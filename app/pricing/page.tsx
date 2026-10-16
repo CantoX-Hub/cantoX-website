@@ -1,21 +1,17 @@
 import HappyCouple from "../component/landing/HappyCouple";
-import MoreWithCanto from "../component/landing/MoreWithCanto";
-import SignatureSection from "../component/landing/Signature";
-import Templates from "../component/landing/TemplatesDesign";
 import Footer from "../component/layout/Footer";
 import PageHeroBanner from "../component/layout/PageHero";
 import ChoosePlan from "../component/Pricing/Plan";
-import PricingPlans from "../component/Pricing/Plan";
 
 
 export default function PricingPage() {
   return (
     <main className="min-h-screen">
       <PageHeroBanner
-        title="Pricing"
-        description="Choose between a one-time payment for a single event or a subscription plan designed for event planners managing multiple events."
-        backgroundImage="/page-hero-banner.png"
-      />
+                    eyebrow="Pricing"
+                    title="Simple pricing, tailored to you.
+Find a plan for your dream wedding."
+                  />
       <ChoosePlan/>
       <HappyCouple/>
       <Footer/>

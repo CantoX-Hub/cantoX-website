@@ -8,10 +8,6 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import Button from "../common/Button";
 
-interface NavbarProps {
-  variant?: "light" | "dark";
-}
-
 const navLinks = [
   { name: "About Us", href: "/about" },
   { name: "Templates", href: "/templates" },
@@ -19,20 +15,10 @@ const navLinks = [
   { name: "Pricing", href: "/pricing" },
 ];
 
-export default function Navbar({ variant = "light" }: NavbarProps) {
+export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  // Home page uses the normal logo.
-  // Other pages use the white logo.
-  const isHomePage = pathname === "/";
-  const isDark = variant === "dark";
-
-  const useWhiteLogo = !isHomePage || isDark;
-
-  const isDarkNavbar = isDark || !isHomePage;
 
   const handleGetStarted = () => {
     setIsMenuOpen(false);
@@ -44,7 +30,7 @@ export default function Navbar({ variant = "light" }: NavbarProps) {
   };
 
   return (
-    <header className="relative z-50 w-full px-[5%] py-5 md:py-6">
+    <header className="relative z-50 w-full px-[5%] py-5 md:py-6 bg-white">
       <div className="maxContainer flex items-center justify-between">
         {/* Logo */}
         <Link
@@ -53,7 +39,7 @@ export default function Navbar({ variant = "light" }: NavbarProps) {
           className="flex items-center tracking-tight"
         >
           <Image
-            src={useWhiteLogo ? "/canto-white.svg" : "/logo.svg"}
+            src="/logo.svg"
             alt="Canto"
             width={100}
             height={30}
@@ -64,13 +50,7 @@ export default function Navbar({ variant = "light" }: NavbarProps) {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:block">
-          <ul
-            className={`flex items-center gap-8 text-sm font-medium lg:gap-10 ${
-              isDarkNavbar
-                ? "text-white/60"
-                : "text-[var(--text-muted)]"
-            }`}
-          >
+          <ul className="flex items-center gap-8 text-sm font-medium lg:gap-10 text-[var(--text-muted,#6B7280)]">
             {navLinks.map((link) => (
               <motion.li
                 key={link.name}
@@ -79,11 +59,7 @@ export default function Navbar({ variant = "light" }: NavbarProps) {
               >
                 <Link
                   href={link.href}
-                  className={
-                    isDarkNavbar
-                      ? "transition-colors hover:text-white"
-                      : "transition-colors hover:text-black"
-                  }
+                  className="transition-colors hover:text-[#0F0F0F]"
                 >
                   {link.name}
                 </Link>
@@ -97,11 +73,7 @@ export default function Navbar({ variant = "light" }: NavbarProps) {
           <Button
             variant="outline"
             onClick={handleGetStarted}
-            className={`rounded-lg px-5 py-2.5 ${
-              isDarkNavbar
-                ? "border-white/30 bg-white text-[#11151D] hover:bg-white/90"
-                : ""
-            }`}
+            className="rounded-lg px-5 py-2.5 border-[#0F0F0F] text-[#0F0F0F] hover:bg-gray-50"
           >
             Get started
           </Button>
@@ -113,11 +85,7 @@ export default function Navbar({ variant = "light" }: NavbarProps) {
           onClick={() => setIsMenuOpen((prev) => !prev)}
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           aria-expanded={isMenuOpen}
-          className={`flex h-10 w-10 items-center justify-center rounded-lg md:hidden ${
-            isDarkNavbar
-              ? "text-white hover:bg-white/10"
-              : "text-black hover:bg-black/5"
-          }`}
+          className="flex h-10 w-10 items-center justify-center rounded-lg text-[#0F0F0F] hover:bg-black/5 md:hidden"
         >
           {isMenuOpen ? (
             <X className="h-6 w-6" />
@@ -127,7 +95,7 @@ export default function Navbar({ variant = "light" }: NavbarProps) {
         </button>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Dropdown Menu */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
@@ -135,14 +103,10 @@ export default function Navbar({ variant = "light" }: NavbarProps) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className={`absolute left-[5%] right-[5%] top-full mt-2 overflow-hidden rounded-2xl border shadow-xl md:hidden ${
-              isDarkNavbar
-                ? "border-white/10 bg-[#0A0D14]"
-                : "border-black/5 bg-white"
-            }`}
+            className="absolute left-[5%] right-[5%] top-full mt-2 overflow-hidden rounded-2xl border border-black/5 bg-white p-4 shadow-xl md:hidden"
           >
-            <nav className="p-4">
-              <ul className="flex flex-col">
+            <nav>
+              <ul className="flex flex-col gap-1">
                 {navLinks.map((link) => {
                   const isActive = pathname === link.href;
 
@@ -152,13 +116,9 @@ export default function Navbar({ variant = "light" }: NavbarProps) {
                         href={link.href}
                         onClick={handleNavClick}
                         className={`block rounded-xl px-4 py-3.5 text-sm font-medium transition-colors ${
-                          isDarkNavbar
-                            ? isActive
-                              ? "bg-white/10 text-white"
-                              : "text-white/70 hover:bg-white/5 hover:text-white"
-                            : isActive
-                              ? "bg-black/5 text-black"
-                              : "text-[var(--text-muted)] hover:bg-black/5 hover:text-black"
+                          isActive
+                            ? "bg-black/5 text-[#0F0F0F]"
+                            : "text-[var(--text-muted,#6B7280)] hover:bg-black/5 hover:text-[#0F0F0F]"
                         }`}
                       >
                         {link.name}
@@ -169,15 +129,11 @@ export default function Navbar({ variant = "light" }: NavbarProps) {
               </ul>
 
               {/* Mobile Get Started */}
-              <div className="mt-3 border-t border-black/5 pt-4 dark:border-white/10">
+              <div className="mt-3 border-t border-black/5 pt-4">
                 <Button
                   variant="outline"
                   onClick={handleGetStarted}
-                  className={`w-full rounded-xl py-3 ${
-                    isDarkNavbar
-                      ? "border-white/20 bg-white text-[#11151D] hover:bg-white/90"
-                      : ""
-                  }`}
+                  className="w-full rounded-xl py-3 border-[#0F0F0F] text-[#0F0F0F] hover:bg-gray-50"
                 >
                   Get started
                 </Button>

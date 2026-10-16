@@ -10,9 +10,8 @@ export default function TemplatesPage() {
   return (
     <main className="min-h-screen">
       <PageHeroBanner
-        title="Templates"
-        description="Behind every seamless wedding is a planner who had the right tools. Now you have them."
-        backgroundImage="/page-hero-banner.png"
+        eyebrow="Templates"
+        title="Behind every seamless wedding is a planner who had the right tools. Now you have them."
       />
       <Templates/>
       <MoreWithCanto/>
