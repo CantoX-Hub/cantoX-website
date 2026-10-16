@@ -11,8 +11,6 @@ export default function AboutPage() {
                     title="Every life has a Canto[Chapters]
 We built the place to experience yours"
                   />
-      <ChoosePlan/>
-      <HappyCouple/>
       <Footer/>
     </main>
   );
