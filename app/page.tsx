@@ -1,3 +1,4 @@
+import AudienceMarquee from "./component/landing/AudienceMarquee";
 import HappyCouple from "./component/landing/HappyCouple";
 import Hero from "./component/landing/Hero";
 import HowItWorks from "./component/landing/HowItWorks";
@@ -14,6 +15,7 @@ export default function Home() {
     <main className="min-h-screen font-['Inter',sans-serif]">
       <Navbar />
       <Hero />
+      <AudienceMarquee />
       <HowItWorks/>
       <Templates/>
       <MoreWithCanto/>

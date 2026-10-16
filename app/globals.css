@@ -136,3 +136,28 @@ p{
 .unique-logo-marquee:hover {
   animation-play-state: paused;
 }
+
+@keyframes audience-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.audience-marquee-track {
+  animation: audience-marquee 32s linear infinite;
+  will-change: transform;
+}
+
+.audience-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .audience-marquee-track {
+    animation: none;
+  }
+}
