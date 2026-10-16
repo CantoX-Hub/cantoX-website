@@ -1,4 +1,4 @@
-import { PricingCategory, PricingData, Template, TemplateCategory, Testimonial } from "../types/index.types";
+import { PricingData, Template, TemplateCategory, Testimonial } from "../types/index.types";
 
 export const templates: Template[] = [
   {
