@@ -14,7 +14,7 @@ export default function RequestLogoPage() {
               title="You deserve an iconic identity for your special chapter, not the regular thing."
             />
       <RequestForm/>
-      <UniqueLogos/>
+      {/* <UniqueLogos/> */}
       <HappyCouple/>
       <Footer/>
     </main>

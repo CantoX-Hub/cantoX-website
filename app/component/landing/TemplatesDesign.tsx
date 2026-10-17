@@ -35,7 +35,7 @@ export default function Templates() {
         </div>
 
         {/* Tabs */}
-        <div className="mb-7 border-b border-[#E6E6E6]">
+        <div className="mb-8 border-b-2 border-[#E6E6E6]">
           <div className="flex items-center gap-8 md:gap-12">
             {tabs.map((tab) => {
               const isActive = activeTab === tab;
@@ -44,7 +44,7 @@ export default function Templates() {
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`relative pb-3 text-[14px] font-medium transition-colors duration-300 ${
+                  className={`relative pb-3 text-[14px] font-medium transition-colors duration-300 min-w-28 ${
                     isActive
                       ? "text-[#171A20]"
                       : "text-[#B1B1B1] hover:text-[#555]"
@@ -53,7 +53,7 @@ export default function Templates() {
                   {tab}
 
                   {isActive && (
-                    <span className="absolute bottom-[-1px] left-0 h-[1px] w-full bg-[#171A20]" />
+                    <span className="absolute bottom-[-1px] left-0 h-[2px] w-full bg-[#060D18]" />
                   )}
                 </button>
               );
@@ -62,7 +62,7 @@ export default function Templates() {
         </div>
 
         {/* Template Grid */}
-        <div className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2 md:grid-cols-3">
+        <div className="grid grid-cols-1 mt-12 gap-x-4 gap-y-6 sm:grid-cols-3 md:grid-cols-4">
           {filteredTemplates.map((template) => (
             <TemplateCard
               key={template.id}

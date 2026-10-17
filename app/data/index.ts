@@ -51,6 +51,16 @@ export const templates: Template[] = [
     category: "Premium",
     rating: 5,
   },
+  {
+    id: 6,
+    name: "Ivory Green",
+    style: "Essential",
+    description:
+      "Premium wedding template, personalize it with your pictures, logo, info and gift inventory.",
+    image: "/template2.png",
+    category: "Free",
+    rating: 3,
+  },
  
 ];
 

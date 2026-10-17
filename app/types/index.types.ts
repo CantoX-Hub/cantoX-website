@@ -33,3 +33,46 @@ export interface Plan {
 
 export type PricingData = Record<PricingCategory, Plan[]>;
 
+///LOGO REQUEST
+
+export const styles = [
+  "Classic",
+  "Minimalistic",
+  "Floral",
+  "Luxury",
+  "Afrocentric",
+] as const;
+
+export type LogoStyle =
+  | "Classic"
+  | "Minimalistic"
+  | "Floral"
+  | "Luxury"
+  | "Afrocentric";
+
+export interface LogoRequestFormData {
+  coupleName: string;
+  email: string;
+  logoName: string;
+  hashtag: string;
+  style: LogoStyle | "";
+  brief: string;
+}
+
+export interface FormErrors {
+  coupleName?: string;
+  email?: string;
+  logoName?: string;
+  hashtag?: string;
+  style?: string;
+  brief?: string;
+}
+
+export const initialForm: LogoRequestFormData = {
+  coupleName: "",
+  email: "",
+  logoName: "",
+  hashtag: "",
+  style: "Classic",
+  brief: "",
+};

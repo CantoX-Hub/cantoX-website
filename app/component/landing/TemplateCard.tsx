@@ -3,14 +3,14 @@ import { Star, Gem, ArrowUpRight } from "lucide-react";
 import { Template } from "@/app/types/index.types";
 export function TemplateCard({ template }: { template: Template }) {
   return (
-    <div className="group overflow-hidden rounded-[4px] border border-[#E8E8E8] bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_35px_rgba(0,0,0,0.07)]">
+    <div className="group overflow-hidden rounded-lg border border-[#E8E8E8] bg-white p-2 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_35px_rgba(0,0,0,0.07)]">
       {/* Image */}
-      <div className="relative aspect-[1.65/1] w-full overflow-hidden bg-[#F4F1EC]">
+      <div className="relative aspect-[1.65/1] rounded-lg w-full overflow-hidden bg-[#F4F1EC]">
         <Image
           src={template.image}
           alt={template.name}
           fill
-          className="object-cover transition-transform duration-500 group-hover:scale-[1.025]"
+          className="object-cover transition-transform duration-500 group-hover:scale-[1.025] "
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
 
