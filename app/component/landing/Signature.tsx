@@ -12,12 +12,12 @@ export default function SignatureSection() {
           </span>
 
           {/* Heading */}
-          <h2 className="text-[24px] text-center sm:text-[32px] font-semibold leading-tight tracking-[-0.005em] md:text-[48px]">
+          <h2 className="text-[24px] text-center sm:text-[32px] leading-tight tracking-[-0.005em]">
             Your wedding deserves a signature
           </h2>
 
           {/* Description */}
-          <p className="mt-1 text-center leading-relaxed text-[#060D18] text-[14px] sm:text-base">
+          <p className="mt-1 text-center leading-relaxed text-[#060D18] text-[14px] sm:text-base font-medium">
             Delivered in 48 hours, expected formats are PNG, JPEG and PDF
             format.
           </p>

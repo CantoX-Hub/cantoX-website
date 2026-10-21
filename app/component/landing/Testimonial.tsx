@@ -10,11 +10,11 @@ export default function Testimonials() {
     <section className="overflow-hidden bg-white py-20 md:py-24">
       {/* Header */}
       <div className="mb-10 px-[5%] text-center md:mb-12">
-        <h2 className="mb-3 text-[24px] sm:text-[32px] font-semibold leading-tight tracking-[-0.005em] md:text-[48px]">
+        <h2 className="mb-3 text-[24px] sm:text-[32px] leading-tight tracking-[-0.005em]">
           Couples who found their design
         </h2>
 
-         <p className="mx-auto max-w-[560px] leading-relaxed text-[#060D18] text-[14px] sm:text-base">
+         <p className="text-center font-medium leading-relaxed text-[#060D18] text-[14px] sm:text-base">
           Delivered in 48 hours, expected formats are PNG, JPEG and PDF format.
         </p>
       </div>

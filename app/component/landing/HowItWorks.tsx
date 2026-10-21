@@ -80,11 +80,11 @@ export default function HowItWorks() {
               HOW IT WORKS
             </span>
 
-          <h2 className="mb-3 text-[24px] sm:text-[32px] leading-tight tracking-[-0.005em] md:text-[48px] text-white">
+          <h2 className="mb-2 text-[24px] sm:text-[32px] leading-tight tracking-[-0.005em] text-white">
               Few step and you are done
             </h2>
 
-          <p className="text-sm leading-6 text-[#A7AFBF] sm:text-base">
+          <p className="text-sm leading-6 text-white sm:text-base font-medium">
             From free to premium templates, personalize your invite
             to fully express yourself.
           </p>
@@ -115,26 +115,6 @@ export default function HowItWorks() {
                   `}
                 >
                   <div className="flex items-start gap-8">
-                    {/* Active indicator / step icon */}
-                    {/* <div
-                      className={`
-                        mt-1 flex h-9 w-9 shrink-0 items-center justify-center
-                        rounded-lg transition-all duration-300
-                        ${
-                          isActive
-                            ? "bg-[#FABB18] text-[#0A0D14]"
-                            : "bg-white/[0.07] text-white/60 group-hover:text-white"
-                        }
-                      `}
-                    >
-                      {isActive ? (
-                        <Icon size={18} strokeWidth={2} />
-                      ) : (
-                        <span className="text-xs font-semibold">
-                          0{index + 1}
-                        </span>
-                      )}
-                    </div> */}
 
                     <div className="min-w-0 flex-1 mb-2 flex flex-col gap-1.5 py-3 md:py-4">
                       <span
@@ -247,22 +227,7 @@ export default function HowItWorks() {
                   </div>
                 </div>
 
-                <div className="flex shrink-0 items-center gap-1.5">
-                  {steps.map((step, index) => (
-                    <button
-                      key={step.id}
-                      type="button"
-                      aria-label={`Show step ${index + 1}: ${step.title}`}
-                      aria-pressed={activeIndex === index}
-                      onClick={() => setActiveIndex(index)}
-                      className={`h-1.5 rounded-full transition-all duration-300 ${
-                        activeIndex === index
-                          ? "w-7 bg-[#FABB18]"
-                          : "w-1.5 bg-white/25 hover:bg-white/50"
-                      }`}
-                    />
-                  ))}
-                </div>
+                
               </div>
             </div>
           </div>

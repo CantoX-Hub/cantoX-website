@@ -1,3 +1,9 @@
+import ChapterSection from "../component/about-us/ChapterSection";
+import HowCantoWorks from "../component/about-us/HowCantoWorks";
+import OnePlatform from "../component/about-us/OnePlatform";
+import PlanningSection from "../component/about-us/PlanningSection";
+import PrincipleSection from "../component/about-us/PrincipleSection";
+import HappyCouple from "../component/landing/HappyCouple";
 import Footer from "../component/layout/Footer";
 import PageHeroBanner from "../component/layout/PageHero";
 
@@ -8,8 +14,14 @@ export default function AboutPage() {
       <PageHeroBanner
                     eyebrow="About us"
                     title="Every life has a Canto[Chapters]
-We built the place to experience yours"
-                  />
+                    We built the place to experience yours"
+                                      />
+      <ChapterSection/>
+      <HowCantoWorks/>
+      <PlanningSection/>
+      <OnePlatform/>
+      <PrincipleSection/>
+      <HappyCouple/>
       <Footer/>
     </main>
   );

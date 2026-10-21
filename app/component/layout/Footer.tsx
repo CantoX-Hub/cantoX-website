@@ -40,7 +40,7 @@ const Footer = () => {
         {/* Logo */}
         <Link
           href="/"
-          className="relative block h-[100px] w-[220px] md:h-[224px] md:w-[960px]"
+          className="relative block h-[100px] w-[220px] md:h-[224px] md:w-[860px]"
         >
           <Image
             src="/canto-footer-logo.svg"

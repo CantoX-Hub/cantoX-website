@@ -24,11 +24,11 @@ export default function Templates() {
             Templates
           </span>
 
-          <h2 className="mb-3 text-[24px] sm:text-[32px] font-semibold leading-tight tracking-[-0.005em] md:text-[48px]">
+          <h2 className="mb-3 text-[24px] sm:text-[32px] leading-tight tracking-[-0.005em] ">
             Find your perfect design
           </h2>
 
-          <p className="mx-auto max-w-[560px] leading-relaxed text-[#060D18] text-[14px] sm:text-base">
+          <p className="mx-auto max-w-[560px] leading-relaxed text-[#060D18] text-[14px] sm:text-base font-medium">
             From free to premium templates, personalize it to fully express
             yourself.
           </p>
@@ -44,7 +44,7 @@ export default function Templates() {
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`relative pb-3 text-[14px] font-medium transition-colors duration-300 min-w-28 ${
+                  className={`relative pb-3 text-[14px] font-medium transition-colors duration-300 sm:min-w-28 ${
                     isActive
                       ? "text-[#171A20]"
                       : "text-[#B1B1B1] hover:text-[#555]"

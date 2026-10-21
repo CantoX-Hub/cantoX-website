@@ -44,11 +44,11 @@ const HappyCouple = () => {
     <section className="relative isolate overflow-hidden bg-white px-[5%] py-12 sm:py-20 md:py-24">
       {/* Header */}
       <div className="relative z-10 flex flex-col items-center text-center">
-        <h2 className="mb-3 text-[24px] font-semibold leading-tight tracking-[-0.005em] sm:text-[32px] md:text-[48px]">
+        <h2 className="mb-3 text-[24px] leading-tight tracking-[-0.005em] sm:text-[32px]">
           Happy couples use Canto
         </h2>
 
-        <p className="mt-2 text-[14px] leading-relaxed text-[#060D18] sm:text-base">
+        <p className="mt-2 text-[14px] leading-relaxed text-[#060D18] sm:text-base font-medium">
           Ready in minutes, not days...designed for couples not designers.
         </p>
       </div>

@@ -49,7 +49,7 @@ export default function Hero() {
 
           <motion.p
             variants={itemVariants}
-            className="text-base md:text-lg text-[var(--text-muted)] mb-10 leading-relaxed max-w-md"
+            className="text-base mb-10 leading-relaxed max-w-lg font-medium"
           >
             Your wedding, beautifully presented. Pick a design, add your
             details, share your link, and Done.

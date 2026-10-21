@@ -8,10 +8,10 @@ export default function MoreWithCanto() {
     <section className="overflow-hidden bg-gradient-to-b from-white to-[#EAF0F5] py-12 sm:py-16 md:py-20">
       {/* Header */}
       <div className="mx-auto mb-8 max-w-[1200px] px-[5%] text-center md:mb-10">
-        <h2 className="mb-3 text-[24px] sm:text-[32px] font-semibold leading-tight tracking-[-0.005em] md:text-[48px]">
+        <h2 className="mb-3 text-[24px] sm:text-[32px] leading-tight tracking-[-0.005em] ">
           Do more with Canto
         </h2>
-        <p className="mx-auto max-w-[560px] leading-relaxed text-[#060D18] text-[14px] sm:text-base">
+        <p className="mx-auto max-w-[560px] leading-relaxed text-[#060D18] text-[14px] sm:text-base font-medium">
           Enjoy more perks and experiences as an event planner
         </p>
       </div>
