@@ -30,7 +30,7 @@ export function FeatureCard({
 
   return (
     <article
-      className="relative isolate flex aspect-[1.08/1] w-full max-w-[400px] shrink-0 flex-col justify-end overflow-hidden rounded-[8px] p-5 "
+      className="relative isolate flex aspect-[1.08/1] w-full max-w-[329px] sm:max-w-[400px] shrink-0 flex-col justify-end overflow-hidden rounded-[8px] p-5 "
       style={{ backgroundColor: tone.base }}
     >
       {/* Photo, greyscale so the tint reads evenly */}

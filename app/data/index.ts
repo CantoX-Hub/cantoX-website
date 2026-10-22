@@ -1,4 +1,4 @@
-import { PricingData, Template, TemplateCategory, Testimonial } from "../types/index.types";
+import { Template,PricingPlan, TemplateCategory, Testimonial } from "../types/index.types";
 
 export const templates: Template[] = [
   {
@@ -141,100 +141,106 @@ export const testimonials: Testimonial[] = [
 
 
 
-export const pricingData: PricingData = {
-  couples: [
+export const pricingData: Record<string, PricingPlan[]> = {
+  Couples: [
     {
-      id: "essentials",
-      name: "Essentials",
-      description: "Best for couples with quick edits.",
+      name: "Free",
       price: "₦0",
-      period: "One-time payment",
-      features: [
-        "Unlimited free templates",
-        "Add 1st flights",
-        "Add pictures",
-        "One-time use",
-      ],
-      theme: "light",
-    },
-    {
-      id: "exclusive",
-      name: "Exclusive",
-      description: "Designed for couples with high needs.",
-      price: "₦20,000",
-      period: "One-time payment",
-      features: [
-        "Unlimited premium templates",
-        "Guest management",
-        "Verified vendors",
-        "E-rsvp request",
-        "One-time use",
-      ],
-      theme: "dark",
-    },
-  ],
-  planners: [
-    {
-      id: "starters",
-      name: "Starters",
+      billing: "One-time payment",
       description: "Best for couples with quick edits.",
+      ctaText: "Get started",
+      features: [
+        {
+          items: [
+            "Unlimited free templates",
+            "Add cash gifts",
+            "Add limited pictures",
+            "One-time use",
+          ],
+        },
+      ],
+    },
+    {
+      name: "Premium",
       price: "₦15,000",
-      period: "monthly payment",
+      billing: "One-time payment",
+      description: "Best for couples with high taste.",
+      ctaText: "Get started",
+      isPopular: true,
       features: [
-        "10 Premium theme access",
-        "Guest management",
-        "Verified vendors",
-        "Calendar",
+        {
+          category: "Premium templates",
+          items: ["Unlimited free templates", "Add cash gifts", "Add limited pictures", "One-time use"],
+        },
+        {
+          category: "Guest management",
+          items: ["Unlimited free templates", "Add cash gifts", "Add limited pictures", "One-time use"],
+        },
+        {
+          category: "Wishlist",
+          items: ["Unlimited free templates", "Add cash gifts", "Add limited pictures", "One-time use"],
+        },
+        {
+          category: "Verified vendors",
+          items: ["Unlimited free templates", "Add cash gifts", "Add limited pictures", "One-time use"],
+        },
       ],
-      theme: "light",
-    },
-    {
-      id: "planner_pro",
-      name: "Planner Pro",
-      description: "Designed for couples with high needs.",
-      price: "₦35,000",
-      period: "monthly payment",
-      features: [
-        "Unlimited Premium templates",
-        "Guest management",
-        "Verified vendors",
-        "E-rsvp request",
-        "Calendar Sync (to-do)",
-      ],
-      theme: "dark",
     },
   ],
-  vendors: [
+  "Event planners": [
     {
-      id: "vendor_basic",
-      name: "Vendor Basic",
-      description: "Best for couples with quick edits.",
+      name: "Starter",
       price: "₦0",
-      period: "monthly payment",
+      billing: "Per month",
+      description: "Best for independent planners starting out.",
+      ctaText: "Get started",
       features: [
-        "Business profile",
-        "Messaging",
-        "Location",
-        "Subscription",
-        "Product/Services",
-        "MCQ",
-        "Social links/Website",
+        {
+          items: ["Up to 5 active events", "Client collaboration portal", "Standard templates", "Email support"],
+        },
       ],
-      theme: "light",
     },
     {
-      id: "vendor_pro",
-      name: "Planner Pro",
-      description: "Designed for couples with high needs.",
-      price: "₦10,000",
-      period: "monthly payment",
+      name: "Pro Agency",
+      price: "₦25,000",
+      billing: "Per month",
+      description: "For growing event planning teams.",
+      ctaText: "Get started",
+      isPopular: true,
       features: [
-        "Premium placement",
-        "More product images",
-        "Priority search ranking",
-        "Verified badge",
+        {
+          category: "Agency features",
+          items: ["Unlimited active events", "Custom branding", "Priority vendor matching", "Advanced guest analytics"],
+        },
       ],
-      theme: "dark",
+    },
+  ],
+  Vendors: [
+    {
+      name: "Standard Listing",
+      price: "₦0",
+      billing: "Monthly subscription",
+      description: "Get discovered by couples planning events.",
+      ctaText: "Get Started",
+      features: [
+        {
+          items: ["Profile showcase", "Direct client inquiries", "Portfolio gallery (up to 12 items)", "Standard support"],
+        },
+      ],
+    },
+    {
+      name: "Verified Pro",
+      price: "₦15,000",
+      billing: "Monthly subscription",
+      description: "For top-tier vendors wanting maximum visibility.",
+      ctaText: "Get Started",
+      isPopular: true,
+      features: [
+        {
+          category: "Featured perks",
+          items: ["Verified badge", "Top placement in search results", "Unlimited portfolio gallery", "Direct WhatsApp integration"],
+        },
+      ],
     },
   ],
 };

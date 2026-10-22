@@ -20,7 +20,7 @@ export default function MoreWithCanto() {
       <div className="relative w-full overflow-hidden">
         <div className="marquee-track flex w-max">
           {/* First Set */}
-          <div className="flex shrink-0 gap-5 pr-5 md:gap-8 md:pr-6">
+          <div className="flex sm:shrink-0 gap-5 pr-5 md:gap-8 md:pr-6">
             {features.map((feature, index) => (
               <FeatureCard key={`first-${index}`} feature={feature} index={index} />
             ))}

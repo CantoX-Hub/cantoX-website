@@ -1,153 +1,89 @@
 "use client";
+
+import { useState } from "react";
+import { Check } from "lucide-react";
 import { pricingData } from "@/app/data";
-import { PricingCategory } from "@/app/types/index.types";
-import React, { useState } from "react";
 
-const tabs: { id: PricingCategory; label: string }[] = [
-  { id: "couples", label: "For couples" },
-  { id: "planners", label: "For Event planners" },
-  { id: "vendors", label: "For Vendors" },
-];
 
-const CheckIcon = ({ className }: { className?: string }) => (
-  <svg
-    className={`w-4 h-4 mt-0.5 shrink-0 ${className || ""}`}
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={3}
-  >
-    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-  </svg>
-);
-
-export default function ChoosePlan() {
-  
-  const [activeTab, setActiveTab] = useState<PricingCategory>("couples");
-  const [selectedPlanId, setSelectedPlanId] = useState<string>("essentials");
-
-  const handleTabChange = (tabId: PricingCategory) => {
-    setActiveTab(tabId);
-    setSelectedPlanId(pricingData[tabId][0].id);
-  };
+export default function PricingSection() {
+  const [activeTab, setActiveTab] = useState<string>("Couples");
 
   return (
-    <section className="bg-white py-16 md:py-24 px-4 sm:px-6">
-      <div className="max-w-[1022px] mx-auto flex flex-col md:flex-row gap-10 lg:gap-16">
-        {/* Left Sidebar - Tabs */}
-        <div className="w-full md:w-[220px] flex flex-col gap-2 shrink-0 md:pt-2">
-          {tabs.map((tab) => {
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => handleTabChange(tab.id)}
-                className={`text-left px-5 py-3 rounded-[8px] text-[15px] font-medium transition-all duration-200 ${
-                  isActive
-                    ? "bg-[#D9A05B] text-white shadow-sm"
-                    : "text-[#060D18] hover:bg-gray-50"
-                }`}
-              >
-                {tab.label}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Right Content - Pricing Cards */}
-        <div className="flex-1 w-full max-w-[650px]">
-          <div className="mb-8">
-            <h2 className="text-[28px] sm:text-[32px] md:text-[48px] tracking-[-0.005em] font-semibold text-[#060D18] leading-tight mb-2">
-              Choose a plan
-            </h2>
-            <p className="text-[14px] md:text-base text-gray-500">
-              We have different packages for everyone, so please select where you belong.
-            </p>
-          </div>
-
-          <div className="flex flex-col gap-5">
-            {pricingData[activeTab].map((plan) => {
-              const isSelected = selectedPlanId === plan.id;
-              const isDark = plan.theme === "dark";
-
+    <section className="bg-white py-16 sm:py-20 md:py-28">
+      <div className=" w-full maxContainer px-[5%]">
+        
+        {/* Tabs Header */}
+        <div className="relative border-b border-[#E2E8F0]">
+          <div className="flex space-x-8 sm:space-x-12">
+            {Object.keys(pricingData).map((tab) => {
+              const isActive = activeTab === tab;
               return (
-                <div
-                  key={plan.id}
-                  onClick={() => setSelectedPlanId(plan.id)}
-                  className={`relative cursor-pointer overflow-hidden rounded-[26px] p-1  transition-all duration-200 border-2 ${
-                    isSelected
-                      ? "border-[#D9A05B] "
-                      : isDark
-                      ? "border-transparent"
-                      : "border-0"
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`pb-4 text-sm transition-colors sm:text-base relative ${
+                    isActive ? "text-[#11151D] font-bold" : " text-[#94A3B8] hover:text-[#64748B]"
                   }`}
                 >
-                <div className={`p-6 md:p-8 rounded-[26px] border ${
-                    isDark
-                      ? "bg-[#060D18] text-white"
-                      : "bg-gradient-to-br from-[#F8F9FB] -2 to-[#F1F3F6] text-[#060D18]"
-                  }`}>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-10">
-                    {/* Plan Info */}
-                    <div className="flex flex-col justify-between">
-                      <div>
-                        <h3 className="text-xl font-semibold mb-1">
-                          {plan.name}
-                        </h3>
-                        <p
-                          className={`text-sm mb-6 ${
-                            isDark ? "text-gray-400" : "text-gray-500"
-                          }`}
-                        >
-                          {plan.description}
-                        </p>
-                      </div>
-                      <div>
-                        <div className="text-[32px] font-bold tracking-tight mb-1">
-                          {plan.price}
-                        </div>
-                        <div
-                          className={`text-sm ${
-                            isDark ? "text-gray-400" : "text-gray-500"
-                          }`}
-                        >
-                          {plan.period}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Features List */}
-                    <div className="flex flex-col justify-center">
-                      <ul className="space-y-2 p-4 shadow-lg rounded-md">
-                        {plan.features.map((feature, idx) => (
-                          <li key={idx} className="flex items-start gap-3">
-                            <CheckIcon
-                              className={
-                                isDark ? "text-[#D9A05B]" : "text-[#060D18]"
-                              }
-                            />
-                            <span
-                              className={`text-[14px] md:text-[15px] ${
-                                isDark ? "text-gray-200" : "text-gray-700"
-                              }`}
-                            >
-                              {feature}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                </div>
+                  {tab}
+                  {isActive && (
+                    <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#11151D]" />
+                  )}
+                </button>
               );
             })}
           </div>
-
-          <button className="w-full mt-6 bg-[#D9A05B] text-white rounded-[8px] py-3 font-medium hover:bg-[#c89250] transition-colors shadow-sm">
-            Get Started
-          </button>
         </div>
+
+        {/* Pricing Cards Grid */}
+        <div className="mt-12 sm:mt-16 grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
+          {pricingData[activeTab].map((plan, index) => (
+            <div key={index} className="flex flex-col">
+              
+              {/* Plan Header */}
+              <div className="min-h-[140px]">
+                <h3 className="text-md sm:text-xl text-[#11151D] md:text-2xl">{plan.name}</h3>
+                <div className="mt-3 flex items-baseline gap-2">
+                  <span className="text-xl sm:text-3xl font-bold tracking-tight text-[#8D8D8D] sm:text-4xl">{plan.price}</span>
+                </div>
+                <p className="mt-1 text-sm text-[#64748B]">{plan.billing}</p>
+              </div>
+
+              <p className="mt-4 text-sm font-medium text-[#343B46]">{plan.description}</p>
+
+              {/* CTA Button */}
+              <button className="mt-6 w-full max-w-max rounded-lg bg-[#11151D] py-3.5 text-center text-sm font-medium text-white transition-colors hover:bg-black sm:w-auto px-8">
+                {plan.ctaText}
+              </button>
+
+              {/* Divider */}
+              <div className="my-8 border-b border-dashed border-[#E2E8F0]" />
+
+              {/* Features Section */}
+              <div className="space-y-6 text-sm text-[#343B46]">
+                <p className="font-semibold text-[#11151D]">What you get:</p>
+
+                {plan.features.map((group, groupIdx) => (
+                  <div key={groupIdx} className="space-y-3">
+                    {group.category && (
+                      <p className="font-medium text-[#64748B] pt-2">{group.category}</p>
+                    )}
+                    <ul className="space-y-3">
+                      {group.items.map((item, itemIdx) => (
+                        <li key={itemIdx} className="flex items-start gap-3">
+                          <Check className="h-4 w-4 shrink-0 text-[#11151D] mt-0.5" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+
+            </div>
+          ))}
+        </div>
+
       </div>
     </section>
   );

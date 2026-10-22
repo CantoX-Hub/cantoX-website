@@ -76,3 +76,16 @@ export const initialForm: LogoRequestFormData = {
   style: "Classic",
   brief: "",
 };
+
+export interface PricingPlan {
+  name: string;
+  price: string;
+  billing: string;
+  description: string;
+  ctaText: string;
+  isPopular?: boolean;
+  features: {
+    category?: string;
+    items: string[];
+  }[];
+}

@@ -104,13 +104,13 @@ export default function HowItWorks() {
                   onClick={() => setActiveIndex(index)}
                   aria-pressed={isActive}
                   className={`
-                    group relative w-full max-w-[269px]
+                    group relative w-full md:max-w-[269px]
                     text-left transition-all duration-300
                     md:border-transparent md:bg-transparent md:p-0
                     ${
                       isActive
-                        ? "border-[#FABB18]/30 bg-white/[0.06]"
-                        : "border-white/[0.06] bg-transparent md:opacity-45 md:hover:opacity-75"
+                        ? "border-[#FABB18]/30 "
+                        : "border-white/[0.06] opacity-45 md:hover:opacity-75"
                     }
                   `}
                 >
@@ -124,7 +124,7 @@ export default function HowItWorks() {
                       </span>
 
                       <h3
-                        className={`flex items-center my-2 gap-2 text-base transition-colors sm:text-lg md:text-2xl ${
+                        className={`flex items-center my-2 gap-2 text-md transition-colors sm:text-lg md:text-2xl ${
                           isActive ? "text-white" : "text-white/70"
                         }`}
                       >
@@ -134,7 +134,7 @@ export default function HowItWorks() {
                       </h3>
 
                       <AnimatePresence initial={false}>
-                        {isActive && (
+                        {/* {isActive && ( */}
                           <motion.div
                             initial={{ opacity: 0, height: 0, y: 6 }}
                             animate={{ opacity: 1, height: "auto", y: 5 }}
@@ -146,18 +146,10 @@ export default function HowItWorks() {
                               {step.desc}
                             </p>
                           </motion.div>
-                        )}
+                        {/* )} */}
                       </AnimatePresence>
                     </div>
-
-                    <ChevronRight
-                      size={16}
-                      className={`mt-2 shrink-0 transition-all duration-300 md:hidden ${
-                        isActive
-                          ? "translate-x-0 text-[#FABB18] opacity-100"
-                          : "-translate-x-1 text-white/30 opacity-0"
-                      }`}
-                    />
+                   
                   </div>
 
                   {/* Desktop progress line */}
@@ -210,25 +202,7 @@ export default function HowItWorks() {
                 </AnimatePresence>
               </div>
 
-              {/* Image caption */}
-              <div className="flex items-center justify-between gap-3 px-2 pb-1 pt-4 sm:px-3 sm:pt-5">
-                <div className="flex min-w-0 items-center gap-2.5">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#FABB18]/10 text-[#FABB18]">
-                    <ActiveIcon size={16} />
-                  </div>
-
-                  <div className="min-w-0">
-                    <p className="truncate text-xs font-semibold text-white sm:text-sm">
-                      {activeStep.title}
-                    </p>
-                    <p className="mt-0.5 text-[10px] text-white/45 sm:text-xs">
-                      Step {activeIndex + 1} of {steps.length}
-                    </p>
-                  </div>
-                </div>
-
-                
-              </div>
+             
             </div>
           </div>
         </div>
