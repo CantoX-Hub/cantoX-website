@@ -7,7 +7,7 @@ export default function MoreWithCanto() {
   return (
     <section className="overflow-hidden bg-gradient-to-b from-white to-[#EAF0F5] py-12 sm:py-16 md:py-20">
       {/* Header */}
-      <div className="mx-auto mb-8 max-w-[1200px] px-[5%] text-center md:mb-10">
+      <div className="mb-8 maxContainer px-[5%] text-center md:mb-10">
         <h2 className="mb-3 text-[24px] sm:text-[32px] leading-tight tracking-[-0.005em] ">
           Do more with Canto
         </h2>

@@ -12,7 +12,6 @@ import {
   PenTool,
   Share,
   FilePen,
-  ChevronRight,
 } from "lucide-react";
 
 const steps = [
@@ -64,16 +63,15 @@ export default function HowItWorks() {
   });
 
   const activeStep = steps[activeIndex];
-  const ActiveIcon = activeStep.icon;
 
   return (
     <section
       ref={containerRef}
       id="how-it-works"
-      className="relative bg-[#0A0D14] px-[5%] py-16 md:min-h-[300vh] md:py-0"
+      className="relative bg-[#0A0D14] py-16 md:min-h-[300vh] md:py-0"
     >
       {/* Sticky experience on desktop; normal flow on mobile */}
-      <div className="relative flex w-full maxContainer flex-col justify-center md:sticky md:top-0 md:min-h-screen md:overflow-hidden md:py-10">
+      <div className="relative flex w-full maxContainer px-[5%] flex-col justify-center md:sticky md:top-0 md:min-h-screen md:overflow-hidden md:py-10">
         {/* Header */}
         <header className="mb-10 text-center md:mb-12">
           <span className="mb-3 text-xs font-semibold tracking-widest text-[#857E75]">
@@ -156,7 +154,7 @@ export default function HowItWorks() {
                   {isActive && (
                     <motion.div
                       layoutId="how-it-works-indicator"
-                      className="absolute -left-4 top-0 hidden h-full w-[3px] rounded-full bg-[#FABB18] md:block"
+                      className="absolute -left-4 top-0 hidden h-full md:block"
                       transition={{
                         type: "spring",
                         stiffness: 300,

@@ -17,7 +17,7 @@ export default function Templates() {
 
   return (
     <section className="bg-white px-[5%] py-20 md:py-28">
-      <div className="mx-auto w-full max-w-[1200px]">
+      <div className="px-[5%] w-full maxContainer">
         {/* Header */}
         <div className="mb-10 text-center md:mb-14">
           <span className="mb-3 block text-[10px] font-medium uppercase tracking-[0.12em] text-[#9B958C]">

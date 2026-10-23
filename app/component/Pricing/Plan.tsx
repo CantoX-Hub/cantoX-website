@@ -44,7 +44,7 @@ export default function PricingSection() {
               <div className="min-h-[140px]">
                 <h3 className="text-md sm:text-xl text-[#11151D] md:text-2xl">{plan.name}</h3>
                 <div className="mt-3 flex items-baseline gap-2">
-                  <span className="text-xl sm:text-3xl font-bold tracking-tight text-[#8D8D8D] sm:text-4xl">{plan.price}</span>
+                  <span className="text-xl sm:text-3xl font-bold tracking-tight text-[#8D8D8D]">{plan.price}</span>
                 </div>
                 <p className="mt-1 text-sm text-[#64748B]">{plan.billing}</p>
               </div>
@@ -52,7 +52,7 @@ export default function PricingSection() {
               <p className="mt-4 text-sm font-medium text-[#343B46]">{plan.description}</p>
 
               {/* CTA Button */}
-              <button className="mt-6 w-full max-w-max rounded-lg bg-[#11151D] py-3.5 text-center text-sm font-medium text-white transition-colors hover:bg-black sm:w-auto px-8">
+              <button className="mt-6 w-full max-w-max rounded-lg bg-[#07111F] py-3.5 text-center text-sm font-medium text-white transition-colors hover:bg-[#07111fc1] sm:w-auto px-8">
                 {plan.ctaText}
               </button>
 

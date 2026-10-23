@@ -41,8 +41,8 @@ export default function GetStarted() {
 
   return (
     <main className="min-h-screen">
-      <div className="px-[5%] py-4">
-        <div className="relative min-h-[calc(100vh-2rem)] overflow-hidden rounded-sm bg-white">
+      <div className="py-4">
+        <div className="relative min-h-[calc(100vh-2rem)] overflow-hidden maxContainer px-[5%] bg-white">
           {/* Back Button */}
           <Link
             href="/"

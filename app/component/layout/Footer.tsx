@@ -34,8 +34,8 @@ const socialLinks = [
 
 const Footer = () => {
   return (
-    <footer className="bg-[#060D18] px-[5%] py-14 mt-14 md:py-16">
-      <div className="maxContainer flex flex-col items-center text-center">
+    <footer className="bg-[#060D18] py-14 mt-14 md:py-16">
+      <div className="maxContainer px-[5%] flex flex-col items-center text-center">
 
         {/* Logo */}
         <Link

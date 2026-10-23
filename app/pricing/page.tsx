@@ -8,10 +8,15 @@ export default function PricingPage() {
   return (
     <main className="min-h-screen">
       <PageHeroBanner
-                    eyebrow="Pricing"
-                    title="Simple pricing, tailored to you.
-Find a plan for your dream wedding."
-                  />
+        eyebrow="Pricing"
+        title={
+          <>
+            Simple pricing, tailored to you.
+            <br />
+           Find a plan for your dream wedding.
+          </>
+        }
+      />
       <ChoosePlan/>
       <HappyCouple/>
       <Footer/>
