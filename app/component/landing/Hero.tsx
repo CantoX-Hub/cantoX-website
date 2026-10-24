@@ -62,8 +62,8 @@ export default function Hero() {
           >
             <Button
             href="/templates"
-              // variant="primary"  
-             className="bg-[#C9933A]"
+              variant="ghost"  
+             className="bg-[#C9933A] text-white"
               icon={<ArrowUpRight size={18} className="ml-1 text-gray-300" />}
             >
               Browse templates
