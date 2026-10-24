@@ -43,7 +43,7 @@ const HappyCouple = () => {
   return (
     <section className="relative isolate overflow-hidden bg-white px-[5%] py-12 sm:py-20 md:py-24">
       {/* Header */}
-      <div className="relative z-10 flex flex-col items-center text-center">
+      <div className="relative maxContainer px-[5%] z-10 flex flex-col items-center text-center">
         <h2 className="mb-3 text-[24px] leading-tight tracking-[-0.005em] sm:text-[32px]">
           Happy couples use Canto
         </h2>
@@ -55,7 +55,7 @@ const HappyCouple = () => {
 
       {/* Carousel */}
       <div className="relative mt-8 w-full">
-        <div className="relative z-10 mx-auto w-full max-w-[1022px]">
+        <div className="relative z-10 px-[5%] w-full maxContainer">
           <div
             className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-[#EAF0F5] shadow-sm sm:aspect-[16/9]"
             role="region"
@@ -80,7 +80,7 @@ const HappyCouple = () => {
                     alt={slide.alt}
                     fill
                     priority={index === 0}
-                    sizes="(max-width: 768px) 90vw, 1022px"
+                    sizes="(max-width: 768px) 100vw, 1440px"
                     className="object-cover object-center"
                   />
                 </div>

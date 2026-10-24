@@ -10,7 +10,7 @@ export default function HowCantoWorks() {
             muted
             playsInline
             preload="auto"
-            className="absolute inset-0 h-full max-h-[640px] w-full object-contain"
+            className="absolute inset-0 h-full max-w-[1440px] w-full object-contain"
           />
         </div>
       </div>

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Button from "../common/Button";
+import AudienceMarquee from "./AudienceMarquee";
 
 const stats = [
   { value: "200+", label: "Templates" },
@@ -30,7 +31,7 @@ const itemVariants = {
 
 export default function Hero() {
   return (
-    <section className="w-full pt-16 pb-24 relative overflow-hidden">
+    <section className="w-full pt-16 pb-12 relative overflow-hidden">
       <div className="maxContainer px-[5%] grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[70vh]">
         {/* Left Column: Text & CTAs */}
         <motion.div
@@ -102,7 +103,9 @@ export default function Hero() {
             priority
           />
         </motion.div>
+        
       </div>
+       <AudienceMarquee />
     </section>
   );
 }

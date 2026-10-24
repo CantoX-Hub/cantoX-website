@@ -15,7 +15,6 @@ export default function Home() {
     <main className="min-h-screen font-['Inter',sans-serif]">
       <Navbar />
       <Hero />
-      <AudienceMarquee />
       <HowItWorks/>
       <Templates/>
       <MoreWithCanto/>

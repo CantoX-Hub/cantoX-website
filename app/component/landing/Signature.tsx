@@ -5,7 +5,7 @@ export default function SignatureSection() {
   return (
     <section className="overflow-hidden bg-white px-[5%] py-12 sm:py-20 md:py-24">
       <div className="w-full">
-        <div className="maxContainer flex flex-col items-center  ">
+        <div className="maxContainer px-[5%] flex flex-col items-center  ">
           {/* Eyebrow */}
           <span className="mb-2 block text-[14px] uppercase font-dm-sans text-[#C9933A] ">
             REQUEST LOGO
@@ -27,7 +27,7 @@ export default function SignatureSection() {
             className="
               relative
               mt-8
-              max-w-[1022px]
+              max-w-[1440px]
               w-full
               overflow-hidden
               rounded-[8px]
@@ -47,7 +47,7 @@ export default function SignatureSection() {
               fill
               priority
               className="object-cover"
-              sizes="(max-width: 768pmax) 90vw, 780px"
+              sizes="(max-width: 768pmax) 100vw, 780px"
             />
 
             {/* Dark overlay on text side */}
