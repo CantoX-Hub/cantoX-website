@@ -62,7 +62,7 @@ export default function Hero() {
           >
             <Button
             href="/templates"
-              variant="ghost"  
+              variant="accent"  
              className="bg-[#C9933A] text-white"
               icon={<ArrowUpRight size={18} className="ml-1 text-gray-300" />}
             >

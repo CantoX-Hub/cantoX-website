@@ -37,7 +37,7 @@ export default function ReadyToStart() {
           <div className="mt-5 md:mt-12 flex flex-wrap items-center gap-3">
                       <Button
                         href="/templates"
-                        // variant="primary"  
+                        variant="accent"  
                        className="bg-[#C9933A] text-white"
                         icon={<ArrowUpRight size={18} className="ml-1 text-gray-300" />}
                       >
