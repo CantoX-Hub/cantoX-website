@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Check } from "lucide-react";
 import { pricingData } from "@/app/data";
+import Button from "../common/Button";
 
 
 export default function PricingSection() {
@@ -44,29 +45,29 @@ export default function PricingSection() {
               <div className="min-h-[140px]">
                 <h3 className="text-md sm:text-xl text-[#11151D] md:text-2xl">{plan.name}</h3>
                 <div className="mt-3 flex items-baseline gap-2">
-                  <span className="text-xl sm:text-3xl font-bold tracking-tight text-[#8D8D8D]">{plan.price}</span>
+                  <span className="text-xl sm:text-3xl font-medium tracking-tight text-[#8D8D8D]">{plan.price}</span>
                 </div>
-                <p className="mt-1 text-sm text-[#64748B]">{plan.billing}</p>
+                <p className="mt-1 text-sm text-[#060D18] sm:text-base font-medium ">{plan.billing}</p>
               </div>
 
-              <p className="mt-4 text-sm font-medium text-[#343B46]">{plan.description}</p>
+              <p className="mt-4 text-sm text-[#060D18] sm:text-base font-medium ">{plan.description}</p>
 
               {/* CTA Button */}
-              <button className="mt-6 w-full max-w-max rounded-lg bg-[#07111F] py-3.5 text-center text-sm font-medium text-white transition-colors hover:bg-[#07111fc1] sm:w-auto px-8">
+              <Button href="/get-started" className="mt-6 w-full max-w-max rounded-lg bg-[#07111F] py-3.5 text-center text-sm font-medium text-white transition-colors hover:bg-[#07111fc1] sm:w-auto px-8">
                 {plan.ctaText}
-              </button>
+              </Button>
 
               {/* Divider */}
               <div className="my-8 border-b border-dashed border-[#E2E8F0]" />
 
               {/* Features Section */}
-              <div className="space-y-6 text-sm text-[#343B46]">
-                <p className="font-semibold text-[#11151D]">What you get:</p>
+              <div className="space-y-6 text-sm text-[#8D8D8D]">
+                <p className="font-medium text-[#2A2A2A] text-base">What you get:</p>
 
                 {plan.features.map((group, groupIdx) => (
                   <div key={groupIdx} className="space-y-3">
                     {group.category && (
-                      <p className="font-medium text-[#64748B] pt-2">{group.category}</p>
+                      <p className="font-medium text-[#2a2a2a] pt-2 text-base">{group.category}</p>
                     )}
                     <ul className="space-y-3">
                       {group.items.map((item, itemIdx) => (

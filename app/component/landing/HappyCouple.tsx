@@ -57,14 +57,14 @@ const HappyCouple = () => {
       <div className="relative mt-8 w-full">
         <div className="relative z-10 px-[5%] w-full maxContainer">
           <div
-            className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-[#EAF0F5] shadow-sm sm:aspect-[16/9]"
+            className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-[#EAF0F5] shadow-sm sm:aspect-[16/9] max-h-[546px]"
             role="region"
             aria-roledescription="carousel"
             aria-label="Happy couples using Canto"
           >
             {/* Sliding image track */}
             <div
-              className="flex h-full w-full transition-transform duration-1000 ease-in-out motion-reduce:transition-none"
+              className="flex h-full max-h-[546px] w-full transition-transform duration-1000 ease-in-out motion-reduce:transition-none"
               style={{
                 transform: `translateX(-${currentSlide * 100}%)`,
               }}
@@ -72,7 +72,7 @@ const HappyCouple = () => {
               {CAROUSEL_SLIDES.map((slide, index) => (
                 <div
                   key={slide.id}
-                  className="relative h-full w-full flex-shrink-0"
+                  className="relative h-full max-h-[546px] w-full flex-shrink-0"
                   aria-hidden={currentSlide !== index}
                 >
                   <Image

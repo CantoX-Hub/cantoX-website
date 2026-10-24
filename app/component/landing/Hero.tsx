@@ -61,12 +61,14 @@ export default function Hero() {
             className="flexStart flex-wrap gap-4 mb-16"
           >
             <Button
-              variant="primary"
+            href="/templates"
+              variant="primary"  
+             className="bg-[#C9933A]"
               icon={<ArrowUpRight size={18} className="ml-1 text-gray-300" />}
             >
               Browse templates
             </Button>
-            <Button variant="outline">Get started</Button>
+            <Button variant="outline"  href="/get-started">Get started</Button>
           </motion.div>
 
           {/* Stats Section */}

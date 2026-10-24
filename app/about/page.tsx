@@ -3,6 +3,7 @@ import HowCantoWorks from "../component/about-us/HowCantoWorks";
 import OnePlatform from "../component/about-us/OnePlatform";
 import PlanningSection from "../component/about-us/PlanningSection";
 import PrincipleSection from "../component/about-us/PrincipleSection";
+import ReadyToStart from "../component/about-us/StartYourJourney";
 import HappyCouple from "../component/landing/HappyCouple";
 import Footer from "../component/layout/Footer";
 import PageHeroBanner from "../component/layout/PageHero";
@@ -26,6 +27,7 @@ export default function AboutPage() {
       <PlanningSection/>
       <OnePlatform/>
       <PrincipleSection/>
+      <ReadyToStart/>
       <HappyCouple/>
       <Footer/>
     </main>
