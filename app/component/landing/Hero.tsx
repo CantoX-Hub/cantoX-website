@@ -40,6 +40,7 @@ export default function Hero() {
           animate="visible"
           className="flex flex-col items-start max-w-[656px]"
         >
+        {/* <div> </div> */}
           <motion.h1
             variants={itemVariants}
             className="text-4xl sm:text-5xl lg:text-[3.5rem] leading-[1.1] mb-6 text-[#0F0F0F]"
@@ -50,7 +51,7 @@ export default function Hero() {
 
           <motion.p
             variants={itemVariants}
-            className="text-base mb-10 leading-relaxed max-w-lg font-medium"
+            className="text-base mb-10 leading-relaxed max-w-[555px] font-medium"
           >
             Your wedding, beautifully presented. Pick a design, add your
             details, share your link, and Done.
@@ -64,11 +65,11 @@ export default function Hero() {
             href="/templates"
               variant="accent"  
              className="bg-[#C9933A] text-white"
-              icon={<ArrowUpRight size={18} className="ml-1 text-gray-300" />}
+              icon={<ArrowUpRight size={18} className="ml-1 text-white" />}
             >
               Browse templates
             </Button>
-            <Button variant="outline"  href="/get-started">Get started</Button>
+            <Button variant="outline" className="border-2" href="/get-started">Get started</Button>
           </motion.div>
 
           {/* Stats Section */}
@@ -78,10 +79,10 @@ export default function Hero() {
           >
             {stats.map((stat, index) => (
               <div key={index} className="flex flex-col">
-                <span className="text-2xl md:text-3xl font-bold text-[#0F0F0F] mb-1">
+                <h2 className="text-[24px] sm:text-[32px]  text-[#060D18] mb-2">
                   {stat.value}
-                </span>
-                <span className="text-sm text-center text-[var(--text-muted)]">
+                </h2>
+                <span className="text-sm sm:text-base text-center ">
                   {stat.label}
                 </span>
               </div>
@@ -94,7 +95,7 @@ export default function Hero() {
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative w-full h-full min-h-[400px] lg:min-h-[600px] flexCenter"
+          className="relative w-full h-full min-h-[400px] lg:max-h-[466px] flexCenter"
         >
 
           <Image

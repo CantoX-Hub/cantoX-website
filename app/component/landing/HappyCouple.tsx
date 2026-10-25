@@ -45,7 +45,7 @@ const HappyCouple = () => {
       {/* Header */}
       <div className="relative maxContainer px-[5%] z-10 flex flex-col items-center text-center">
         <h2 className="mb-3 text-[24px] leading-tight tracking-[-0.005em] sm:text-[32px]">
-          Happy couples use Canto
+          Happy couples use CantoX
         </h2>
 
         <p className="mt-2 text-[14px] leading-relaxed text-[#060D18] sm:text-base font-medium">
@@ -92,7 +92,7 @@ const HappyCouple = () => {
 
             {/* Animated bottom-left caption */}
             <div
-              className="pointer-events-none absolute bottom-10 left-5 z-20 max-w-[80%] sm:bottom-12 sm:left-8 md:left-10"
+              className="pointer-events-none absolute bottom-5 left-5 z-20 w-full "
               aria-live="polite"
               aria-atomic="true"
             >
@@ -112,7 +112,7 @@ const HappyCouple = () => {
 
             {/* Slide indicators */}
             <div
-              className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2"
+              className="absolute bottom-5 right-5 z-20 flex items-center gap-2"
               aria-label="Choose a wedding image"
             >
               {CAROUSEL_SLIDES.map((slide, index) => (
@@ -124,7 +124,7 @@ const HappyCouple = () => {
                   aria-current={currentSlide === index ? "true" : undefined}
                   className={`h-1.5 rounded-full transition-all duration-300 ${
                     currentSlide === index
-                      ? "w-12 bg-[#C99532]"
+                      ? "w-24 bg-[#C99532]"
                       : "w-6 bg-white/30 hover:bg-white"
                   }`}
                 />

@@ -73,7 +73,7 @@ export default function Navbar() {
           <Button
             variant="outline"
             onClick={handleGetStarted}
-            className="rounded-lg px-5 py-2.5 border-[#0F0F0F] text-[#0F0F0F] hover:bg-gray-50"
+            className="px-5 py-2.5 border-2 text-[#0F0F0F] "
           >
             Get started
           </Button>

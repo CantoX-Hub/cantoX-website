@@ -7,7 +7,7 @@ export default function SignatureSection() {
       <div className="w-full">
         <div className="maxContainer px-[5%] flex flex-col items-center  ">
           {/* Eyebrow */}
-          <span className="mb-2 block text-[14px] uppercase font-dm-sans text-[#C9933A] ">
+          <span className="mb-5 block text-[14px] uppercase font-dm-sans text-[#D98A00] ">
             REQUEST LOGO
           </span>
 
@@ -17,7 +17,7 @@ export default function SignatureSection() {
           </h2>
 
           {/* Description */}
-          <p className="mt-1 text-center leading-relaxed text-[#060D18] text-[14px] sm:text-base font-medium">
+          <p className="mt-2 text-center leading-relaxed text-[#060D18] text-[14px] sm:text-base font-medium">
             Delivered in 48 hours, expected formats are PNG, JPEG and PDF
             format.
           </p>
@@ -37,7 +37,7 @@ export default function SignatureSection() {
               bg-no-repeat
               text-left
               shadow-sm
-              md:min-h-[270px]
+              md:min-h-[270px] h-full
             "
           >
             {/* Background Image */}

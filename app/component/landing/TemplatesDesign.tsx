@@ -20,8 +20,8 @@ export default function Templates() {
       <div className="px-[5%] w-full maxContainer">
         {/* Header */}
         <div className="mb-10 text-center md:mb-14">
-          <span className="mb-3 block text-[10px] font-medium uppercase tracking-[0.12em] text-[#9B958C]">
-            Templates
+          <span className="mb-5 block text-[14px] font-medium uppercase tracking-[0.12em] text-[#16324A]">
+            TEMPLATES
           </span>
 
           <h2 className="mb-3 text-[24px] sm:text-[32px] leading-tight tracking-[-0.005em] ">

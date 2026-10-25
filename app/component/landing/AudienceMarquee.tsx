@@ -1,48 +1,45 @@
 "use client";
-import {
-  UsersRound,
-  ListChecks,
-  CalendarDays,
-  Heart,
-  Store,
-  Cake,
-  Wallpaper
-} from "lucide-react";
-
+import { HiOutlineRectangleStack } from "react-icons/hi2";
+import { PiUsersThreeDuotone,PiStorefrontDuotone,PiHeartHalfDuotone,PiCakeDuotone,PiCalendarStarBold,PiListChecksDuotone,PiCalendarDotsDuotone,PiListChecks } from "react-icons/pi";
 const audiences = [
   {
     label: "Guests",
-    icon: UsersRound,
+    icon: PiUsersThreeDuotone ,
     color: "border-[#25286B] bg-[#EEF0FF] text-[#171A55]",
   },
   {
     label: "Couples",
-    icon: Heart,
+    icon: PiHeartHalfDuotone,
     color: "border-[#76522B] bg-[#FFF6E8] text-[#68451F]",
   },
   {
     label: "Event Planners",
-    icon: CalendarDays,
+    icon: PiCalendarStarBold,
     color: "border-[#28651F] bg-[#EDFFEA] text-[#245D1D]",
   },
   {
     label: "To-do list",
-    icon: ListChecks,
+    icon: PiListChecks,
     color: "border-[#762727] bg-[#FFF0EF] text-[#6E2424]",
   },
   {
     label: "Wedding website templates",
-    icon: Wallpaper,
+    icon: HiOutlineRectangleStack ,
     color: "border-[#00484A] bg-[#dcf5fe] text-[#00484A]",
   },
   {
+    label: "Calendar",
+    icon: PiCalendarDotsDuotone ,
+    color: "border-[#4A003A] bg-[#FFECFA] text-[#4A2A00]",
+  },
+  {
     label: "Vendors",
-    icon: Store,
+    icon: PiStorefrontDuotone,
     color: "border-[#713080] bg-[#FAEBFF] text-[#61266E]",
   },
   {
     label: "Events",
-    icon: Cake,
+    icon: PiCakeDuotone,
     color: "border-[#795529] bg-[#FFF5E7] text-[#67461F]",
   },
 ];
