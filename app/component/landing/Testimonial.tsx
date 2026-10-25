@@ -9,13 +9,13 @@ export default function Testimonials() {
   return (
     <section className="overflow-hidden bg-white py-20 md:py-24">
       {/* Header */}
-      <div className="mb-10 px-[5%] text-center md:mb-12">
+      <div className="mb-10 px-5 sm:px-[5%] text-center md:mb-12">
         <h2 className="mb-3 text-[24px] sm:text-[32px] leading-tight tracking-[-0.005em]">
-          Couples who found their design
+          Real couples. Real moments. Real Canto Xperiences.
         </h2>
 
-         <p className="text-center font-medium leading-relaxed text-[#060D18] text-[14px] sm:text-base">
-          Delivered in 48 hours, expected formats are PNG, JPEG and PDF format.
+         <p className="text-center font-medium leading-relaxed text-[#060D18] text-base sm:text-[24px]">
+          Loved by couples and event planners creating experiences worth remembering.
         </p>
       </div>
 

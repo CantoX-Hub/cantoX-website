@@ -41,14 +41,14 @@ const HappyCouple = () => {
   }, []);
 
   return (
-    <section className="relative isolate overflow-hidden bg-white px-[5%] py-12 sm:py-20 md:py-24">
+    <section className="relative isolate overflow-hidden bg-white py-12 sm:py-20 md:py-24">
       {/* Header */}
-      <div className="relative maxContainer px-[5%] z-10 flex flex-col items-center text-center">
+      <div className="relative maxContainer px-5 sm:px-[5%] z-10 flex flex-col items-center text-center">
         <h2 className="mb-3 text-[24px] leading-tight tracking-[-0.005em] sm:text-[32px]">
           Happy couples use CantoX
         </h2>
 
-        <p className="mt-2 text-[14px] leading-relaxed text-[#060D18] sm:text-base font-medium">
+         <p className="text-center font-medium leading-relaxed text-[#060D18] text-base sm:text-[24px]">
           Ready in minutes, not days...designed for couples not designers.
         </p>
       </div>
@@ -124,7 +124,7 @@ const HappyCouple = () => {
                   aria-current={currentSlide === index ? "true" : undefined}
                   className={`h-1.5 rounded-full transition-all duration-300 ${
                     currentSlide === index
-                      ? "w-24 bg-[#C99532]"
+                      ? "w-12 sm:w-24 bg-[#C99532]"
                       : "w-6 bg-white/30 hover:bg-white"
                   }`}
                 />

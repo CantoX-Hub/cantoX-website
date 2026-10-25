@@ -16,8 +16,8 @@ export default function Templates() {
   }, [activeTab]);
 
   return (
-    <section className="bg-white px-[5%] py-20 md:py-28">
-      <div className="px-[5%] w-full maxContainer">
+    <section className="bg-white py-20 md:py-28">
+      <div className="px-5 sm:px-[5%] w-full maxContainer">
         {/* Header */}
         <div className="mb-10 text-center md:mb-14">
           <span className="mb-5 block text-[14px] font-medium uppercase tracking-[0.12em] text-[#16324A]">

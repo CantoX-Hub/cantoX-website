@@ -30,7 +30,7 @@ export function FeatureCard({
 
   return (
     <article
-      className="relative isolate flex aspect-[1.08/1] w-full max-w-[329px] sm:max-w-[400px] shrink-0 flex-col justify-end overflow-hidden rounded-[8px] p-5 "
+      className="relative isolate flex aspect-[1.08/1] w-full max-w-[329px] sm:max-w-[400px] shrink-0 flex-col justify-end overflow-hidden rounded-[8px] p-4 "
       style={{ backgroundColor: tone.base }}
     >
       {/* Photo, greyscale so the tint reads evenly */}
@@ -61,7 +61,7 @@ export function FeatureCard({
       <h3 className="text-[22px] leading-tight text-white md:text-[24px]">
         {feature.title}
       </h3>
-      <p className="mt-2 text-[14px] leading-[1.45] text-white/90">
+      <p className="mt-2 text-[14px] sm:text-base text-white font-medium">
         {feature.description}
       </p>
     </article>

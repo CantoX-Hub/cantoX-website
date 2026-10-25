@@ -32,7 +32,7 @@ const itemVariants = {
 export default function Hero() {
   return (
     <section className="w-full pt-16 pb-12 relative overflow-hidden">
-      <div className="maxContainer px-[5%] grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[70vh]">
+      <div className="maxContainer px-5 sm:px-[5%] grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[70vh]">
         {/* Left Column: Text & CTAs */}
         <motion.div
           variants={containerVariants}
@@ -59,7 +59,7 @@ export default function Hero() {
 
           <motion.div
             variants={itemVariants}
-            className="flexStart flex-wrap gap-4 mb-16"
+            className="flexStart gap-2 mb-8 sm:mb-16"
           >
             <Button
             href="/templates"

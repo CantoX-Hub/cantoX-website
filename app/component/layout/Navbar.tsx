@@ -31,7 +31,7 @@ export default function Navbar() {
 
   return (
     <header className="relative z-50 w-full  py-5 md:py-6 bg-white">
-      <div className="maxContainer px-[5%] flex items-center justify-between">
+      <div className="maxContainer px-5 sm:px-[5%] flex items-center justify-between">
         {/* Logo */}
         <Link
           href="/"

@@ -67,7 +67,7 @@ export default function HowItWorks() {
       className="relative bg-[#0A0D14] py-16 md:min-h-[300vh] md:py-0"
     >
       {/* Sticky experience on desktop; normal flow on mobile */}
-      <div className="relative flex w-full maxContainer flex-col justify-center px-[5%] md:sticky md:top-0 md:min-h-screen md:overflow-hidden md:py-10">
+      <div className="relative flex w-full maxContainer flex-col justify-center px-5 sm:px-[5%] md:sticky md:top-0 md:min-h-screen md:overflow-hidden md:py-10">
         {/* Header */}
         <header className="mb-10 text-center md:mb-12">
           <span className="mb-5 block text-[14px] font-medium tracking-widest text-[#C7E1F5]">

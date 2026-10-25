@@ -4,10 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   FaInstagram,
-  FaLinkedinIn,
-  FaYoutube,
-  FaSquareFacebook,
-} from "react-icons/fa6";
+  FaLinkedin,
+} from "react-icons/fa";
 
 const socialLinks = [
   {
@@ -18,46 +16,36 @@ const socialLinks = [
   {
     name: "LinkedIn",
     href: "https://linkedin.com",
-    icon: FaLinkedinIn,
-  },
-  {
-    name: "YouTube",
-    href: "https://youtube.com",
-    icon: FaYoutube,
-  },
-  {
-    name: "Facebook",
-    href: "https://facebook.com",
-    icon: FaSquareFacebook,
+    icon: FaLinkedin,
   },
 ];
 
 const Footer = () => {
   return (
-    <footer className="bg-[#060D18] py-14 mt-14 md:py-16">
-      <div className="maxContainer px-[5%] flex flex-col items-center text-center">
+    <footer className="bg-[#060D18] py-14 mt-14 sm:py-16 md:py-24">
+      <div className="maxContainer px-5 sm:px-[5%] flex flex-col items-center text-center">
 
         {/* Logo */}
         <Link
           href="/"
-          className="relative block h-[100px] md:h-[224px] md:w-[1440px] w-full"
+          className="relative block h-[100px] md:min-h-[329px] md:w- [1440px] w-full"
         >
           <Image
             src="/canto-footer-logo.svg"
             alt="Canto"
             fill
             priority
-            className="object-contain"
+            className="object-contain w-full"
           />
         </Link>
 
         {/* Tagline */}
-        <p className="mt-4 text-[14px] text-gray-300 md:text-base">
+        <p className="mt-4 md:text-[24px] text-white text-base">
           Crafted for the moments that change everything.
         </p>
 
         {/* Social Icons */}
-        <div className="my-10 flex items-center gap-4">
+        <div className="my-10 md:my-24 flex items-center gap-4">
           {socialLinks.map((social) => {
             const Icon = social.icon;
 
@@ -95,7 +83,7 @@ const Footer = () => {
             justify-between
             gap-3
             text-[14px]
-            text-gray-400
+            text-white
             sm:flex-row
           "
         >

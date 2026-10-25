@@ -76,7 +76,7 @@ export const features = [
   {
     title: "Wishlist",
     description:
-      "Create a personalized wish list—choose from curated gifts or cash contributions, and make it easy for guests to give.",
+      "Create a personalized wish list or cash contributions, and make it easy for guests to give.",
     image: "/wishlist-banner.png",
   },
   {
