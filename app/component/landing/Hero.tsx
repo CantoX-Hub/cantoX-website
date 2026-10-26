@@ -38,13 +38,13 @@ export default function Hero() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="flex flex-col items-start max-w-[656px]"
+          className="flex flex-col md:justify-between items-start max-w-[656px]"
         >
-        {/* <div> </div> */}
+        <div> 
           <motion.h1
             variants={itemVariants}
             className="text-4xl sm:text-5xl lg:text-[3.5rem] leading-[1.1] mb-6 text-[#0F0F0F]"
-          >
+            >
             Design your perfect day, <br className="hidden md:block" /> without
             the stress.
           </motion.h1>
@@ -64,13 +64,14 @@ export default function Hero() {
             <Button
             href="/templates"
               variant="accent"  
-             className="bg-[#C9933A] text-white"
+              className="bg-[#C9933A] text-white"
               icon={<ArrowUpRight size={18} className="ml-1 text-white" />}
             >
               Browse templates
             </Button>
             <Button variant="outline" className="border-2" href="/get-started">Get started</Button>
           </motion.div>
+              </div>
 
           {/* Stats Section */}
           <motion.div

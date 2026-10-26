@@ -11,7 +11,7 @@ export default function PricingSection() {
 
   return (
     <section className="bg-white py-16 sm:py-20 md:py-28">
-      <div className=" w-full maxContainer px-[5%]">
+      <div className=" w-full maxContainer px-5 sm:px-[5%]">
         
         {/* Tabs Header */}
         <div className="relative border-b border-[#E2E8F0]">

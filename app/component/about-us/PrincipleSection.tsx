@@ -50,7 +50,7 @@ export default function PrincipleSection() {
 
   return (
     <section className="overflow-hidden bg-white py-16 sm:py-20 md:py-28">
-      <div className="maxContainer w-full px-[5%]">
+      <div className="maxContainer w-full px-5 sm:px-[5%]">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-12 lg:gap-20">
           {/* Left column */}
           <motion.div

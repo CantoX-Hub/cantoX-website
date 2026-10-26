@@ -10,8 +10,6 @@ export function TestimonialCard({
     <article
       className="
         flex
-        // h-[175px]
-        // w-[298px]
         shrink-0
         flex-col
         justify-between
@@ -20,9 +18,11 @@ export function TestimonialCard({
         border-[#B9CCDD]
         bg-white
         p-4
-        md:h-[165px]
-        md:w-[320px]
+        md:min-h-[228px]
+        md:w-[324px]
+        w-[224px]
         md:p-5
+        h-full
       "
     >
       {/* Testimonial */}
@@ -39,7 +39,7 @@ export function TestimonialCard({
       </p>
 
       {/* User */}
-      <div className="flex items-center gap-2 mt-4">
+      <div className="flex items-center gap-2 mt-4 sm:mt-10">
         {/* Avatar */}
         <div className="relative h-7 w-7 shrink-0 overflow-hidden rounded-full bg-[#E7EAF0]">
           <Image
@@ -52,12 +52,12 @@ export function TestimonialCard({
         </div>
 
         {/* User information */}
-        <div>
+        <div >
           <p className="text-[14px] font-semibold leading-tight text-[#11151D]">
             {testimonial.name}
           </p>
 
-          <p className="mt-[2px] text-[12px] leading-tight text-[#7B8088]">
+          <p className="mt-[2px] text-[14px] leading-tight ">
             {testimonial.location}
           </p>
         </div>

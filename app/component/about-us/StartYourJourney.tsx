@@ -21,7 +21,7 @@ export default function ReadyToStart() {
  {/* Dark Overlay */}
       <div className="absolute inset-0 bg-[#07101C]/25" />
       
-      <div className="grid min-h-[420px] w-full maxContainer grid-cols-1 items-center gap-10 px-[5%] pt-14 sm:pt-16 md:grid-cols-2 md:gap-8 md:pt-16 lg:min-h-[440px] lg:pt-20">
+      <div className="grid min-h-[420px] w-full maxContainer grid-cols-1 items-center gap-5 px-5 sm:px-[5%] pt-14 sm:pt-16 md:grid-cols-2 md:gap-8 md:pt-16 lg:min-h-[440px] lg:pt-20">
         {/* Left: Heading and actions */}
         <div className="relative z-10 flex flex-col items-start justify-center pb-2 md:pb-12 lg:pb-16">
            <h2 className="text-[24px] leading-[1.15] text-white sm:text-[32px]">

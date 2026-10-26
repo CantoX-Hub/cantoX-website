@@ -124,7 +124,7 @@ export default function RequestForm() {
 
   return (
     <section className="bg-white py-12 sm:py-16 md:py-20">
-      <div className="grid w-full maxContainer px-[5%] grid-cols-1 items-start gap-12 md:grid-cols-[1fr_0.9fr] lg:gap-20">
+      <div className="grid w-full maxContainer px-5 sm:px-[5%] grid-cols-1 items-start gap-12 md:grid-cols-[1fr_0.9fr] lg:gap-20">
         {/* Left: Request form */}
         <div className="w-full">
           <form

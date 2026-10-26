@@ -28,7 +28,7 @@ export default function Templates() {
             Find your perfect design
           </h2>
 
-          <p className="mx-auto max-w-[560px] leading-relaxed text-[#060D18] text-[14px] sm:text-base font-medium">
+          <p className="text-center leading-relaxed text-[#060D18] sm:text-base font-medium">
             From free to premium templates, personalize it to fully express
             yourself.
           </p>

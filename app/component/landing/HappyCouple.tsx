@@ -112,7 +112,7 @@ const HappyCouple = () => {
 
             {/* Slide indicators */}
             <div
-              className="absolute bottom-5 right-5 z-20 flex items-center gap-2"
+              className="absolute bottom-2 sm:bottom-5 right-5 z-20 flex items-center gap-2"
               aria-label="Choose a wedding image"
             >
               {CAROUSEL_SLIDES.map((slide, index) => (
