@@ -26,7 +26,7 @@ import { FeatureCard } from "../landing/FeatureCard";
  ];
 export default function OnePlatform() {
   return (
-    <section className="overflow-hidden bg-gradient-to-b from-white to-[#EAF0F5] py-12 sm:py-16 md:py-20">
+    <section className="overflow-hidden bg-white py-12 sm:py-16 md:py-20">
       {/* Header */}
       <div className="maxContainer mb-8 px-5 sm:px-[5%] text-center md:mb-10">
         <span className="mb-2 block text-[14px] uppercase font-dm-sans text-[#C9933A] ">

@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import Button from "../common/Button";
 
@@ -15,10 +15,28 @@ const navLinks = [
   { name: "Pricing", href: "/pricing" },
 ];
 
+/** How far (px) the page must scroll before the glass style kicks in */
+const SCROLL_THRESHOLD = 12;
+
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Track scroll position. Runs once on mount too, so a reload
+  // mid-page starts in the right state.
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > SCROLL_THRESHOLD);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Close the mobile menu whenever the route changes
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [pathname]);
 
   const handleGetStarted = () => {
     setIsMenuOpen(false);
@@ -29,8 +47,17 @@ export default function Navbar() {
     setIsMenuOpen(false);
   };
 
+  // Glass when scrolled, or when the mobile menu is open over content
+  const isGlass = isScrolled || isMenuOpen;
+
   return (
-    <header className="relative z-50 w-full  py-5 md:py-6 bg-white">
+    <header
+      className={`sticky top-0 z-50 w-full border-b transition-[background-color,border-color,box-shadow,padding] duration-300 ease-out ${
+        isGlass
+          ? "border-black/5 bg-white/85 py-3 shadow-[0_4px_24px_rgba(6,13,24,0.06)] supports-[backdrop-filter]:bg-white/60 supports-[backdrop-filter]:backdrop-blur-xl supports-[backdrop-filter]:backdrop-saturate-150 md:py-4"
+          : "border-transparent bg-white py-5 md:py-6"
+      }`}
+    >
       <div className="maxContainer px-5 sm:px-[5%] flex items-center justify-between">
         {/* Logo */}
         <Link
@@ -49,7 +76,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:block">
+        <nav aria-label="Main" className="hidden md:block">
           <ul className="flex items-center gap-8 text-sm font-medium lg:gap-10 text-[var(--text-muted,#6B7280)]">
             {navLinks.map((link) => (
               <motion.li
@@ -59,7 +86,10 @@ export default function Navbar() {
               >
                 <Link
                   href={link.href}
-                  className="transition-colors hover:text-[#0F0F0F]"
+                  aria-current={pathname === link.href ? "page" : undefined}
+                  className={`transition-colors hover:text-[#0F0F0F] ${
+                    pathname === link.href ? "text-[#0F0F0F]" : ""
+                  }`}
                 >
                   {link.name}
                 </Link>
@@ -73,7 +103,7 @@ export default function Navbar() {
           <Button
             variant="outline"
             onClick={handleGetStarted}
-            className="px-5 py-2.5 border-2 text-[#0F0F0F] "
+            className="px-5 py-2.5 border-2 text-[#0F0F0F]"
           >
             Get started
           </Button>
@@ -85,27 +115,25 @@ export default function Navbar() {
           onClick={() => setIsMenuOpen((prev) => !prev)}
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           aria-expanded={isMenuOpen}
+          aria-controls="mobile-menu"
           className="flex h-10 w-10 items-center justify-center rounded-lg text-[#0F0F0F] hover:bg-black/5 md:hidden"
         >
-          {isMenuOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
+          {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </div>
 
       {/* Mobile Dropdown Menu */}
       <AnimatePresence>
         {isMenuOpen && (
-          <motion.div
+         <motion.div
+            id="mobile-menu"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute left-[5%] right-[5%] top-full mt-2 overflow-hidden rounded-2xl border border-black/5 bg-white p-4 shadow-xl md:hidden"
+            className="absolute left-[5%] right-[5%] top-full mt-2 overflow-hidden rounded-2xl border border-black/5 bg-[#C99532] p-4 shadow-xl md:hidden"
           >
-            <nav>
+            <nav aria-label="Mobile">
               <ul className="flex flex-col gap-1">
                 {navLinks.map((link) => {
                   const isActive = pathname === link.href;
@@ -115,11 +143,12 @@ export default function Navbar() {
                       <Link
                         href={link.href}
                         onClick={handleNavClick}
-                        className={`block rounded-xl px-4 py-3.5 text-sm font-medium transition-colors ${
-                          isActive
-                            ? "bg-black/5 text-[#0F0F0F]"
-                            : "text-[var(--text-muted,#6B7280)] hover:bg-black/5 hover:text-[#0F0F0F]"
-                        }`}
+                        aria-current={isActive ? "page" : undefined}
+                       className={`block rounded-xl px-4 py-3.5 text-sm font-medium transition-colors ${
+                            isActive
+                              ? "bg-black/10 text-[#0F0F0F]"
+                              : "text-[#0F0F0F] hover:bg-black/10"
+                          }`}
                       >
                         {link.name}
                       </Link>

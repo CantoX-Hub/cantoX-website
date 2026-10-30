@@ -32,13 +32,13 @@ const itemVariants = {
 export default function Hero() {
   return (
     <section className="w-full pt-16 pb-12 relative overflow-hidden">
-      <div className="maxContainer px-5 sm:px-[5%] grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-[70vh]">
+      <div className="maxContainer px-5 sm:px-[5%] grid grid-cols-1 md:grid-cols-2 gap-8 items-center min-h-[70vh]">
         {/* Left Column: Text & CTAs */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="flex flex-col md:justify-between items-start max-w-[656px]"
+          className="flex flex-col h-full max-h-[600px] md:justify-between items-start max-w-[656px]"
         >
         <div> 
           <motion.h1
@@ -71,7 +71,7 @@ export default function Hero() {
             </Button>
             <Button variant="outline" className="border-2" href="/get-started">Get started</Button>
           </motion.div>
-              </div>
+        </div>
 
           {/* Stats Section */}
           <motion.div
@@ -96,13 +96,14 @@ export default function Hero() {
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative w-full h-full min-h-[400px] lg:max-h-[466px] flexCenter"
+          className="relative w-full h-full min-h-[466px] max-h-[600px] flexCenter"
         >
 
           <Image
             src="/couple-illustration.svg"
             alt="Wedding couple illustration"
             fill
+            sizes="600px"
             className="object-contain"
             priority
           />

@@ -1,6 +1,5 @@
 import HappyCouple from "../component/landing/HappyCouple";
 import MoreWithCanto from "../component/landing/MoreWithCanto";
-import SignatureSection from "../component/landing/Signature";
 import Templates from "../component/landing/TemplatesDesign";
 import Footer from "../component/layout/Footer";
 import PageHeroBanner from "../component/layout/PageHero";
@@ -15,7 +14,6 @@ export default function TemplatesPage() {
       />
       <Templates/>
       <MoreWithCanto/>
-      <SignatureSection/>
       <HappyCouple/>
       <Footer/>
     </main>

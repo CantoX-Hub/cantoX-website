@@ -123,10 +123,10 @@ export default function RequestForm() {
   }
 
   return (
-    <section className="bg-white py-12 sm:py-16 md:py-20">
-      <div className="grid w-full maxContainer px-5 sm:px-[5%] grid-cols-1 items-start gap-12 md:grid-cols-[1fr_0.9fr] lg:gap-20">
+    <section className="bg-white py-12 sm:py-16 md:py-20 w-full   ">
+      <div className="w-full maxContainer px-5 sm:px-[5%] flex items-start gap-8 justify-between flex-wrap sm:flex-nowrap">
         {/* Left: Request form */}
-        <div className="w-full">
+        <div className="w-full max-w-[579px]">
           <form
             onSubmit={handleSubmit}
             noValidate

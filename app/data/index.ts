@@ -114,7 +114,7 @@ export const testimonials: Testimonial[] = [
     text: "I showed my mum the template and she couldn't believe I made it myself. The drag-and-drop is super intuitive and the fonts are so elegant. Highly recommend!",
     name: "Zainab Mustapha",
     location: "Nairobi, Kenya",
-    avatar: "/client3.svg",
+    avatar: "/avatar3.svg",
   },
   {
     id: 4,

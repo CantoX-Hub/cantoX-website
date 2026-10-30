@@ -33,7 +33,7 @@ export default function RequestFormField({
       <div className="mb-1.5 flex items-center gap-2">
         <label
           htmlFor={id}
-          className="text-sm font-semibold text-[#11151D]"
+          className="text-[18px] font-bold text-[#11151D]"
         >
           {label}
         </label>

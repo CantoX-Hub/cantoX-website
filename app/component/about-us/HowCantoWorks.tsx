@@ -2,7 +2,7 @@ export default function HowCantoWorks() {
   return (
     <section className="bg-white py-12 sm:py-16 md:py-20">
       <div className=" w-full maxContainer px-5 sm:px-[5%]">
-        <div className="relative aspect-video w-full overflow-hidden">
+        <div className="relative aspect-video w-full h-full overflow-hidden">
           <video
             src="/how-canto-works-gif.mp4"
             autoPlay
