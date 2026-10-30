@@ -75,7 +75,7 @@ export default function PlanningSection() {
               <motion.p
                 key={index}
                 variants={reveal}
-                className={`max-w-[540px] text-sm font-medium leading-[1.9] text-[#060D18] sm:text-base ${
+                className={` text-sm font-medium leading-[1.9] text-[#060D18] sm:text-base ${
                   index !== paragraphs.length - 1 ? "mb-6 sm:mb-8" : ""
                 }`}
               >

@@ -84,7 +84,7 @@ export default function PrincipleSection() {
               <motion.article
                 key={principle.number}
                 variants={reveal}
-                className={`group relative max-w-[496px] py-7 first:pt-0 last:pb-0 ${
+                className={`group relative w-full py-7 first:pt-0 last:pb-0 ${
                   index !== principles.length - 1
                     ? "border-b border-[#E1E7EF]"
                     : ""
@@ -107,7 +107,7 @@ export default function PrincipleSection() {
                 </h3>
 
                 {/* Description */}
-                <p className="mt-3 max-w-[470px] text-sm font-medium leading-[1.5] text-[#060D18 sm:text-base">
+                <p className="mt-3 text-sm font-medium leading-[1.5] text-[#060D18 sm:text-base">
                   {principle.description}
                 </p>
 
