@@ -61,7 +61,46 @@ export const templates: Template[] = [
     category: "Free",
     rating: 3,
   },
- 
+  {
+    id: 7,
+    name: "Burgundy & Navy blue",
+    style: "premium",
+    description:
+      "Premium wedding template, personalize it with your details.",
+    image: "/template6.png",
+    category: "Free",
+    rating: 3,
+  },
+  {
+    id: 8,
+    name: "Burgundy & Navy blue",
+    style: "premium",
+    description:
+      "Premium wedding template, personalize it with your details.",
+    image: "/template6.png",
+    category: "Free",
+    rating: 3,
+  },
+  {
+    id: 9,
+    name: "Burgundy & Navy blue",
+    style: "premium",
+    description:
+      "Premium wedding template, personalize it with your details.",
+    image: "/template6.png",
+    category: "Free",
+    rating: 3,
+  },
+  {
+    id: 10,
+    name: "Burgundy & Navy blue",
+    style: "premium",
+    description:
+      "Premium wedding template, personalize it with your details.",
+    image: "/template6.png",
+    category: "Free",
+    rating: 3,
+  }
 ];
 
 export const tabs: TemplateCategory[] = ["All", "Free", "Premium"];

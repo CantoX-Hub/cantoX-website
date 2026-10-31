@@ -28,7 +28,7 @@ export default function OnePlatform() {
   return (
     <section className="overflow-hidden bg-white py-12 sm:py-16 md:py-20">
       {/* Header */}
-      <div className="maxContainer mb-8 px-5 sm:px-[5%] text-center md:mb-10">
+      <div className="maxContainer mb-8 px-5 sm:px-[5%] w-full text-center md:mb-10">
         <span className="mb-2 block text-[14px] uppercase font-dm-sans text-[#C9933A] ">
                     ONE PLATFORM, THREE SIDES
                   </span>
@@ -40,7 +40,7 @@ export default function OnePlatform() {
         </p>
       </div>
 
-      <div className="relative w-full maxContainer px-[5%] overflow-hidden">
+      <div className="relative w-full maxContainer px-5 sm:px-[5%]overflow-hidden">
           <div className="flex justify-between flex-wrap sm:flex-nowrap gap-8 ">
             {features.map((feature, index) => (
               <FeatureCard key={index} feature={feature} index={index} />
