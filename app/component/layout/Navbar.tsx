@@ -58,7 +58,7 @@ export default function Navbar() {
           : "border-transparent bg-white py-5 md:py-6"
       }`}
     >
-      <div className="maxContainer px-5 sm:px-[5%] flex items-center justify-between">
+      <div className="maxContainer px-5 sm:px-[5%] w-full flex items-center justify-between">
         {/* Logo */}
         <Link
           href="/"
@@ -81,7 +81,6 @@ export default function Navbar() {
             {navLinks.map((link) => (
               <motion.li
                 key={link.name}
-                whileHover={{ y: -2 }}
                 transition={{ duration: 0.2 }}
               >
                 <Link
