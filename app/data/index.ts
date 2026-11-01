@@ -1,3 +1,4 @@
+import { Feature } from "../component/landing/FeatureCard";
 import { Template,PricingPlan, TemplateCategory, Testimonial } from "../types/index.types";
 
 export const templates: Template[] = [
@@ -105,33 +106,38 @@ export const templates: Template[] = [
 
 export const tabs: TemplateCategory[] = ["All", "Free", "Premium"];
 
-export const features = [
+
+export const features: Feature[] = [
   {
     title: "Manage guests",
     description:
-      "Effortlessly organize your guest list—group attendees, track RSVPs, and manage seating with ease.",
+      "Effortlessly organize your guest list, track RSVPs, and manage seating with ease.",
     image: "/guest-banner.png",
-  },
-  {
-    title: "Wishlist",
-    description:
-      "Create a personalized wish list or cash contributions, and make it easy for guests to give.",
-    image: "/wishlist-banner.png",
+    tone: "gold",
   },
   {
     title: "Access vendors",
     description:
       "Discover trusted vendors to bring your wedding vision to life.",
     image: "/vendor-banner.png",
+    tone: "teal",
+  },
+  {
+    title: "Wishlist",
+    description:
+      "Create a personalized wish list or cash contributions, and make it easy for guests to give.",
+    image: "/wishlist-banner.png",
+    tone: "plum",
   },
   {
     title: "To-do list",
     description:
-      "Stay on track—visualize key milestones and tasks, ensuring every detail is planned and executed seamlessly.",
+      "Stay on track—visualize key milestones and tasks, ensuring every detail is planned seamlessly.",
     image: "/to-do-banner.png",
+    tone: "navy",
+   
   },
 ];
-
 
 export const testimonials: Testimonial[] = [
   {

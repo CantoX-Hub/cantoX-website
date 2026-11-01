@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useRef, useState } from "react";
@@ -6,6 +5,7 @@ import Image from "next/image";
 import {
   motion,
   AnimatePresence,
+  MotionConfig,
   useScroll,
   useMotionValueEvent,
 } from "framer-motion";
@@ -40,6 +40,10 @@ const steps = [
   },
 ];
 
+/** Diagonal hatch behind the mobile images */
+const STRIPES =
+  "repeating-linear-gradient(135deg, rgba(255,255,255,0.06) 0 2px, transparent 2px 10px)";
+
 export default function HowItWorks() {
   const containerRef = useRef<HTMLElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -50,12 +54,8 @@ export default function HowItWorks() {
   });
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    const nextIndex =
-      latest < 1 / 3 ? 0 : latest < 2 / 3 ? 1 : 2;
-
-    setActiveIndex((current) =>
-      current === nextIndex ? current : nextIndex
-    );
+    const nextIndex = latest < 1 / 3 ? 0 : latest < 2 / 3 ? 1 : 2;
+    setActiveIndex((current) => (current === nextIndex ? current : nextIndex));
   });
 
   const activeStep = steps[activeIndex];
@@ -64,9 +64,8 @@ export default function HowItWorks() {
     <section
       ref={containerRef}
       id="how-it-works"
-      className="relative bg-[#0A0D14] py-16 md:min-h-[300vh] md:py-0"
+      className="relative bg-[#0A0D14] py-16 md:py-24 md:min-h-[300vh]"
     >
-      {/* Sticky experience on desktop; normal flow on mobile */}
       <div className="relative flex w-full maxContainer flex-col justify-center px-5 sm:px-[5%] md:sticky md:top-0 md:min-h-screen md:overflow-hidden md:py-10">
         {/* Header */}
         <header className="mb-10 text-center md:mb-12">
@@ -79,14 +78,67 @@ export default function HowItWorks() {
           </h2>
 
           <p className="text-sm font-medium leading-6 text-white sm:text-base">
-            From free to premium templates, personalize your invite
-            to fully express yourself.
+            From free to premium templates, personalize your invite to fully
+            express yourself.
           </p>
         </header>
 
-        <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-[0.75fr_1.6fr] md:gap-10 lg:grid-cols-[0.7fr_1.8fr] lg:gap-16">
+        {/* ───────── Mobile: each step stacked with its image underneath ───────── */}
+        <MotionConfig reducedMotion="user">
+          <ol className="flex flex-col gap-12 md:hidden">
+            {steps.map((step) => (
+              <motion.li
+                key={step.id}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.25 }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <span className="flex items-center gap-3 text-[14px] tracking-wider text-[#EAF0F5]">
+                  <span
+                    aria-hidden="true"
+                    className="h-0 w-0 border-y-[6px] border-y-transparent border-l-[7px] border-l-[#FABB18]"
+                  />
+                  {step.num}
+                </span>
+
+                <h3 className="mt-4 flex items-center gap-3 text-[22px] text-white">
+                  {step.title}
+                  <Image
+                    src={step.icon}
+                    alt=""
+                    width={22}
+                    height={22}
+                    aria-hidden="true"
+                    className="h-5 w-5 shrink-0 object-contain"
+                  />
+                </h3>
+
+                <p className="mt-3 max-w-sm leading-relaxed text-white/85">
+                  {step.desc}
+                </p>
+
+                <div
+                  className="relative mt-6 aspect-[4/3] w-full overflow-hidden rounded-lg bg-[#080D16]"
+                  style={{ backgroundImage: STRIPES }}
+                >
+                  <Image
+                    src={step.image}
+                    alt={step.imageAlt}
+                    fill
+                    className="object-cover object-top"
+                    sizes="90vw"
+                  />
+                </div>
+              </motion.li>
+            ))}
+          </ol>
+        </MotionConfig>
+
+        {/* ───────── Desktop: sticky scroll-driven showcase (unchanged) ───────── */}
+        <div className="hidden items-center gap-10 md:grid md:grid-cols-[0.75fr_1.6fr] lg:grid-cols-[0.7fr_1.8fr] lg:gap-16">
           {/* Left: Interactive steps */}
-          <div className="flex flex-col gap-3 md:gap-6">
+          <div className="flex flex-col gap-6">
             {steps.map((step, index) => {
               const isActive = activeIndex === index;
 
@@ -96,16 +148,9 @@ export default function HowItWorks() {
                   type="button"
                   onClick={() => setActiveIndex(index)}
                   aria-pressed={isActive}
-                  className={`
-                    group relative w-full text-left
-                    transition-opacity duration-300
-                    md:max-w-[269px]
-                    ${
-                      isActive
-                        ? "opacity-100"
-                        : "opacity-45 hover:opacity-75"
-                    }
-                  `}
+                  className={`group relative w-full max-w-[269px] text-left transition-opacity duration-300 ${
+                    isActive ? "opacity-100" : "opacity-45 hover:opacity-75"
+                  }`}
                 >
                   {/* Animated gold arrow for the active step */}
                   <AnimatePresence initial={false}>
@@ -117,79 +162,41 @@ export default function HowItWorks() {
                         exit={{ opacity: 0, x: -4 }}
                         transition={{ duration: 0.2 }}
                         aria-hidden="true"
-                        className="
-                          absolute -left-4 top-[18px]
-                          h-0 w-0
-                          border-y-[6px] border-y-transparent
-                          border-l-[7px] border-l-[#FABB18]
-                        "
+                        className="absolute -left-4 top-[18px] h-0 w-0 border-y-[6px] border-y-transparent border-l-[7px] border-l-[#FABB18]"
                       />
                     )}
                   </AnimatePresence>
 
-                  <div className="flex items-start gap-8">
-                    <div className="mb-2 flex min-w-0 flex-1 flex-col gap-1.5 py-3 md:py-4">
-                      <span className="mb-1 block text-[14px] tracking-wider text-[#EAF0F5]">
-                        {step.num}
-                      </span>
+                  <div className="mb-2 flex min-w-0 flex-col gap-1.5 py-4">
+                    <span className="mb-1 block text-[14px] tracking-wider text-[#EAF0F5]">
+                      {step.num}
+                    </span>
 
-                      <h3
-                        className={`
-                          my-2 flex items-center gap-4
-                          text-md transition-colors
-                          sm:text-lg md:text-[24px]
-                          ${
-                            isActive
-                              ? "text-white"
-                              : "text-white/70"
-                          }
-                        `}
-                      >
-                        {step.title}
+                    <h3
+                      className={`my-2 flex items-center gap-4 text-[24px] transition-colors ${
+                        isActive ? "text-white" : "text-white/70"
+                      }`}
+                    >
+                      {step.title}
+                      <Image
+                        src={step.icon}
+                        alt=""
+                        width={22}
+                        height={22}
+                        aria-hidden="true"
+                        className={`h-5 w-5 shrink-0 object-contain transition-opacity duration-300 ${
+                          isActive ? "opacity-100" : "opacity-60"
+                        }`}
+                      />
+                    </h3>
 
-                        <Image
-                          src={step.icon}
-                          alt=""
-                          width={22}
-                          height={22}
-                          aria-hidden="true"
-                          className={`
-                            h-5 w-5 shrink-0 object-contain
-                            transition-opacity duration-300
-                            ${
-                              isActive
-                                ? "opacity-100"
-                                : "opacity-60"
-                            }
-                          `}
-                        />
-                      </h3>
-
-                      <AnimatePresence initial={false}>
-                        {isActive && (
-                          <motion.div
-                            key={`${step.id}-description`}
-                            initial={{ opacity: 0, height: 0, y: 6 }}
-                            animate={{
-                              opacity: 1,
-                              height: "auto",
-                              y: 5,
-                            }}
-                            exit={{
-                              opacity: 0,
-                              height: 0,
-                              y: -4,
-                            }}
-                            transition={{ duration: 0.25 }}
-                            className="overflow-hidden"
-                          >
-                            <p className="max-w-sm leading-relaxed text-[#EAF0F5]">
-                              {step.desc}
-                            </p>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
+                    <p
+                      className={`max-w-sm leading-relaxed ${
+                        isActive ? "text-white" : "text-white/70"
+                      }`}
+                    >
+                      {step.desc}
+                    </p>
                   </div>
                 </button>
               );
@@ -200,38 +207,17 @@ export default function HowItWorks() {
           <div className="relative min-w-0">
             <div className="relative w-full max-w-[900px] overflow-hidden">
               {/* Stable image frame prevents layout shifts */}
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-[#080D16] sm:aspect-[1.45/1]">
+              <div className="relative aspect-[1.45/1] w-full overflow-hidden rounded-lg bg-[#080D16]">
                 <AnimatePresence mode="sync" initial={false}>
                   <motion.div
                     key={activeStep.id}
-                    initial={{
-                      opacity: 0,
-                      scale: 1.035,
-                      x: 12,
-                    }}
-                    animate={{
-                      opacity: 1,
-                      scale: 1,
-                      x: 0,
-                    }}
-                    exit={{
-                      opacity: 0,
-                      scale: 0.985,
-                      x: -8,
-                    }}
+                    initial={{ opacity: 0, scale: 1.035, x: 12 }}
+                    animate={{ opacity: 1, scale: 1, x: 0 }}
+                    exit={{ opacity: 0, scale: 0.985, x: -8 }}
                     transition={{
-                      opacity: {
-                        duration: 0.45,
-                        ease: "easeInOut",
-                      },
-                      scale: {
-                        duration: 0.65,
-                        ease: "easeOut",
-                      },
-                      x: {
-                        duration: 0.45,
-                        ease: "easeInOut",
-                      },
+                      opacity: { duration: 0.45, ease: "easeInOut" },
+                      scale: { duration: 0.65, ease: "easeOut" },
+                      x: { duration: 0.45, ease: "easeInOut" },
                     }}
                     className="absolute inset-0"
                   >
@@ -240,8 +226,7 @@ export default function HowItWorks() {
                       alt={activeStep.imageAlt}
                       fill
                       className="object-cover object-top"
-                      priority={activeIndex === 0}
-                      sizes="(max-width: 768px) 90vw, 65vw"
+                      sizes="65vw"
                     />
                   </motion.div>
                 </AnimatePresence>
