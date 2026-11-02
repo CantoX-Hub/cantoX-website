@@ -92,7 +92,7 @@ const HappyCouple = () => {
 
             {/* Animated bottom-left caption */}
             <div
-              className="pointer-events-none absolute bottom-5 left-5 z-20 w-full "
+              className="pointer-events-none absolute bottom-4 left-2 sm:left-4 z-20 w-full "
               aria-live="polite"
               aria-atomic="true"
             >
@@ -112,7 +112,7 @@ const HappyCouple = () => {
 
             {/* Slide indicators */}
             <div
-              className="absolute bottom-2 sm:bottom-5 right-5 z-20 flex items-center gap-2"
+              className="absolute bottom-5 right-2 sm:right-4 z-20 flex items-center gap-2"
               aria-label="Choose a wedding image"
             >
               {CAROUSEL_SLIDES.map((slide, index) => (
@@ -125,7 +125,7 @@ const HappyCouple = () => {
                   className={`h-1.5 rounded-full transition-all duration-300 ${
                     currentSlide === index
                       ? "w-12 sm:w-24 bg-[#C99532]"
-                      : "w-6 bg-white/30 hover:bg-white"
+                      : "w-4 sm:w-6 bg-white/30 hover:bg-white"
                   }`}
                 />
               ))}

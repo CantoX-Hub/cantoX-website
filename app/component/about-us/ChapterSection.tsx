@@ -42,7 +42,7 @@ const lineGrow: Variants = {
 
 export default function ChapterSection() {
   return (
-    <section className="bg-white py-16 sm:py-20 md:py-28 overflow-hidden">
+    <section className="bg-white py-12 sm:py-20 md:py-24 overflow-hidden">
       <div className="maxContainer px-5 sm:px-[5%] w-full">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-12">
           

@@ -7,7 +7,7 @@ import { TestimonialCard } from "./TestimonialCard";
 
 export default function Testimonials() {
   return (
-    <section className="overflow-hidden bg-white py-20 md:py-24">
+    <section className="overflow-hidden bg-white py-12 sm:py-20 md:py-24">
       {/* Header */}
       <div className="mb-10 px-5 sm:px-[5%] text-center md:mb-12">
         <h2 className="mb-3 text-[24px] sm:text-[32px] leading-tight tracking-[-0.005em]">

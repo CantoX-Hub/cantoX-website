@@ -50,7 +50,7 @@ export default function AudienceMarquee() {
   return (
     <section
       aria-label="Discover what you can do with Canto"
-      className="relative w-full overflow-hidden bg-white py-8 sm:py-12"
+      className="relative w-full overflow-hidden bg-white py-4 sm:py-12"
     >
       {/* Left and right fade edges */}
       <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-gradient-to-r from-white to-transparent sm:w-14" />

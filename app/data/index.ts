@@ -62,46 +62,7 @@ export const templates: Template[] = [
     category: "Free",
     rating: 3,
   },
-  {
-    id: 7,
-    name: "Burgundy & Navy blue",
-    style: "premium",
-    description:
-      "Premium wedding template, personalize it with your details.",
-    image: "/template6.png",
-    category: "Free",
-    rating: 3,
-  },
-  {
-    id: 8,
-    name: "Burgundy & Navy blue",
-    style: "premium",
-    description:
-      "Premium wedding template, personalize it with your details.",
-    image: "/template6.png",
-    category: "Free",
-    rating: 3,
-  },
-  {
-    id: 9,
-    name: "Burgundy & Navy blue",
-    style: "premium",
-    description:
-      "Premium wedding template, personalize it with your details.",
-    image: "/template6.png",
-    category: "Free",
-    rating: 3,
-  },
-  {
-    id: 10,
-    name: "Burgundy & Navy blue",
-    style: "premium",
-    description:
-      "Premium wedding template, personalize it with your details.",
-    image: "/template6.png",
-    category: "Free",
-    rating: 3,
-  }
+
 ];
 
 export const tabs: TemplateCategory[] = ["All", "Free", "Premium"];
@@ -197,17 +158,17 @@ export const pricingData: Record<string, PricingPlan[]> = {
       features: [
         {
           items: [
-            "Unlimited free templates",
-            "Add cash gifts",
-            "Add limited pictures",
-            "One-time use",
+            "One wedding website from the free templates",
+            "Names, date, venue, schedule and story",
+            "Limited photos",
+            "Basic RSVP and limited guest list",
           ],
         },
       ],
     },
     {
       name: "Premium",
-      price: "₦15,000",
+      price: "₦100,000",
       billing: "One-time payment",
       description: "Best for couples with high taste.",
       ctaText: "Get started",
@@ -215,19 +176,37 @@ export const pricingData: Record<string, PricingPlan[]> = {
       features: [
         {
           category: "Premium templates",
-          items: ["Unlimited free templates", "Add cash gifts", "Add limited pictures", "One-time use"],
+          items: [
+            "Every template, previewed before you pay",
+            "More photos and richer personalisation",
+          ],
         },
         {
           category: "Guest management",
-          items: ["Unlimited free templates", "Add cash gifts", "Add limited pictures", "One-time use"],
+          items: [
+            "Guest cap of 300",
+            "Table and seat assignment",
+            "Personalised invites",
+          ],
         },
         {
           category: "Wishlist",
-          items: ["Unlimited free templates", "Add cash gifts", "Add limited pictures", "One-time use"],
+          items: [
+            "Gifts with photo and retailer link",
+            "Attach to your site or share on its own",
+          ],
         },
         {
           category: "Verified vendors",
-          items: ["Unlimited free templates", "Add cash gifts", "Add limited pictures", "One-time use"],
+          items: ["Browse and contact CAC-verified vendors"],
+        },
+        {
+          category: "Calendar",
+          items: ["Wedding dates synced to Google Calendar"],
+        },
+        {
+          category: "To-do list",
+          items: ["Planning checklist with due dates"],
         },
       ],
     },
@@ -235,55 +214,97 @@ export const pricingData: Record<string, PricingPlan[]> = {
   "Event planners": [
     {
       name: "Starter",
-      price: "₦0",
-      billing: "Per month",
-      description: "Best for independent planners starting out.",
+      price: "₦10,000",
+      billing: "Monthly payment",
+      description: "Best for planners with quick plans.",
       ctaText: "Get started",
       features: [
         {
-          items: ["Up to 5 active events", "Client collaboration portal", "Standard templates", "Email support"],
+          items: [
+            "Up to 5 active weddings website templates",
+            "Free templates",
+            "Separate dashboard for each client",
+            "Guest list and RSVP tracking per wedding",
+          ],
         },
       ],
     },
     {
-      name: "Pro Agency",
+      name: "Pro",
       price: "₦25,000",
-      billing: "Per month",
-      description: "For growing event planning teams.",
+      billing: "Monthly payment",
+      description: "Designed for planners with high taste and complex planning.",
       ctaText: "Get started",
       isPopular: true,
       features: [
         {
-          category: "Agency features",
-          items: ["Unlimited active events", "Custom branding", "Priority vendor matching", "Advanced guest analytics"],
+          category: "Client projects",
+          items: ["Up to 15 active weddings", "Each client kept separate"],
+        },
+        {
+          category: "Premium templates",
+          items: [
+            "Every wedding website templates",
+            "Reuse designs across clients",
+          ],
+        },
+        {
+          category: "Guest management",
+          items: ["Tables and personalised invites", "RSVP tracking per client"],
+        },
+        {
+          category: "Verified vendors",
+          items: ["Shortlist vendors and share with clients"],
         },
       ],
     },
   ],
   Vendors: [
     {
-      name: "Standard Listing",
+      name: "Basic",
       price: "₦0",
-      billing: "Monthly subscription",
-      description: "Get discovered by couples planning events.",
-      ctaText: "Get Started",
+      billing: "Monthly payment",
+      description: "Basic vendor setup",
+      ctaText: "Get started",
       features: [
         {
-          items: ["Profile showcase", "Direct client inquiries", "Portfolio gallery (up to 12 items)", "Standard support"],
+          items: [
+            "Business profile and location",
+            "Show products and services",
+            "Minimum order (MOQ)",
+            "Basic photo gallery",
+            "Receive enquiries",
+            "Apply for verification",
+          ],
         },
       ],
     },
     {
-      name: "Verified Pro",
-      price: "₦15,000",
-      billing: "Monthly subscription",
-      description: "For top-tier vendors wanting maximum visibility.",
-      ctaText: "Get Started",
+      name: "Premium",
+      price: "₦10,000",
+      billing: "Monthly payment",
+      description: "Vendors who want to be seen.",
+      ctaText: "Get started",
       isPopular: true,
       features: [
         {
-          category: "Featured perks",
-          items: ["Verified badge", "Top placement in search results", "Unlimited portfolio gallery", "Direct WhatsApp integration"],
+          items: ["Everything in basic"],
+        },
+        {
+          category: "Featured placement",
+          items: ["Labelled spot at the top of listings"],
+        },
+        {
+          category: "Priority search ranking",
+          items: ["Appear higher in results"],
+        },
+        {
+          category: "Bigger portfolio",
+          items: ["More photos and a fuller catalogue"],
+        },
+        {
+          category: "Verified vendors",
+          items: ["Views and enquiries"],
         },
       ],
     },
