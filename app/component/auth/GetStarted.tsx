@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const CAROUSEL_SLIDES = [
   {
@@ -30,6 +31,7 @@ const CAROUSEL_SLIDES = [
 
 export default function GetStarted() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const router = useRouter();
 
   useEffect(() => {
     const slideInterval = setInterval(() => {
@@ -43,20 +45,21 @@ export default function GetStarted() {
     <main className="min-h-screen">
       <div className="py-4">
         <div className="relative min-h-[calc(100vh-2rem)] overflow-hidden maxContainer px-5 sm:px-[5%] bg-white">
-          {/* Back Button */}
-          <Link
-            href="/"
-            aria-label="Go back to home"
-            className="absolute left-6 top-6 z-20 flex items-center gap-1.5 text-xs font-medium text-[#11151D] transition-colors hover:text-[#C99532] sm:left-8 sm:top-7"
+        
+          <button
+            type="button"
+            onClick={() => router.back()}
+            aria-label="Go back to previous page"
+            className="absolute left-5 top-6 z-20 flex items-center gap-1.5  text-[#11151D] transition-colors hover:text-[#11151d50] sm:left-[5vw] sm:top-7"
           >
-            <ArrowLeft className="h-3.5 w-3.5" />
-            Back
-          </Link>
+            <ArrowLeft />
+            <h2 className="md:text-[24px]">Back</h2>
+          </button>
 
           <div className="grid min-h-[calc(100vh-2rem)] grid-cols-1 lg:grid-cols-[45%_55%]">
             {/* LEFT — FORM */}
-            <section className="relative z-10 flex items-center px-6 pb-16 pt-20 sm:px-10 lg:pt-10">
-              <div className="w-full max-w-[390px]">
+            <section className="relative z-10 flex items-center pb-16 pt-20 lg:pt-10">
+              <div className="w-full max-w-[467px]">
                 {/* Heading */}
                 <div className="mb-7">
                   <div className="flex items-center gap-1.5">
@@ -67,14 +70,14 @@ export default function GetStarted() {
                       <Image
                         src="/logo.svg"
                         alt="Canto"
-                        width={105}
+                        width={194}
                         height={32}
                         priority
                       />
                     </Link>
                   </div>
 
-                  <p className="mt-2 max-w-[340px] text-[12px] leading-5 text-[#777D87]">
+                  <p className="mt-2 max-w-[447px] text-[12px] leading-5 text-[#060D18]">
                     Create beautiful wedding invitations and manage your special
                     moments with Canto.
                   </p>
@@ -207,7 +210,7 @@ export default function GetStarted() {
                 </button>
 
                 {/* Terms */}
-                <p className="mt-6 text-center text-[9px] leading-4 text-[#A0A5AD]">
+                {/* <p className="mt-6 text-center text-[9px] leading-4 text-[#A0A5AD]">
                   By continuing, you agree to Canto&apos;s{" "}
                   <Link
                     href="/terms"
@@ -223,7 +226,7 @@ export default function GetStarted() {
                     Privacy Policy
                   </Link>
                   .
-                </p>
+                </p> */}
               </div>
             </section>
 

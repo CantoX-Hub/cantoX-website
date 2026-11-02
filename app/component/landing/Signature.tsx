@@ -95,7 +95,7 @@ export default function Signature() {
   };
 
   return (
-    <section className="relative w-full overflow-hidden bg-white py-20 md:py-24">
+    <section className="relative w-full overflow-hidden bg-white py-12 sm:py-20 md:py-24">
       <div className="maxContainer grid grid-cols-1 items-center gap-8 px-5 sm:px-[5%] lg:grid-cols-2">
 
         {/* Left Column */}

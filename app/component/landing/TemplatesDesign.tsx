@@ -1,17 +1,45 @@
 "use client";
 import { templates, tabs } from "@/app/data";
 import { TemplateCategory } from "@/app/types/index.types";
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { TemplateCard } from "./TemplateCard";
 
-/** Cards shown on first load, and added on each "See more" click */
-const PAGE_SIZE = 8;
-/** How long the loader shows before the next batch appears (ms) */
+/** Cards per batch: first load and each "See more" click */
+const PAGE_SIZE = { mobile: 2, desktop: 8 };
+const MOBILE_QUERY = "(max-width: 600px)";
 const LOAD_DELAY = 600;
 
+/** True when the media query matches. Server render assumes desktop. */
+function useMediaQuery(query: string) {
+  const subscribe = useCallback(
+    (onChange: () => void) => {
+      const mql = window.matchMedia(query);
+      mql.addEventListener("change", onChange);
+      return () => mql.removeEventListener("change", onChange);
+    },
+    [query]
+  );
+
+  return useSyncExternalStore(
+    subscribe,
+    () => window.matchMedia(query).matches,
+    () => false
+  );
+}
+
 export default function Templates() {
+  const isMobile = useMediaQuery(MOBILE_QUERY);
+  const pageSize = isMobile ? PAGE_SIZE.mobile : PAGE_SIZE.desktop;
+
   const [activeTab, setActiveTab] = useState<TemplateCategory>("All");
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const [pages, setPages] = useState(1);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const loadTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -27,17 +55,18 @@ export default function Templates() {
     return templates.filter((template) => template.category === activeTab);
   }, [activeTab]);
 
+  const visibleCount = pages * pageSize;
   const visibleTemplates = filteredTemplates.slice(0, visibleCount);
   const remaining = filteredTemplates.length - visibleCount;
   const hasMore = remaining > 0;
   // Only show as many skeletons as cards that are actually coming
-  const skeletonCount = Math.min(PAGE_SIZE, Math.max(remaining, 0));
+  const skeletonCount = Math.min(pageSize, Math.max(remaining, 0));
 
   const handleTabChange = (tab: TemplateCategory) => {
     if (loadTimer.current) clearTimeout(loadTimer.current);
     setIsLoadingMore(false);
     setActiveTab(tab);
-    setVisibleCount(PAGE_SIZE); // every tab starts back at 8
+    setPages(1); // every tab starts back at one batch
   };
 
   const handleSeeMore = () => {
@@ -45,13 +74,13 @@ export default function Templates() {
     setIsLoadingMore(true);
 
     loadTimer.current = setTimeout(() => {
-      setVisibleCount((count) => count + PAGE_SIZE);
+      setPages((p) => p + 1);
       setIsLoadingMore(false);
     }, LOAD_DELAY);
   };
 
   return (
-    <section className="bg-white py-20 md:py-28">
+    <section className="bg-white py-12 sm:py-20 md:py-24">
       <div className="px-5 sm:px-[5%] w-full maxContainer">
         {/* Header */}
         <div className="mb-10 text-center md:mb-14">
