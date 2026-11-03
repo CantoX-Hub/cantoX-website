@@ -9,6 +9,8 @@ export interface Template {
   category: "Free" | "Premium";
   rating: number;
   featured?: boolean;
+  /** When set, clicking the card opens a preview panel showing this page */
+  previewUrl?: string;
 }
 
 export type Testimonial = {
