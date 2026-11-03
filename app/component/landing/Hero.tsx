@@ -1,6 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import {
+  motion,
+  animate,
+  useInView,
+  useReducedMotion,
+} from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Button from "../common/Button";
@@ -29,6 +35,83 @@ const itemVariants = {
   },
 };
 
+/**
+ * Splits a stat like "4,800+" or "48hrs" into the number to count to and
+ * the text around it, so the "+" / "hrs" stays put while the number climbs.
+ */
+function parseStat(value: string) {
+  const match = value.match(/^(\D*)([\d,]+(?:\.\d+)?)(.*)$/);
+  if (!match) return null;
+
+  const [, prefix, numberText, suffix] = match;
+  const decimals = numberText.split(".")[1]?.length ?? 0;
+  // No thousands separator: "4,800" shows as "4800"
+  const formatter = new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+    useGrouping: false,
+  });
+  const target = Number(numberText.replace(/,/g, ""));
+  const format = (n: number) => `${prefix}${formatter.format(n)}${suffix}`;
+
+  return { target, format, final: format(target) };
+}
+
+function CountUp({ value, delay = 0 }: { value: string; delay?: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true, amount: 0.6 });
+  const reduceMotion = useReducedMotion();
+  const parsed = parseStat(value);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node || !parsed || !isInView) return;
+
+    // Respect "reduce motion": jump straight to the final number
+    if (reduceMotion) {
+      node.textContent = parsed.final;
+      return;
+    }
+
+    const controls = animate(0, parsed.target, {
+      duration: 1.8,
+      delay,
+      ease: [0.22, 1, 0.36, 1],
+      onUpdate: (n) => {
+        node.textContent = parsed.format(n);
+      },
+      onComplete: () => {
+        node.textContent = parsed.final; // land exactly on the real value
+      },
+    });
+
+    return () => controls.stop();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isInView, reduceMotion, value, delay]);
+
+  // Not a number we can count (e.g. "Free"): just show it
+  if (!parsed) return <>{value}</>;
+
+  return (
+    // The invisible final value reserves the full width, so the row doesn't
+    // shift sideways as "0+" grows into "4,800+".
+    <span className="inline-grid">
+      <span aria-hidden="true" className="invisible col-start-1 row-start-1">
+        {parsed.final}
+      </span>
+      <span
+        ref={ref}
+        aria-hidden="true"
+        className="col-start-1 row-start-1 tabular-nums"
+      >
+        {parsed.format(0)}
+      </span>
+      {/* Screen readers get the real value, not every frame of the count */}
+      <span className="sr-only">{parsed.final}</span>
+    </span>
+  );
+}
+
 export default function Hero() {
   return (
     <section className="w-full pt-16 pb-12 relative overflow-hidden">
@@ -40,50 +123,50 @@ export default function Hero() {
           animate="visible"
           className="flex flex-col h-full max-h-[600px] md:justify-between items-start max-w-[656px]"
         >
-        <div> 
-          <motion.h1
-            variants={itemVariants}
-            className="text-4xl sm:text-5xl lg:text-[3.5rem] leading-[1.1] mb-6 text-[#0F0F0F]"
+          <div>
+            <motion.h1
+              variants={itemVariants}
+              className="text-4xl sm:text-5xl lg:text-[3.5rem] leading-[1.1] mb-6 text-[#0F0F0F]"
             >
-            Design your perfect day, <br className="hidden md:block" /> without
-            the stress.
-          </motion.h1>
+              Design your perfect day, <br className="hidden md:block" /> without
+              the stress.
+            </motion.h1>
 
-          <motion.p
-            variants={itemVariants}
-            className="text-base mb-10 leading-relaxed max-w-[555px] font-medium"
-          >
-            Your wedding, beautifully presented. Pick a design, add your
-            details, share your link, and Done.
-          </motion.p>
-
-          <motion.div
-            variants={itemVariants}
-            className="flexStart gap-2 mb-8 sm:mb-16"
-          >
-            <Button
-            href="/templates"
-              variant="accent"  
-              className="bg-[#C9933A] text-white"
-              icon={<ArrowUpRight size={18} className="ml-1 text-white" />}
+            <motion.p
+              variants={itemVariants}
+              className="text-base mb-10 leading-relaxed max-w-[555px] font-medium"
             >
-              Browse templates
-            </Button>
-            <Button variant="outline" className="border-2" href="/get-started">Get started</Button>
-          </motion.div>
-        </div>
+              Your wedding, beautifully presented. Pick a design, add your
+              details, share your link, and Done.
+            </motion.p>
+
+            <motion.div
+              variants={itemVariants}
+              className="flexStart gap-2 mb-8 sm:mb-16"
+            >
+              <Button
+                href="/templates"
+                variant="accent"
+                className="bg-[#C9933A] text-white"
+                icon={<ArrowUpRight size={18} className="ml-1 text-white" />}
+              >
+                Browse templates
+              </Button>
+              <Button variant="outline" className="border-2" href="/get-started">
+                Get started
+              </Button>
+            </motion.div>
+          </div>
 
           {/* Stats Section */}
-          <motion.div
-            variants={itemVariants}
-            className="flex gap-5 md:gap-12"
-          >
+          <motion.div variants={itemVariants} className="flex gap-5 md:gap-12">
             {stats.map((stat, index) => (
-              <div key={index} className="flex flex-col">
-                <h2 className="text-[24px] sm:text-[32px]  text-[#060D18] mb-2">
-                  {stat.value}
+              <div key={stat.label} className="flex flex-col">
+                <h2 className="text-[24px] sm:text-[32px] text-[#060D18] mb-2">
+                  {/* Starts once the stats row has faded in, slightly staggered */}
+                  <CountUp value={stat.value} delay={0.5 + index * 0.15} />
                 </h2>
-                <span className="text-sm sm:text-base text-center ">
+                <span className="text-sm sm:text-base text-center">
                   {stat.label}
                 </span>
               </div>
@@ -98,7 +181,6 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="relative w-full h-full min-h-[466px] max-h-[600px] flexCenter"
         >
-
           <Image
             src="/couple-illustration.svg"
             alt="Wedding couple illustration"
@@ -108,9 +190,8 @@ export default function Hero() {
             priority
           />
         </motion.div>
-        
       </div>
-       <AudienceMarquee />
+      <AudienceMarquee />
     </section>
   );
 }
