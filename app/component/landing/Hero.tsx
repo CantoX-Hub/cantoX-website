@@ -45,16 +45,16 @@ function parseStat(value: string) {
 
   const [, prefix, numberText, suffix] = match;
   const decimals = numberText.split(".")[1]?.length ?? 0;
+  // No thousands separator: "4,800" shows as "4800"
   const formatter = new Intl.NumberFormat("en-US", {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
-    useGrouping: numberText.includes(","),
+    useGrouping: false,
   });
+  const target = Number(numberText.replace(/,/g, ""));
+  const format = (n: number) => `${prefix}${formatter.format(n)}${suffix}`;
 
-  return {
-    target: Number(numberText.replace(/,/g, "")),
-    format: (n: number) => `${prefix}${formatter.format(n)}${suffix}`,
-  };
+  return { target, format, final: format(target) };
 }
 
 function CountUp({ value, delay = 0 }: { value: string; delay?: number }) {
@@ -69,7 +69,7 @@ function CountUp({ value, delay = 0 }: { value: string; delay?: number }) {
 
     // Respect "reduce motion": jump straight to the final number
     if (reduceMotion) {
-      node.textContent = value;
+      node.textContent = parsed.final;
       return;
     }
 
@@ -81,7 +81,7 @@ function CountUp({ value, delay = 0 }: { value: string; delay?: number }) {
         node.textContent = parsed.format(n);
       },
       onComplete: () => {
-        node.textContent = value; // land exactly on the real value
+        node.textContent = parsed.final; // land exactly on the real value
       },
     });
 
@@ -97,7 +97,7 @@ function CountUp({ value, delay = 0 }: { value: string; delay?: number }) {
     // shift sideways as "0+" grows into "4,800+".
     <span className="inline-grid">
       <span aria-hidden="true" className="invisible col-start-1 row-start-1">
-        {value}
+        {parsed.final}
       </span>
       <span
         ref={ref}
@@ -107,7 +107,7 @@ function CountUp({ value, delay = 0 }: { value: string; delay?: number }) {
         {parsed.format(0)}
       </span>
       {/* Screen readers get the real value, not every frame of the count */}
-      <span className="sr-only">{value}</span>
+      <span className="sr-only">{parsed.final}</span>
     </span>
   );
 }
