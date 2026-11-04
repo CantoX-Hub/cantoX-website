@@ -1,9 +1,14 @@
+"use client";
+import { useState } from "react";
 import Image from "next/image";
 import { Star } from "lucide-react";
 import { Template } from "@/app/types/index.types";
 import { RiExpandDiagonalLine } from "react-icons/ri";
+import { TemplatePreviewPanel } from "../templates/TemplatePreviewPanel";
 export function TemplateCard({ template }: { template: Template }) {
-  return (
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
+  const card = (
     <div className="group relative overflow-hidden rounded-lg border-2 max-h-[479px] h-full min-h-[409px] border-[#E2E8F0] bg-white p-3 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_35px_rgba(0,0,0,0.07)]">
       {/* Image */}
       <div className="relative aspect-[1.65/1] rounded-lg max-h-[238px] h-full w-full overflow-hidden bg-[#F4F1EC]">
@@ -71,5 +76,32 @@ export function TemplateCard({ template }: { template: Template }) {
         </div>
       </div>
     </div>
+  );
+
+  if (!template.previewUrl) return card;
+
+  return (
+    <>
+      <div
+        role="button"
+        tabIndex={0}
+        aria-label={`Preview ${template.name} template`}
+        onClick={() => setIsPreviewOpen(true)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            setIsPreviewOpen(true);
+          }
+        }}
+        className="h-full cursor-pointer"
+      >
+        {card}
+      </div>
+      <TemplatePreviewPanel
+        template={template}
+        open={isPreviewOpen}
+        onClose={() => setIsPreviewOpen(false)}
+      />
+    </>
   );
 }
