@@ -15,8 +15,8 @@ export default function OnboardingShell({ onBack, children }: OnboardingShellPro
         <GoldRibbons />
 
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
+          // initial={{ opacity: 0, y: 16 }}
+          // animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           className="relative z-10 mx-auto flex min-h-[calc(100vh-1.5rem)] max-w-[1280px] flex-col rounded-[12px] bg-white px-5 pb-10 pt-8 sm:min-h-[calc(100vh-7rem)] sm:px-[8%] sm:pb-16 sm:pt-14"
         >

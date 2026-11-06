@@ -32,7 +32,40 @@ function parseBody(text: string): unknown {
   }
 }
 
+/** Set NEXT_PUBLIC_MOCK_API=true in .env.local to test the UI without the backend */
+const MOCK_API = process.env.NEXT_PUBLIC_MOCK_API === "true";
+
+/** Fake upload: fills the progress bar over ~2s and returns a local preview URL */
+function mockUpload(file: File, onProgress?: Options["onProgress"]): UploadProgressHandle {
+  let timer: ReturnType<typeof setInterval> | undefined;
+  let rejectFn: ((reason: unknown) => void) | undefined;
+
+  const promise = new Promise<{ url: string }>((resolve, reject) => {
+    rejectFn = reject;
+    let loaded = 0;
+    const step = Math.max(file.size / 20, 1);
+    timer = setInterval(() => {
+      loaded = Math.min(file.size, loaded + step);
+      onProgress?.(loaded, file.size);
+      if (loaded >= file.size) {
+        clearInterval(timer);
+        resolve({ url: URL.createObjectURL(file) });
+      }
+    }, 100);
+  });
+
+  return {
+    promise,
+    abort: () => {
+      clearInterval(timer);
+      rejectFn?.({ status: "ABORTED" });
+    },
+  };
+}
+
 export function uploadWithProgress(file: File, { folder, onProgress }: Options = {}): UploadProgressHandle {
+  if (MOCK_API) return mockUpload(file, onProgress);
+
   let current: XMLHttpRequest | null = null;
   let aborted = false;
 
