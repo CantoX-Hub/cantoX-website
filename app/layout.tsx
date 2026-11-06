@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Providers from "./providers";
 
 export const metadata: Metadata = {
   title: "CantoX",
@@ -26,8 +27,9 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="antialiased ">
-        {children}
+      <body className="antialiased">
+       {/* Redux store for the whole app */}
+       <Providers>{children}</Providers>
       </body>
     </html>
   );
