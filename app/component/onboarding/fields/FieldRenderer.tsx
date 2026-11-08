@@ -188,7 +188,12 @@ export default function FieldRenderer({
   const labelContent = (
     <>
       {field.label}
-      {showOptional && <span className="ml-1.5 font-normal text-[#94A3B8]">(Optional)</span>}
+      {required && (
+        <span aria-hidden="true" className="ml-0.5 text-[#EF4444]">
+          *
+        </span>
+      )}
+      {showOptional &&<span className="ml-1.5 font-normal text-[#94A3B8]">(Optional)</span>}
     </>
   );
   const labelClass = "mb-2 block text-sm font-medium text-[#11151D] sm:text-[15px]";
