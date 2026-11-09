@@ -109,10 +109,10 @@ export default function GetStarted() {
             <div className="w-full max-w-[467px]">
               {/* Heading */}
               <div className="mb-7">
-                <div className="flex items-center gap-1.5">
-                  <h1 className="text-[24px] leading-tight tracking-[-0.005em] sm:text-[32px]">Do more with</h1>
+                <div className="flex flex-nowrap items-center gap-1.5">
+                  <h1 className="text-[20px] leading-tight tracking-[-0.005em] sm:text-[32px]">Do more with</h1>
                   <Link href="/">
-                    <Image src="/logo.svg" alt="Canto" width={194} height={32} priority />
+                    <Image src="/logo.svg" alt="Canto" width={174} height={32} priority />
                   </Link>
                 </div>
                 <p className="mt-2 max-w-[447px] text-[12px] leading-5 text-[#060D18]">

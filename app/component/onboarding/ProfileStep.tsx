@@ -44,7 +44,7 @@ export default function ProfileStep() {
       <div
         role="radiogroup"
         aria-label="Profile type"
-        className="mt-10 grid grid-cols-3 gap-3 sm:mt-16 sm:gap-6"
+        className="mt-10 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:mt-16 sm:gap-6"
       >
         {PROFILE_OPTIONS.map((option, index) => {
           const active = role === option.role;
