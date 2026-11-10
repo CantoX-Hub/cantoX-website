@@ -1,14 +1,28 @@
 "use client";
 
+import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Check } from "lucide-react";
 import { ROUTES } from "@/app/lib/routes";
 import { useAppDispatch } from "@/app/store/hooks";
 import { resetOnboarding } from "@/app/store/onboardingSlice";
 import { PrimaryButton } from "./ui";
+import WelcomeSplash from "./WelcomeSplash";
 
 export default function SuccessStep() {
+  const [showWelcome, setShowWelcome] = useState(true);
+  const hideWelcome = useCallback(() => setShowWelcome(false), []);
+
+  return (
+    <>
+      <AnimatePresence>{showWelcome && <WelcomeSplash onDone={hideWelcome} />}</AnimatePresence>
+      {!showWelcome && <SubmittedMessage />}
+    </>
+  );
+}
+
+function SubmittedMessage() {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
