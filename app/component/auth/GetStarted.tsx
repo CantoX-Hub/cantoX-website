@@ -5,9 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowLeft, Mail } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { GOOGLE_AUTH_URL, useRequestMagicLinkMutation } from "@/app/services/api";
 import { getErrorMessage } from "@/app/services/baseQuery";
+import { ROUTES } from "@/app/lib/routes";
+import { PENDING_EMAIL_KEY } from "./CheckEmail";
 
 const CAROUSEL_SLIDES = [
   { id: 1, src: "/get-started-couple.jpg", alt: "Happy couple celebrating their wedding" },
@@ -17,15 +19,6 @@ const CAROUSEL_SLIDES = [
 ];
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-/** Seconds before "Resend link" can be pressed again */
-const RESEND_COOLDOWN = 30;
-
-const fade = {
-  initial: { opacity: 0, y: 8 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -6 },
-  transition: { duration: 0.25, ease: "easeOut" as const },
-};
 
 export default function GetStarted() {
   const router = useRouter();
@@ -34,8 +27,6 @@ export default function GetStarted() {
 
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState<string | null>(null);
-  const [sentTo, setSentTo] = useState<string | null>(null);
-  const [cooldown, setCooldown] = useState(0);
   const [requestMagicLink, { isLoading, error: requestError, reset }] = useRequestMagicLinkMutation();
 
   /* ---------- Carousel (pauses on hover and for reduced motion) ---------- */
@@ -48,13 +39,6 @@ export default function GetStarted() {
     return () => clearInterval(id);
   }, [paused]);
 
-  /* ---------- Resend countdown ---------- */
-  useEffect(() => {
-    if (cooldown <= 0) return;
-    const id = setTimeout(() => setCooldown((c) => c - 1), 1000);
-    return () => clearTimeout(id);
-  }, [cooldown]);
-
   // Back to the previous page; home if there isn't one (opened in a new tab or from a link)
   const handleBack = () => {
     if (window.history.length > 1) router.back();
@@ -64,8 +48,12 @@ export default function GetStarted() {
   const sendLink = async (address: string) => {
     try {
       await requestMagicLink({ email: address }).unwrap();
-      setSentTo(address);
-      setCooldown(RESEND_COOLDOWN);
+      try {
+        sessionStorage.setItem(PENDING_EMAIL_KEY, address);
+      } catch {
+        // Storage blocked: the next page falls back to "your email"
+      }
+      router.push(ROUTES.checkEmail);
     } catch {
       // Shown below from requestError
     }
@@ -80,12 +68,6 @@ export default function GetStarted() {
     }
     setEmailError(null);
     sendLink(trimmed);
-  };
-
-  const switchEmail = () => {
-    setSentTo(null);
-    setCooldown(0);
-    reset();
   };
 
   const apiError = requestError ? getErrorMessage(requestError) : null;
@@ -120,132 +102,86 @@ export default function GetStarted() {
                 </p>
               </div>
 
-              <AnimatePresence mode="wait" initial={false}>
-                {sentTo ? (
-                  /* ---------- Link sent ---------- */
-                  <motion.div key="sent" {...fade} aria-live="polite">
-                    <div className="rounded-[6px] border border-[#F1E4CC] bg-[#FFF9F0] p-5">
-                      <motion.span
-                        initial={{ scale: 0.6, rotate: -12 }}
-                        animate={{ scale: 1, rotate: 0 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 18 }}
-                        className="flex h-10 w-10 items-center justify-center rounded-full bg-[#C99532]/15"
-                      >
-                        <Mail className="h-5 w-5 text-[#C99532]" aria-hidden="true" />
-                      </motion.span>
-                      <h2 className="mt-3 text-lg text-[#11151D]">Check your email</h2>
-                      <p className="mt-1 text-[12px] leading-5 text-[#4B5563]">
-                        We sent a sign-in link to <span className="font-medium text-[#11151D]">{sentTo}</span>. Open it
-                        on this device to continue. It can take a minute to arrive, so check your spam folder too.
-                      </p>
-                    </div>
+              {/* ---------- Sign-in options ---------- */}
+              <div>
+                <form onSubmit={handleSubmit} noValidate className="space-y-3">
+                  <div>
+                    <label htmlFor="email" className="mb-1.5 block text-[11px] font-medium text-[#252A33]">
+                      Email
+                    </label>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      inputMode="email"
+                      placeholder="you@example.com"
+                      value={email}
+                      onChange={(event) => {
+                        setEmail(event.target.value);
+                        if (emailError) setEmailError(null);
+                        if (requestError) reset();
+                      }}
+                      aria-invalid={!!(emailError || apiError) || undefined}
+                      aria-describedby={emailError || apiError ? "email-error" : undefined}
+                      className={`h-10 w-full rounded-[4px] border bg-white px-3 text-base text-[#11151D] outline-none transition-all placeholder:text-[#A7ACB4] focus:border-[#C99532] focus:ring-2 focus:ring-[#C99532]/10 sm:text-xs ${
+                        emailError || apiError ? "border-red-400" : "border-[#D9DDE3]"
+                      }`}
+                    />
+                    <AnimatePresence initial={false}>
+                      {(emailError || apiError) && (
+                        <motion.p
+                          id="email-error"
+                          role="alert"
+                          initial={{ opacity: 0, y: -4 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0 }}
+                          className="mt-1.5 text-xs text-red-600"
+                        >
+                          {emailError ?? apiError}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+                  </div>
 
-                    {apiError && (
-                      <p role="alert" className="mt-3 text-xs text-red-600">
-                        {apiError}
-                      </p>
-                    )}
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="flex h-10 w-full items-center justify-center gap-2 rounded-[4px] bg-[#C99532] text-xs font-medium text-white transition-all hover:bg-[#B78628] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {isLoading && <Spinner />}
+                    {isLoading ? "Sending link…" : "Continue"}
+                  </button>
+                </form>
 
-                    <button
-                      type="button"
-                      disabled={cooldown > 0 || isLoading}
-                      onClick={() => sendLink(sentTo)}
-                      className="mt-4 flex h-10 w-full items-center justify-center gap-2 rounded-[4px] bg-[#C99532] text-xs font-medium text-white transition-all hover:bg-[#B78628] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                      {isLoading && <Spinner />}
-                      {isLoading ? "Sending…" : cooldown > 0 ? `Resend link in ${cooldown}s` : "Resend link"}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={switchEmail}
-                      className="mt-2 h-10 w-full rounded-[4px] bg-[#F2F5F8] text-xs font-bold text-[#11151D] transition-colors hover:bg-[#E9EDF2]"
-                    >
-                      Use a different email
-                    </button>
-                  </motion.div>
-                ) : (
-                  /* ---------- Sign-in options ---------- */
-                  <motion.div key="form" {...fade}>
-                    <form onSubmit={handleSubmit} noValidate className="space-y-3">
-                      <div>
-                        <label htmlFor="email" className="mb-1.5 block text-[11px] font-medium text-[#252A33]">
-                          Email
-                        </label>
-                        <input
-                          id="email"
-                          name="email"
-                          type="email"
-                          autoComplete="email"
-                          inputMode="email"
-                          placeholder="you@example.com"
-                          value={email}
-                          onChange={(event) => {
-                            setEmail(event.target.value);
-                            if (emailError) setEmailError(null);
-                            if (requestError) reset();
-                          }}
-                          aria-invalid={!!(emailError || apiError) || undefined}
-                          aria-describedby={emailError || apiError ? "email-error" : undefined}
-                          className={`h-10 w-full rounded-[4px] border bg-white px-3 text-base text-[#11151D] outline-none transition-all placeholder:text-[#A7ACB4] focus:border-[#C99532] focus:ring-2 focus:ring-[#C99532]/10 sm:text-xs ${
-                            emailError || apiError ? "border-red-400" : "border-[#D9DDE3]"
-                          }`}
-                        />
-                        <AnimatePresence initial={false}>
-                          {(emailError || apiError) && (
-                            <motion.p
-                              id="email-error"
-                              role="alert"
-                              initial={{ opacity: 0, y: -4 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0 }}
-                              className="mt-1.5 text-xs text-red-600"
-                            >
-                              {emailError ?? apiError}
-                            </motion.p>
-                          )}
-                        </AnimatePresence>
-                      </div>
+                {/* Divider */}
+                <div className="my-5 flex items-center gap-3">
+                  <div className="h-px flex-1 bg-[#E5E7EB]" />
+                  <span className="text-xs text-[#9CA1A9]">or</span>
+                  <div className="h-px flex-1 bg-[#E5E7EB]" />
+                </div>
 
-                      <button
-                        type="submit"
-                        disabled={isLoading}
-                        className="flex h-10 w-full items-center justify-center gap-2 rounded-[4px] bg-[#C99532] text-xs font-medium text-white transition-all hover:bg-[#B78628] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
-                      >
-                        {isLoading && <Spinner />}
-                        {isLoading ? "Sending link…" : "Continue"}
-                      </button>
-                    </form>
+                {/* Google: full-page redirect to the backend OAuth route */}
+                <a
+                  href={GOOGLE_AUTH_URL}
+                  className="flex h-10 w-full items-center justify-center gap-2 rounded-[4px] bg-[#F2F5F8] text-xs font-bold text-[#11151D] transition-colors hover:bg-[#E9EDF2]"
+                >
+                  <Image src="/google.svg" alt="" width={18} height={18} />
+                  Continue with Google
+                </a>
 
-                    {/* Divider */}
-                    <div className="my-5 flex items-center gap-3">
-                      <div className="h-px flex-1 bg-[#E5E7EB]" />
-                      <span className="text-xs text-[#9CA1A9]">or</span>
-                      <div className="h-px flex-1 bg-[#E5E7EB]" />
-                    </div>
-
-                    {/* Google: full-page redirect to the backend OAuth route */}
-                    <a
-                      href={GOOGLE_AUTH_URL}
-                      className="flex h-10 w-full items-center justify-center gap-2 rounded-[4px] bg-[#F2F5F8] text-xs font-bold text-[#11151D] transition-colors hover:bg-[#E9EDF2]"
-                    >
-                      <Image src="/google.svg" alt="" width={18} height={18} />
-                      Continue with Google
-                    </a>
-
-                    {/* No Apple endpoint on the backend yet */}
-                    <button
-                      type="button"
-                      disabled
-                      title="Apple sign-in is coming soon"
-                      className="mt-2 flex h-10 w-full cursor-not-allowed items-center justify-center gap-2 rounded-[4px] bg-[#F2F5F8] text-xs font-bold text-[#11151D] opacity-50"
-                    >
-                      <Image src="/apple.svg" alt="" width={18} height={18} />
-                      Continue with Apple
-                      <span className="font-normal text-[#6B7280]">(soon)</span>
-                    </button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                {/* No Apple endpoint on the backend yet */}
+                <button
+                  type="button"
+                  disabled
+                  title="Apple sign-in is coming soon"
+                  className="mt-2 flex h-10 w-full cursor-not-allowed items-center justify-center gap-2 rounded-[4px] bg-[#F2F5F8] text-xs font-bold text-[#11151D] opacity-50"
+                >
+                  <Image src="/apple.svg" alt="" width={18} height={18} />
+                  Continue with Apple
+                  <span className="font-normal text-[#6B7280]">(soon)</span>
+                </button>
+              </div>
             </div>
           </section>
 
