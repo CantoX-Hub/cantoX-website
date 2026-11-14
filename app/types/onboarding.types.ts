@@ -46,6 +46,8 @@ export interface FieldConfig {
   accept?: string;
   uploadFolder?: string;
   maxLength?: number;
+  /** Digits only: number keypad on phones, anything else is stripped as you type */
+  numeric?: boolean;
   rules?: { future?: boolean; minAge?: number };
 }
 

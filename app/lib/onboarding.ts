@@ -139,7 +139,15 @@ export function planIdFor(role: Role, planName: string): string {
  * businessEmail/businessType have no backend field yet. Couple dob/id fields
  * are optional on the backend, so the couple flow has no identity step.
  */
-const DTO_FIELDS: Record<Role, Record<string, keyof OnboardingPayload | ((p: OnboardingPayload) => string | undefined)>> = {
+type DtoSource = keyof OnboardingPayload | ((p: OnboardingPayload) => string | number | undefined);
+
+/** The years field is typed as digits ("5"); the backend wants a number (5). */
+function yearsToNumber(range: string | undefined): number | undefined {
+  const years = range ? parseInt(range, 10) : NaN;
+  return Number.isFinite(years) && years >= 0 ? years : undefined;
+}
+
+const DTO_FIELDS: Record<Role, Record<string, DtoSource>> = {
   couple: {
     fullName: "fullName",
     phone: "phone",
@@ -163,7 +171,7 @@ const DTO_FIELDS: Record<Role, Record<string, keyof OnboardingPayload | ((p: Onb
     businessType: (p) => (p.businessType === "registered" ? "registered_company" : p.businessType),
     // Registered companies give a CAC number, individuals their NIN
     registrationNumber: (p) => p.cacNumber ?? p.ninNumber,
-    yearsOfExperience: "yearsOfExperience",
+    yearsOfExperience: (p) => yearsToNumber(p.yearsOfExperience),
     address: "businessAddress",
     // One "Website or Instagram" box on the form
     websiteUrl: (p) => (p.website && !isInstagram(p.website) ? p.website : undefined),
@@ -177,7 +185,7 @@ const DTO_FIELDS: Record<Role, Record<string, keyof OnboardingPayload | ((p: Onb
     bio: "bio",
     category: "serviceCategory",
     registrationNumber: "cacNumber",
-    yearsInOperation: "yearsOfExperience",
+    yearsInOperation: (p) => yearsToNumber(p.yearsOfExperience),
     phone: "whatsapp",
     whatsappNumber: "whatsapp",
     address: "businessAddress",
@@ -195,11 +203,11 @@ function isInstagram(value: string) {
 }
 
 /** Converts the form payload into the exact body POST /onboarding accepts. */
-export function toOnboardingDto(payload: OnboardingPayload): Record<string, string> {
-  const body: Record<string, string> = { role: payload.role };
+export function toOnboardingDto(payload: OnboardingPayload): Record<string, string | number> {
+  const body: Record<string, string | number> = { role: payload.role };
   for (const [dtoKey, source] of Object.entries(DTO_FIELDS[payload.role])) {
     const value = typeof source === "function" ? source(payload) : payload[source];
-    if (typeof value === "string" && value) body[dtoKey] = value;
+    if ((typeof value === "string" && value) || typeof value === "number") body[dtoKey] = value;
   }
   return body;
 }

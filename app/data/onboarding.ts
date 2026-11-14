@@ -57,13 +57,17 @@ const BUSINESS_TYPES: FieldOption[] = [
   { label: "Individual", value: "individual" },
 ];
 
-const YEARS: FieldOption[] = [
-  { label: "Less than 1 year", value: "0-1" },
-  { label: "1 - 3 years", value: "1-3" },
-  { label: "4 - 6 years", value: "4-6" },
-  { label: "7 - 10 years", value: "7-10" },
-  { label: "10+ years", value: "10+" },
-];
+/** Planner "Years planning events" / vendor "Years in operation"; sent to the backend as a number */
+const yearsField: FieldConfig = {
+  name: "yearsOfExperience",
+  label: "Years",
+  type: "text",
+  numeric: true,
+  maxLength: 2,
+  required: true,
+  placeholder: "eg. 5",
+  pattern: { value: /^\d{1,2}$/, message: "Enter the number of years, e.g. 5." },
+};
 
 const SERVICE_CATEGORIES = toOptions([
   "Photography and Media",
@@ -196,7 +200,7 @@ export const ROLE_CONFIGS: Record<Role, RoleConfig> = {
             showWhen: { field: "businessType", equals: "individual" },
             pattern: { value: /^\d{11}$/, message: "Your NIN is 11 digits." },
           },
-          { name: "yearsOfExperience", label: "Years planning events", type: "select", required: true, options: YEARS, placeholder: "Select" },
+          { ...yearsField, label: "Years planning events" },
           { name: "businessAddress", label: "Business address", type: "text", required: true, span: 2, placeholder: "eg. 13, Ore close, Surulere, Lagos, Nigeria" },
           { name: "website", label: "Website or Instagram", type: "text", span: 2, placeholder: "eg. www.olorievents.com or @olorievents" },
         ],
@@ -233,7 +237,7 @@ export const ROLE_CONFIGS: Record<Role, RoleConfig> = {
           { name: "serviceCategory", label: "Service category", type: "select", required: true, span: 2, options: SERVICE_CATEGORIES, placeholder: "Select" },
           { name: "businessType", label: "Business type", type: "radio", required: true, span: 2, options: BUSINESS_TYPES },
           { name: "cacNumber", label: "CAC registration number", type: "text", placeholder: "eg. RC 2314532" },
-          { name: "yearsOfExperience", label: "Years in operation", type: "select", required: true, options: YEARS, placeholder: "Select" },
+          { ...yearsField, label: "Years in operation" },
         ],
       },
       {
