@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useVerifyMagicLinkMutation } from "@/app/services/api";
 import { getErrorMessage, hasStatus } from "@/app/services/baseQuery";
 import { ROUTES } from "@/app/lib/routes";
+import { loadRememberMe } from "@/app/lib/rememberMe";
 
 export default function VerifyMagicLink() {
   const router = useRouter();
@@ -20,7 +21,7 @@ export default function VerifyMagicLink() {
     if (!token || started.current) return;
     started.current = true;
 
-    verify({ token })
+    verify({ token, rememberMe: loadRememberMe() })
       .unwrap()
       .then((res) => {
         router.replace(res.user?.onboarded ? ROUTES.dashboard : ROUTES.onboarding);

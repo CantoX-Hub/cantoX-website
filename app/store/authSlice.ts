@@ -1,12 +1,12 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { api } from "@/app/services/api";
+import { api, toAuthUser, type BackendUser } from "@/app/services/api";
 import { onboardingAlreadyComplete, sessionExpired } from "./authActions";
 import type { AuthUser, OnboardingPayload } from "@/app/types/onboarding.types";
 import type { RootState } from "./store";
 
 /**
- * "unknown" until something tells us otherwise — there is no GET /auth/me yet,
- * so a fresh page load can't confirm the session on its own.
+ * "unknown" until GET /auth/me (or a sign-in) answers. Pages keep showing the
+ * last known user from localStorage meanwhile, and only redirect on "guest".
  */
 export type AuthStatus = "unknown" | "authenticated" | "guest";
 
@@ -39,11 +39,21 @@ function withOnboarding(user: AuthUser | null, body: OnboardingPayload): AuthUse
   };
 }
 
+/**
+ * The backend only returns id, email, role, onboarded, name and avatar. Keep
+ * the extra profile fields saved for the same account (partner name, plan…);
+ * drop them if a different account signed in.
+ */
+function fromBackend(current: AuthUser | null, user: BackendUser): AuthUser {
+  const sameAccount = current?.id === user.id || (!current?.id && current?.email === user.email);
+  return { ...(sameAccount ? current : {}), ...toAuthUser(user) };
+}
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    /** Restores the last known user from localStorage (no GET /auth/me yet) */
+    /** Restores the last known user from localStorage for an instant first paint */
     hydrateUser(state, action: PayloadAction<AuthUser | null>) {
       if (!state.user && action.payload) state.user = action.payload;
     },
@@ -59,8 +69,15 @@ const authSlice = createSlice({
       })
       .addMatcher(api.endpoints.verifyMagicLink.matchFulfilled, (state, { payload }) => {
         state.status = "authenticated";
-        state.user = payload.user ?? null;
-        if (payload.user?.email) state.email = payload.user.email;
+        if (payload.user) {
+          state.user = fromBackend(state.user, payload.user);
+          state.email = payload.user.email;
+        }
+      })
+      .addMatcher(api.endpoints.getMe.matchFulfilled, (state, { payload }) => {
+        state.status = "authenticated";
+        state.user = fromBackend(state.user, payload);
+        state.email = payload.email;
       })
       .addMatcher(api.endpoints.completeOnboarding.matchFulfilled, (state, action) => {
         state.user = withOnboarding(state.user, action.meta.arg.originalArgs);

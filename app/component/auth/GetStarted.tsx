@@ -9,6 +9,7 @@ import { Check } from "lucide-react";
 import { GOOGLE_AUTH_URL, useRequestMagicLinkMutation } from "@/app/services/api";
 import { getErrorMessage, isWakingError, wakeBackend } from "@/app/services/baseQuery";
 import { ROUTES } from "@/app/lib/routes";
+import { saveRememberMe } from "@/app/lib/rememberMe";
 import { PENDING_EMAIL_KEY } from "./CheckEmail";
 
 /** Each slide drives both the image on the right and the heading on the left */
@@ -52,7 +53,10 @@ const CAROUSEL_SLIDES = [
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-/** "Remember me" keeps only the email address on this device, so it's pre-filled next time */
+/**
+ * "Remember me": ticked → 7-day session (sent at verify, see lib/rememberMe) and
+ * the email is pre-filled next time; unticked → session ends when the browser closes.
+ */
 const REMEMBERED_EMAIL_KEY = "cantox:remembered-email";
 
 export default function GetStarted() {
@@ -135,6 +139,7 @@ export default function GetStarted() {
     }
     setEmailError(null);
     saveRememberedEmail(trimmed);
+    saveRememberMe(rememberMe);
     sendLink(trimmed);
   };
 
