@@ -1,5 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { api } from "@/app/services/api";
+import { onboardingAlreadyComplete } from "./authActions";
 import type {
   FormValues,
   OnboardingPhase,
@@ -75,6 +76,10 @@ const onboardingSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // Both outcomes play the welcome screen before the dashboard
+      .addCase(onboardingAlreadyComplete, (state) => {
+        state.phase = "done";
+      })
       .addMatcher(api.endpoints.completeOnboarding.matchFulfilled, (state) => {
         state.phase = "done";
       })
