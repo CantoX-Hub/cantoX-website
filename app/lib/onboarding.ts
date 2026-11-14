@@ -136,7 +136,8 @@ export function planIdFor(role: Role, planName: string): string {
  * Backend DTO field ← form field, per role (from /api/v1/docs-json).
  * The backend rejects unknown properties, so anything not listed here is
  * dropped: couple planId/partnerEmail/partnerPhone and vendor
- * businessEmail/businessType have no backend field yet.
+ * businessEmail/businessType have no backend field yet. Couple dob/id fields
+ * are optional on the backend, so the couple flow has no identity step.
  */
 const DTO_FIELDS: Record<Role, Record<string, keyof OnboardingPayload | ((p: OnboardingPayload) => string | undefined)>> = {
   couple: {
@@ -157,7 +158,9 @@ const DTO_FIELDS: Record<Role, Record<string, keyof OnboardingPayload | ((p: Onb
     phone: "phone",
     dob: "dob",
     businessName: "businessName",
-    businessType: "businessType",
+    // Backend values: "registered_company" | "individual". idType is left out:
+    // the backend defaults it to "cac" for companies and "nin" for individuals.
+    businessType: (p) => (p.businessType === "registered" ? "registered_company" : p.businessType),
     // Registered companies give a CAC number, individuals their NIN
     registrationNumber: (p) => p.cacNumber ?? p.ninNumber,
     yearsOfExperience: "yearsOfExperience",

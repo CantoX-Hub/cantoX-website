@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast";
 import { makeStore } from "@/app/store/store";
 import { hydrateOnboarding } from "@/app/store/onboardingSlice";
 import { hydrateUser } from "@/app/store/authSlice";
+import { api } from "@/app/services/api";
 import { loadOnboardingDraft, saveOnboardingDraft, loadUser, saveUser } from "@/app/store/persist";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
@@ -15,6 +16,13 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     store.dispatch(hydrateOnboarding(loadOnboardingDraft()));
     store.dispatch(hydrateUser(loadUser()));
+
+    // Confirm the session with the backend (refreshes the access token if needed;
+    // a failed refresh marks the user as a guest). The sign-in pages handle this
+    // themselves, so skip them to avoid racing the magic-link / Google cookies.
+    if (!window.location.pathname.startsWith("/auth/")) {
+      store.dispatch(api.endpoints.getMe.initiate(undefined, { subscribe: false }));
+    }
 
     let lastSaved = store.getState().onboarding;
     let lastUser = store.getState().auth.user;

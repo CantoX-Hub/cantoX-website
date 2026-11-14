@@ -3,10 +3,35 @@ import { API_BASE, baseQueryWithReauth } from "./baseQuery";
 import type { AuthUser, OnboardingPayload } from "@/app/types/onboarding.types";
 import { toOnboardingDto } from "@/app/lib/onboarding";
 
+/** User as the backend returns it from /auth/me and /auth/magic-link/verify */
+export interface BackendUser {
+  id: string;
+  email: string;
+  /** "unassigned" until onboarding is done */
+  role: "couple" | "planner" | "vendor" | "unassigned";
+  onboarded: boolean;
+  name: string | null;
+  avatar: string | null;
+}
+
 export interface VerifyMagicLinkResponse {
-  user?: AuthUser;
   message?: string;
-  [key: string]: unknown;
+  user?: BackendUser;
+}
+
+/** Maps the backend user onto the fields the app uses (role, fullName, avatarUrl). */
+export function toAuthUser(user: BackendUser): AuthUser {
+  const role = user.role === "unassigned" ? null : user.role;
+  return {
+    id: user.id,
+    email: user.email,
+    role,
+    onboarded: user.onboarded,
+    ...(user.name ? { fullName: user.name } : {}),
+    // Vendors have no personal name; the backend's name is their business name
+    ...(user.name && role === "vendor" ? { businessName: user.name } : {}),
+    ...(user.avatar ? { avatarUrl: user.avatar } : {}),
+  };
 }
 
 export interface UploadResponse {
@@ -25,8 +50,14 @@ export const api = createApi({
       query: (body) => ({ url: "/auth/magic-link/request", method: "POST", body }),
     }),
 
-    verifyMagicLink: build.mutation<VerifyMagicLinkResponse, { token: string }>({
+    /** rememberMe false → session cookie cleared when the browser closes; true → 7 days */
+    verifyMagicLink: build.mutation<VerifyMagicLinkResponse, { token: string; rememberMe?: boolean }>({
       query: (body) => ({ url: "/auth/magic-link/verify", method: "POST", body }),
+    }),
+
+    /** Restores the session on page load and after the Google redirect */
+    getMe: build.query<BackendUser, void>({
+      query: () => "/auth/me",
     }),
 
     logout: build.mutation<void, void>({
@@ -54,6 +85,7 @@ export const {
   useHealthQuery,
   useRequestMagicLinkMutation,
   useVerifyMagicLinkMutation,
+  useGetMeQuery,
   useLogoutMutation,
   useCompleteOnboardingMutation,
   useUploadFileMutation,
