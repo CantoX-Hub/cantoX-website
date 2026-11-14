@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check } from "lucide-react";
 import { GOOGLE_AUTH_URL, useRequestMagicLinkMutation } from "@/app/services/api";
-import { getErrorMessage } from "@/app/services/baseQuery";
+import { getErrorMessage, isWakingError, wakeBackend } from "@/app/services/baseQuery";
 import { ROUTES } from "@/app/lib/routes";
 import { PENDING_EMAIL_KEY } from "./CheckEmail";
 
@@ -62,6 +62,8 @@ export default function GetStarted() {
 
   const [email, setEmail] = useState("");
   const [rememberMe, setRememberMe] = useState(true);
+  /** True while waiting for a sleeping backend to start before retrying */
+  const [waking, setWaking] = useState(false);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [requestMagicLink, { isLoading, error: requestError, reset }] = useRequestMagicLinkMutation();
 
@@ -74,6 +76,11 @@ export default function GetStarted() {
     }, 5000);
     return () => clearInterval(id);
   }, [paused]);
+
+  // Wake a sleeping backend while the user is still typing
+  useEffect(() => {
+    wakeBackend();
+  }, []);
 
   // Pre-fill a remembered email (after mount, so the first render matches the server)
   useEffect(() => {
@@ -96,7 +103,18 @@ export default function GetStarted() {
 
   const sendLink = async (address: string) => {
     try {
-      await requestMagicLink({ email: address }).unwrap();
+      try {
+        await requestMagicLink({ email: address }).unwrap();
+      } catch (error) {
+        // Server was asleep: wait for it to wake, then try once more
+        if (!isWakingError(error)) throw error;
+        setWaking(true);
+        await wakeBackend();
+        reset();
+        await requestMagicLink({ email: address }).unwrap();
+      } finally {
+        setWaking(false);
+      }
       try {
         sessionStorage.setItem(PENDING_EMAIL_KEY, address);
       } catch {
@@ -196,11 +214,11 @@ export default function GetStarted() {
 
                   <button
                     type="submit"
-                    disabled={isLoading}
+                    disabled={isLoading || waking}
                     className="flex h-10 w-full items-center justify-center gap-2 rounded-[4px] bg-[#C99532] text-xs font-medium text-white transition-all hover:bg-[#B78628] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    {isLoading && <Spinner />}
-                    {isLoading ? "Sending link…" : "Continue"}
+                    {(isLoading || waking) && <Spinner />}
+                    {waking ? "Connecting, this can take a moment…" : isLoading ? "Sending link…" : "Continue"}
                   </button>
 
                   <label className="flex w-fit cursor-pointer select-none items-center gap-2 pt-1 text-[11px] text-[#5B616B]">
