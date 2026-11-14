@@ -62,6 +62,35 @@ export const baseQueryWithReauth: BaseQueryFn<
   return result;
 };
 
+/* ---------- Cold starts ---------- */
+
+/**
+ * The backend sleeps when idle (Render free plan) and takes ~40s to wake.
+ * Ping it as soon as a sign-in page opens, so it's awake by the time the
+ * user submits. Fire-and-forget; failures are ignored.
+ */
+let wakePromise: Promise<void> | null = null;
+export function wakeBackend(): Promise<void> {
+  if (!wakePromise) {
+    wakePromise = fetch(`${API_BASE}/health`, { cache: "no-store" })
+      .then(() => undefined)
+      .catch(() => undefined)
+      .finally(() => {
+        // Allow another wake-up later if the server goes back to sleep
+        setTimeout(() => {
+          wakePromise = null;
+        }, 60_000);
+      });
+  }
+  return wakePromise;
+}
+
+/** Errors that mean "server unreachable or still starting", worth one retry */
+export function isWakingError(error: unknown): boolean {
+  const status = (error as { status?: unknown } | null)?.status;
+  return status === "FETCH_ERROR" || status === 500 || status === 502 || status === 503 || status === 504;
+}
+
 /* ---------- Error helpers ---------- */
 
 export function hasStatus(error: unknown, status: number): boolean {
