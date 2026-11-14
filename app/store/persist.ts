@@ -47,6 +47,28 @@ export function saveOnboardingDraft(state: OnboardingState) {
   }
 }
 
+/* ---------- Account deleted ---------- */
+
+const APP_KEY_PREFIXES = ["cantox:", "canto:"];
+
+/**
+ * Removes everything this site stored on the device (saved user, remembered
+ * email, to-dos, saved vendors, onboarding draft…). Used after the account is
+ * deleted so no personal details are left behind.
+ */
+export function clearAllLocalData() {
+  for (const storage of [window.localStorage, window.sessionStorage]) {
+    try {
+      const keys = Array.from({ length: storage.length }, (_, i) => storage.key(i)).filter(
+        (key): key is string => !!key && APP_KEY_PREFIXES.some((prefix) => key.startsWith(prefix))
+      );
+      keys.forEach((key) => storage.removeItem(key));
+    } catch {
+      // Storage blocked: nothing was saved there
+    }
+  }
+}
+
 /* ---------- Signed-in user (display data only) ---------- */
 
 const USER_KEY = "cantox:user";

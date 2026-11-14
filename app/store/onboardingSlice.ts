@@ -1,4 +1,4 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, isAnyOf, type PayloadAction } from "@reduxjs/toolkit";
 import { api } from "@/app/services/api";
 import { onboardingAlreadyComplete } from "./authActions";
 import type {
@@ -83,7 +83,7 @@ const onboardingSlice = createSlice({
       .addMatcher(api.endpoints.completeOnboarding.matchFulfilled, (state) => {
         state.phase = "done";
       })
-      .addMatcher(api.endpoints.logout.matchFulfilled, () => ({
+      .addMatcher(isAnyOf(api.endpoints.logout.matchFulfilled, api.endpoints.deleteAccount.matchFulfilled), () => ({
         ...onboardingInitialState,
         hydrated: true,
       }));

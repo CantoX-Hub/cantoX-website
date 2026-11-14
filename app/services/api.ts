@@ -55,6 +55,11 @@ export const api = createApi({
       query: (body) => ({ url: "/auth/magic-link/verify", method: "POST", body }),
     }),
 
+    /** Permanently deletes the signed-in account and its personal details */
+    deleteAccount: build.mutation<void, void>({
+      query: () => ({ url: "/auth/me", method: "DELETE" }),
+    }),
+
     /** Restores the session on page load and after the Google redirect */
     getMe: build.query<BackendUser, void>({
       query: () => "/auth/me",
@@ -86,6 +91,7 @@ export const {
   useRequestMagicLinkMutation,
   useVerifyMagicLinkMutation,
   useGetMeQuery,
+  useDeleteAccountMutation,
   useLogoutMutation,
   useCompleteOnboardingMutation,
   useUploadFileMutation,

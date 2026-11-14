@@ -6,6 +6,7 @@ import {
   ListTodo,
   MessageSquareText,
   PartyPopper,
+  Settings,
   Star,
   Store,
   Users,
@@ -27,6 +28,8 @@ const guests: NavItem = { label: "Guests", href: "/dashboard/guests", icon: User
 const vendors: NavItem = { label: "Vendors", href: "/dashboard/vendors", icon: Store };
 const todo: NavItem = { label: "To-do list", href: "/dashboard/todo", icon: ListTodo };
 const calendar: NavItem = { label: "Calendar", href: "/dashboard/calendar", icon: CalendarDays };
+/** Opened from the profile menu, not the sidebar */
+const settings: NavItem = { label: "Settings", href: "/dashboard/settings", icon: Settings };
 
 export const NAV_BY_ROLE: Record<Role, NavItem[]> = {
   couple: [overview, templates, wishlist, guests, vendors, todo, calendar],
@@ -46,7 +49,7 @@ export const NAV_BY_ROLE: Record<Role, NavItem[]> = {
 export function crumbFor(pathname: string, role: Role): NavItem | null {
   if (pathname === "/dashboard") return null;
   if (pathname.startsWith("/dashboard/vendors/")) return { ...vendors, label: "Vendor" };
-  const all = [...NAV_BY_ROLE[role], events, templates, wishlist, guests, vendors, todo, calendar];
+  const all = [...NAV_BY_ROLE[role], events, templates, wishlist, guests, vendors, todo, calendar, settings];
   return all.find((item) => item.href !== "/dashboard" && pathname.startsWith(item.href)) ?? null;
 }
 
