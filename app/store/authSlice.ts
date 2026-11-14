@@ -1,4 +1,4 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, isAnyOf, type PayloadAction } from "@reduxjs/toolkit";
 import { api, toAuthUser, type BackendUser } from "@/app/services/api";
 import { onboardingAlreadyComplete, sessionExpired } from "./authActions";
 import type { AuthUser, OnboardingPayload } from "@/app/types/onboarding.types";
@@ -82,10 +82,10 @@ const authSlice = createSlice({
       .addMatcher(api.endpoints.completeOnboarding.matchFulfilled, (state, action) => {
         state.user = withOnboarding(state.user, action.meta.arg.originalArgs);
       })
-      .addMatcher(api.endpoints.logout.matchFulfilled, () => ({
-        ...initialState,
-        status: "guest" as const,
-      }));
+      .addMatcher(
+        isAnyOf(api.endpoints.logout.matchFulfilled, api.endpoints.deleteAccount.matchFulfilled),
+        () => ({ ...initialState, status: "guest" as const })
+      );
   },
 });
 

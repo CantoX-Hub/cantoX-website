@@ -190,7 +190,7 @@ function ProfileMenu() {
         <MenuItem
           onClick={() => {
             close();
-            notify("Settings are coming soon", { severity: "info" });
+            router.push("/dashboard/settings");
           }}
         >
           <ListItemIcon><Settings size={16} /></ListItemIcon>
