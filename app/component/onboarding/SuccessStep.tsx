@@ -1,26 +1,28 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
-import { AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
 import { ROUTES } from "@/app/lib/routes";
 import { useAppSelector } from "@/app/store/hooks";
 import WelcomeSplash from "./WelcomeSplash";
 
 /**
- * Shown for every role once POST /onboarding succeeds: the "Welcome to CantoX"
- * splash plays, then the user lands on the dashboard.
+ * Shown for every role once onboarding is complete: the "Welcome to CantoX"
+ * splash plays full screen, then the user lands on the dashboard.
  */
 export default function SuccessStep() {
   const router = useRouter();
   const role = useAppSelector((state) => state.onboarding.role);
   const leaving = useRef(false);
+  const [mounted, setMounted] = useState(false);
 
   // Load the dashboard while the splash plays so the hand-over is instant.
   // The finished flow is cleared by OnboardingFlow if /onboarding is opened again,
   // so the first onboarding step never flashes on the way out.
   useEffect(() => {
+    setMounted(true);
     router.prefetch(ROUTES.dashboard);
   }, [router]);
 
@@ -39,9 +41,12 @@ export default function SuccessStep() {
     router.replace(ROUTES.dashboard);
   }, [role, router]);
 
+  // Rendered on <body> so the animated onboarding card (transforms, overflow)
+  // can't shrink or clip the full-screen splash.
   return (
-    <AnimatePresence>
-      <WelcomeSplash onDone={goToDashboard} />
-    </AnimatePresence>
+    <>
+      <div className="min-h-[50vh]" aria-hidden="true" />
+      {mounted && createPortal(<WelcomeSplash onDone={goToDashboard} />, document.body)}
+    </>
   );
 }

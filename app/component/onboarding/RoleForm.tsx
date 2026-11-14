@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { AnimatePresence, motion, useAnimationControls } from "framer-motion";
 import { Check } from "lucide-react";
 import toast from "react-hot-toast";
@@ -16,9 +15,9 @@ import {
   validateStep,
   type FieldErrors,
 } from "@/app/lib/onboarding";
-import { ROUTES } from "@/app/lib/routes";
 import { useCompleteOnboardingMutation } from "@/app/services/api";
 import { getErrorMessage, hasStatus } from "@/app/services/baseQuery";
+import { onboardingAlreadyComplete } from "@/app/store/authActions";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { goToStep, selectRoleValues, setField } from "@/app/store/onboardingSlice";
 import type { FieldConfig, Role } from "@/app/types/onboarding.types";
@@ -35,7 +34,6 @@ const slide = {
 
 export default function RoleForm({ role }: { role: Role }) {
   const dispatch = useAppDispatch();
-  const router = useRouter();
   const config = ROLE_CONFIGS[role];
   const { steps } = config;
 
@@ -121,14 +119,16 @@ export default function RoleForm({ role }: { role: Role }) {
     }
 
     const toastId = toast.loading("Setting up your account...");
+    const payload = buildPayload(role, values, planId);
     try {
-      await completeOnboarding(buildPayload(role, values, planId)).unwrap();
+      await completeOnboarding(payload).unwrap();
       // onboardingSlice moves to the "done" phase, which plays the welcome screen
       toast.dismiss(toastId);
     } catch (error) {
       if (hasStatus(error, 409)) {
-        toast.success("You're already set up. Taking you to your dashboard.", { id: toastId });
-        router.replace(ROUTES.dashboard);
+        // Already onboarded on the backend: still welcome them, then the dashboard
+        toast.dismiss(toastId);
+        dispatch(onboardingAlreadyComplete(payload));
         return;
       }
       if (hasStatus(error, 401)) {
