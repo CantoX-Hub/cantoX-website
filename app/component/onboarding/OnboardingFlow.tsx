@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ROUTES } from "@/app/lib/routes";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
-import { goBack } from "@/app/store/onboardingSlice";
+import { goBack, resetOnboarding } from "@/app/store/onboardingSlice";
 import OnboardingShell from "./OnboardingShell";
 import PlanStep from "./PlanStep";
 import ProfileStep from "./ProfileStep";
@@ -23,6 +23,14 @@ export default function OnboardingFlow() {
   useEffect(() => {
     if (authStatus === "guest") router.replace(ROUTES.getStarted);
   }, [authStatus, router]);
+
+  // Coming back after finishing (the welcome screen sent you to the dashboard)
+  // starts a fresh flow. Only checked when this page mounts, so the welcome
+  // screen itself isn't interrupted.
+  useEffect(() => {
+    if (phase === "done") dispatch(resetOnboarding());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Start each screen at the top
   useEffect(() => {

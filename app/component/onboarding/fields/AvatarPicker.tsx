@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { ImagePlus } from "lucide-react";
+import toast from "react-hot-toast";
 import { PRESET_AVATARS } from "@/app/data/onboarding";
 import { useUploadFileMutation } from "@/app/services/api";
 import { getErrorMessage } from "@/app/services/baseQuery";
@@ -23,7 +24,6 @@ const tileSize = "h-14 w-14 sm:h-[72px] sm:w-[72px]";
 export default function AvatarPicker({ name, value, describedBy, onChange }: AvatarPickerProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [upload, { isLoading }] = useUploadFileMutation();
-  const [uploadError, setUploadError] = useState<string | null>(null);
 
   const isPreset = (path: string) => !!value && value.endsWith(path);
   const customUrl = value && !PRESET_AVATARS.some(isPreset) ? value : null;
@@ -34,20 +34,21 @@ export default function AvatarPicker({ name, value, describedBy, onChange }: Ava
 
   const handleFile = async (file: File | undefined) => {
     if (!file) return;
-    setUploadError(null);
     if (!file.type.startsWith("image/")) {
-      setUploadError("Choose an image file (PNG, JPG or WebP).");
+      toast.error("Choose an image file (PNG, JPG or WebP).");
       return;
     }
     if (file.size > MAX_UPLOAD_BYTES) {
-      setUploadError("That image is over 5MB. Choose a smaller one.");
+      toast.error("That image is over 5MB. Choose a smaller one.");
       return;
     }
+    const toastId = toast.loading("Uploading your photo...");
     try {
       const { url } = await upload({ file, folder: "avatars" }).unwrap();
       onChange(url);
+      toast.success("Photo uploaded.", { id: toastId });
     } catch (error) {
-      setUploadError(getErrorMessage(error, "Upload failed. Please try again."));
+      toast.error(getErrorMessage(error, "Upload failed. Please try again."), { id: toastId });
     } finally {
       if (inputRef.current) inputRef.current.value = "";
     }
@@ -113,7 +114,6 @@ export default function AvatarPicker({ name, value, describedBy, onChange }: Ava
           <span className="sr-only">{customUrl ? "Change your photo" : "Upload your own photo"}</span>
         </motion.label>
       </div>
-      {uploadError && <p className="mt-2 text-xs text-red-600">{uploadError}</p>}
     </div>
   );
 }

@@ -41,13 +41,6 @@ export const PLAN_TABS: { role: Role; label: string }[] = [
 const toOptions = (items: string[]): FieldOption[] =>
   items.map((item) => ({ label: item, value: item }));
 
-const ID_TYPES: FieldOption[] = [
-  { label: "NIN", value: "nin" },
-  { label: "International Passport", value: "passport" },
-  { label: "Driver's Licence", value: "drivers_licence" },
-  { label: "Voter's Card", value: "voters_card" },
-];
-
 const COUNTRIES = toOptions([
   "Nigeria",
   "Ghana",
@@ -89,35 +82,6 @@ const IMAGE_ACCEPT = "image/png,image/jpeg,image/webp";
 const DOC_ACCEPT = "application/pdf,image/png,image/jpeg";
 
 /* ---------- Shared fields ---------- */
-
-const idTypeField: FieldConfig = {
-  name: "idType",
-  label: "ID type",
-  type: "select",
-  required: true,
-  options: ID_TYPES,
-  placeholder: "Select",
-};
-
-const idNumberField: FieldConfig = {
-  name: "idNumber",
-  label: "ID number",
-  type: "text",
-  required: true,
-  placeholder: "Enter ID number",
-};
-
-const idDocumentField: FieldConfig = {
-  name: "idDocumentUrl",
-  label: "Upload ID document",
-  reviewLabel: "ID upload",
-  type: "upload",
-  required: true,
-  span: 2,
-  accept: DOC_ACCEPT,
-  uploadFolder: "id-documents",
-  hint: "PDF, JPG or PNG · max 5MB",
-};
 
 /** Planner and vendor documents step */
 const cacCertificateField: FieldConfig = {
@@ -181,18 +145,6 @@ export const ROLE_CONFIGS: Record<Role, RoleConfig> = {
           { name: "weddingDate", label: "Wedding date", type: "date", required: true, rules: { future: true } },
           { name: "weddingCountry", label: "Country", type: "select", required: true, options: COUNTRIES, placeholder: "Select" },
           { name: "weddingCity", label: "City", type: "text", required: true, span: 2, placeholder: "eg. Lagos, Nigeria" },
-        ],
-      },
-      {
-        id: "identity",
-        label: "Identity",
-        title: "Verify your identity",
-        description: "We verify every account to keep couples, planners and vendors safe.",
-        fields: [
-          { name: "dob", label: "Date of birth", type: "date", required: true, rules: { minAge: 18 } },
-          idTypeField,
-          { ...idNumberField, span: 2 },
-          idDocumentField,
         ],
       },
     ],

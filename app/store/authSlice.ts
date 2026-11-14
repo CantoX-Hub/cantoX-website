@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { api } from "@/app/services/api";
 import { sessionExpired } from "./authActions";
 import type { AuthUser } from "@/app/types/onboarding.types";
@@ -25,7 +25,12 @@ const initialState: AuthState = {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    /** Restores the last known user from localStorage (no GET /auth/me yet) */
+    hydrateUser(state, action: PayloadAction<AuthUser | null>) {
+      if (!state.user && action.payload) state.user = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(sessionExpired, () => ({ ...initialState, status: "guest" as const }))
@@ -37,8 +42,20 @@ const authSlice = createSlice({
         state.user = payload.user ?? null;
         if (payload.user?.email) state.email = payload.user.email;
       })
-      .addMatcher(api.endpoints.completeOnboarding.matchFulfilled, (state) => {
-        if (state.user) state.user.onboarded = true;
+      .addMatcher(api.endpoints.completeOnboarding.matchFulfilled, (state, action) => {
+        // Keep what was just submitted so the dashboard knows the role and
+        // names straight away (onboarding state is reset before redirecting).
+        const body = action.meta.arg.originalArgs;
+        state.user = {
+          ...(state.user ?? {}),
+          role: body.role,
+          planId: body.planId,
+          fullName: body.fullName,
+          partnerName: body.partnerName,
+          businessName: body.businessName,
+          avatarUrl: body.avatarUrl,
+          onboarded: true,
+        };
       })
       .addMatcher(api.endpoints.logout.matchFulfilled, () => ({
         ...initialState,
@@ -46,6 +63,8 @@ const authSlice = createSlice({
       }));
   },
 });
+
+export const { hydrateUser } = authSlice.actions;
 
 export const selectAuth = (state: RootState) => state.auth;
 

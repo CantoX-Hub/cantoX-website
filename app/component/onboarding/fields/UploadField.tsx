@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { CheckCheck, ImagePlus, Loader, RotateCcw, Trash2, Upload, X } from "lucide-react";
+import toast from "react-hot-toast";
 import { getErrorMessage, hasStatus } from "@/app/services/baseQuery";
 import { uploadWithProgress, type UploadProgressHandle } from "@/app/services/upload";
 import { sessionExpired } from "@/app/store/authActions";
@@ -78,7 +79,6 @@ export default function UploadField({
   const inputRef = useRef<HTMLInputElement>(null);
   const handleRef = useRef<UploadProgressHandle | null>(null);
   const [upload, setUpload] = useState<UploadState | null>(null);
-  const [rejectError, setRejectError] = useState<string | null>(null);
   const [dragging, setDragging] = useState(false);
 
   const imageOnly = !!accept && accept.split(",").every((t) => t.trim().startsWith("image/"));
@@ -96,7 +96,6 @@ export default function UploadField({
 
   const start = (file: File) => {
     handleRef.current?.abort();
-    setRejectError(null);
     if (value) onChange(""); // replacing: the old file no longer counts
     setUpload({ file, loaded: 0, status: "uploading" });
 
@@ -114,14 +113,15 @@ export default function UploadField({
           current?.file === file ? { ...current, loaded: file.size, status: "done" } : current
         );
         onChange(url);
+        toast.success(`${file.name} uploaded.`);
       })
       .catch((error) => {
         if ((error as { status?: unknown } | null)?.status === "ABORTED") return;
         if (hasStatus(error, 401)) dispatch(sessionExpired());
+        const message = getErrorMessage(error, "Upload failed. Please try again.");
+        toast.error(message);
         setUpload((current) =>
-          current?.file === file
-            ? { ...current, status: "error", error: getErrorMessage(error, "Upload failed. Please try again.") }
-            : current
+          current?.file === file ? { ...current, status: "error", error: message } : current
         );
       })
       .finally(() => {
@@ -133,11 +133,11 @@ export default function UploadField({
     if (inputRef.current) inputRef.current.value = "";
     if (!file) return;
     if (!matchesAccept(file, accept)) {
-      setRejectError(`That file type isn't supported. Upload a ${acceptedNames(accept)}.`);
+      toast.error(`That file type isn't supported. Upload a ${acceptedNames(accept)}.`);
       return;
     }
     if (file.size > MAX_UPLOAD_BYTES) {
-      setRejectError("That file is over 5MB. Choose a smaller one.");
+      toast.error("That file is over 5MB. Choose a smaller one.");
       return;
     }
     start(file);
@@ -235,9 +235,7 @@ export default function UploadField({
             )}
           </AnimatePresence>
         </div>
-        {(rejectError || upload?.error) && (
-          <p className="mt-2 text-xs text-red-600">{rejectError ?? upload?.error}</p>
-        )}
+        {upload?.error && <p className="mt-2 text-xs text-red-600">{upload.error}</p>}
       </div>
     );
   }
@@ -292,7 +290,6 @@ export default function UploadField({
         )}
       </AnimatePresence>
 
-      {rejectError && <p className="mt-2 text-xs text-red-600">{rejectError}</p>}
     </div>
   );
 }

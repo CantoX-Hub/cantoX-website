@@ -1,6 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { API_BASE, baseQueryWithReauth } from "./baseQuery";
 import type { AuthUser, OnboardingPayload } from "@/app/types/onboarding.types";
+import { toOnboardingDto } from "@/app/lib/onboarding";
 
 export interface VerifyMagicLinkResponse {
   user?: AuthUser;
@@ -11,13 +12,6 @@ export interface VerifyMagicLinkResponse {
 export interface UploadResponse {
   url: string;
 }
-
-/**
- * Set NEXT_PUBLIC_MOCK_API=true in .env.local to click through onboarding
- * without the backend: Submit succeeds after a short pause and the payload is
- * logged to the browser console. Remove it (or set false) to use the real API.
- */
-const MOCK_API = process.env.NEXT_PUBLIC_MOCK_API === "true";
 
 export const api = createApi({
   reducerPath: "api",
@@ -39,30 +33,20 @@ export const api = createApi({
       query: () => ({ url: "/auth/logout", method: "POST" }),
     }),
 
-    completeOnboarding: build.mutation<unknown, OnboardingPayload>(
-      MOCK_API
-        ? {
-            queryFn: async (body) => {
-              console.info("[mock] POST /onboarding", body);
-              await new Promise((resolve) => setTimeout(resolve, 900));
-              return { data: { ok: true } };
-            },
-          }
-        : { query: (body) => ({ url: "/onboarding", method: "POST", body }) }
-    ),
+    // Takes the form payload (authSlice keeps it for the dashboard) and sends
+    // only the fields the backend DTO accepts.
+    completeOnboarding: build.mutation<unknown, OnboardingPayload>({
+      query: (payload) => ({ url: "/onboarding", method: "POST", body: toOnboardingDto(payload) }),
+    }),
 
-    uploadFile: build.mutation<UploadResponse, { file: File; folder?: string }>(
-      MOCK_API
-        ? { queryFn: async ({ file }) => ({ data: { url: URL.createObjectURL(file) } }) }
-        : {
-            query: ({ file, folder }) => {
-              const formData = new FormData();
-              formData.append("file", file);
-              if (folder) formData.append("folder", folder);
-              return { url: "/upload", method: "POST", body: formData };
-            },
-          }
-    ),
+    uploadFile: build.mutation<UploadResponse, { file: File; folder?: string }>({
+      query: ({ file, folder }) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        if (folder) formData.append("folder", folder);
+        return { url: "/upload", method: "POST", body: formData };
+      },
+    }),
   }),
 });
 
