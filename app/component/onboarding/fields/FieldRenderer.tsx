@@ -169,8 +169,11 @@ export default function FieldRenderer({
             readOnly={readOnly}
             placeholder={field.placeholder}
             autoComplete={autoCompleteFor(field)}
-            inputMode={field.type === "tel" ? "tel" : field.name === "ninNumber" ? "numeric" : undefined}
-            onChange={(event) => onChange(event.target.value)}
+            inputMode={field.type === "tel" ? "tel" : field.numeric || field.name === "ninNumber" ? "numeric" : undefined}
+            maxLength={field.maxLength}
+            onChange={(event) =>
+              onChange(field.numeric ? event.target.value.replace(/\D/g, "") : event.target.value)
+            }
             onBlur={onBlur}
             aria-required={required || undefined}
             aria-invalid={!!error || undefined}
