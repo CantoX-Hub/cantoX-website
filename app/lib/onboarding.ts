@@ -133,6 +133,75 @@ export function planIdFor(role: Role, planName: string): string {
 }
 
 /**
+ * Backend DTO field ← form field, per role (from /api/v1/docs-json).
+ * The backend rejects unknown properties, so anything not listed here is
+ * dropped: couple planId/partnerEmail/partnerPhone and vendor
+ * businessEmail/businessType have no backend field yet.
+ */
+const DTO_FIELDS: Record<Role, Record<string, keyof OnboardingPayload | ((p: OnboardingPayload) => string | undefined)>> = {
+  couple: {
+    fullName: "fullName",
+    phone: "phone",
+    partnerName: "partnerName",
+    weddingDate: "weddingDate",
+    weddingCountry: "weddingCountry",
+    weddingCity: "weddingCity",
+    dob: "dob",
+    idType: "idType",
+    idNumber: "idNumber",
+    avatarUrl: "avatarUrl",
+    idDocumentUrl: "idDocumentUrl",
+  },
+  planner: {
+    fullName: "fullName",
+    phone: "phone",
+    dob: "dob",
+    businessName: "businessName",
+    businessType: "businessType",
+    // Registered companies give a CAC number, individuals their NIN
+    registrationNumber: (p) => p.cacNumber ?? p.ninNumber,
+    yearsOfExperience: "yearsOfExperience",
+    address: "businessAddress",
+    // One "Website or Instagram" box on the form
+    websiteUrl: (p) => (p.website && !isInstagram(p.website) ? p.website : undefined),
+    instagramHandle: (p) => (p.website && isInstagram(p.website) ? p.website : undefined),
+    logoUrl: "avatarUrl",
+    cacCertificateUrl: "cacDocumentUrl",
+    governmentIdUrl: "idDocumentUrl",
+  },
+  vendor: {
+    businessName: "businessName",
+    bio: "bio",
+    category: "serviceCategory",
+    registrationNumber: "cacNumber",
+    yearsInOperation: "yearsOfExperience",
+    phone: "whatsapp",
+    whatsappNumber: "whatsapp",
+    address: "businessAddress",
+    websiteUrl: "website",
+    instagramHandle: "instagram",
+    logoUrl: "logoUrl",
+    cacCertificateUrl: "cacDocumentUrl",
+    governmentIdUrl: "idDocumentUrl",
+    proofOfResidenceUrl: "proofOfResidenceUrl",
+  },
+};
+
+function isInstagram(value: string) {
+  return value.startsWith("@") || /instagram\.com/i.test(value);
+}
+
+/** Converts the form payload into the exact body POST /onboarding accepts. */
+export function toOnboardingDto(payload: OnboardingPayload): Record<string, string> {
+  const body: Record<string, string> = { role: payload.role };
+  for (const [dtoKey, source] of Object.entries(DTO_FIELDS[payload.role])) {
+    const value = typeof source === "function" ? source(payload) : payload[source];
+    if (typeof value === "string" && value) body[dtoKey] = value;
+  }
+  return body;
+}
+
+/**
  * Builds the POST /onboarding body. Only keys defined for this role are sent;
  * the login email is dropped (the backend knows it from the session), hidden
  * conditional fields (e.g. a CAC number typed before switching to Individual)

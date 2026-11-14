@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion, useAnimationControls } from "framer-motion";
 import { Check } from "lucide-react";
+import toast from "react-hot-toast";
 import { ROLE_CONFIGS } from "@/app/data/onboarding";
 import {
   buildPayload,
@@ -24,7 +25,7 @@ import type { FieldConfig, Role } from "@/app/types/onboarding.types";
 import FieldRenderer from "./fields/FieldRenderer";
 import ReviewStep from "./ReviewStep";
 import StepTabs from "./StepTabs";
-import { FormAlert, PrimaryButton, SecondaryButton, SecureNote, StepHeading } from "./ui";
+import { PrimaryButton, SecondaryButton, SecureNote, StepHeading } from "./ui";
 
 const slide = {
   enter: (direction: number) => ({ opacity: 0, x: direction * 28 }),
@@ -44,7 +45,6 @@ export default function RoleForm({ role }: { role: Role }) {
   const authEmail = useAppSelector((state) => state.auth.email);
 
   const [errors, setErrors] = useState<FieldErrors>({});
-  const [submitError, setSubmitError] = useState<string | null>(null);
   const [agreed, setAgreed] = useState(false);
   const [completeOnboarding, { isLoading: submitting }] = useCompleteOnboardingMutation();
   const shake = useAnimationControls();
@@ -70,7 +70,6 @@ export default function RoleForm({ role }: { role: Role }) {
 
   const changeStep = (index: number) => {
     setErrors({});
-    setSubmitError(null);
     dispatch(goToStep(index));
     setReached((r) => Math.max(r, index));
   };
@@ -96,6 +95,7 @@ export default function RoleForm({ role }: { role: Role }) {
     const stepErrors = validateStep(step, effectiveValues);
     if (Object.keys(stepErrors).length > 0) {
       setErrors(stepErrors);
+      toast.error("Please complete the highlighted fields.", { id: "onboarding-validation" });
       shake.start({ x: [0, -8, 8, -5, 5, 0], transition: { duration: 0.4 } });
       const first = step.fields.find((f) => stepErrors[f.name]);
       if (first) {
@@ -116,20 +116,27 @@ export default function RoleForm({ role }: { role: Role }) {
     if (invalid !== -1) {
       changeStep(invalid);
       setErrors(validateStep(steps[invalid], effectiveValues));
+      toast.error("Some details are missing. Please review this step.", { id: "onboarding-validation" });
       return;
     }
 
-    setSubmitError(null);
+    const toastId = toast.loading("Setting up your account...");
     try {
       await completeOnboarding(buildPayload(role, values, planId)).unwrap();
-      // onboardingSlice moves to the "done" phase on success
+      // onboardingSlice moves to the "done" phase, which plays the welcome screen
+      toast.dismiss(toastId);
     } catch (error) {
       if (hasStatus(error, 409)) {
+        toast.success("You're already set up. Taking you to your dashboard.", { id: toastId });
         router.replace(ROUTES.dashboard);
         return;
       }
-      if (hasStatus(error, 401)) return; // session expired → OnboardingFlow redirects
-      setSubmitError(getErrorMessage(error));
+      if (hasStatus(error, 401)) {
+        // session expired → OnboardingFlow redirects
+        toast.error("Your session expired. Please sign in again.", { id: toastId });
+        return;
+      }
+      toast.error(getErrorMessage(error), { id: toastId });
     }
   };
 
@@ -177,7 +184,7 @@ export default function RoleForm({ role }: { role: Role }) {
                 <div className="mt-6">
                   <ReviewStep steps={steps} values={values} emailOverride={authEmail} onEdit={changeStep} />
                 </div>
-                <Consent checked={agreed} onChange={setAgreed} />
+                <Consent checked={agreed} onChange={setAgreed} verifiesIdentity={role !== "couple"} />
               </>
             ) : (
               <>
@@ -211,12 +218,6 @@ export default function RoleForm({ role }: { role: Role }) {
         </AnimatePresence>
       </motion.div>
 
-      {submitError && (
-        <div className="mt-5">
-          <FormAlert>{submitError}</FormAlert>
-        </div>
-      )}
-
       <div className={`mt-4 grid gap-3 sm:gap-4 ${stepIndex > 0 ? "sm:grid-cols-2" : ""}`}>
         {stepIndex > 0 && (
           <SecondaryButton
@@ -249,7 +250,15 @@ export default function RoleForm({ role }: { role: Role }) {
   );
 }
 
-function Consent({ checked, onChange }: { checked: boolean; onChange: (value: boolean) => void }) {
+function Consent({
+  checked,
+  onChange,
+  verifiesIdentity,
+}: {
+  checked: boolean;
+  onChange: (value: boolean) => void;
+  verifiesIdentity: boolean;
+}) {
   return (
     <label className="mt-4 flex cursor-pointer items-start gap-3 rounded-[6px] bg-[#EEF2F7] px-4 py-5 text-[13px] leading-5 text-[#11151D] transition-colors hover:bg-[#E7ECF3] sm:px-6 sm:text-sm">
       <input
@@ -287,7 +296,7 @@ function Consent({ checked, onChange }: { checked: boolean; onChange: (value: bo
         <Link href="/privacy" className="underline-offset-2 hover:text-[#C99532] hover:underline">
           Privacy Policy
         </Link>
-        , including the use of this data for identity verification purposes.
+        {verifiesIdentity ? ", including the use of this data for identity verification purposes." : "."}
       </span>
     </label>
   );

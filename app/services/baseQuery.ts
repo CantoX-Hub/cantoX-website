@@ -85,12 +85,22 @@ export function getErrorMessage(
     return "We couldn't reach the server. Check your connection and try again.";
   }
 
-  const data = (error as { data?: unknown }).data;
-  if (data && typeof data === "object" && "message" in data) {
-    const message = (data as { message: unknown }).message;
-    if (typeof message === "string") return message;
-    if (Array.isArray(message)) return message.join(" ");
-  }
+  // Backend errors look like { error: { code, message } }; validation errors
+  // give message as an array. A top-level { message } is accepted too.
+  const data = (error as { data?: unknown }).data as
+    | { message?: unknown; error?: { message?: unknown } }
+    | null
+    | undefined;
+  const message = data && typeof data === "object" ? data.error?.message ?? data.message : undefined;
+  if (typeof message === "string" && message) return message;
+  if (Array.isArray(message) && message.length) return message.map(sentence).join(" ");
 
   return fallback;
+}
+
+/** "email must be an email" → "Email must be an email." */
+function sentence(text: unknown): string {
+  const s = String(text).trim();
+  if (!s) return s;
+  return s[0].toUpperCase() + s.slice(1) + (/[.!?]$/.test(s) ? "" : ".");
 }

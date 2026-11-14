@@ -5,20 +5,55 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowLeft } from "lucide-react";
+import { Check } from "lucide-react";
 import { GOOGLE_AUTH_URL, useRequestMagicLinkMutation } from "@/app/services/api";
 import { getErrorMessage } from "@/app/services/baseQuery";
 import { ROUTES } from "@/app/lib/routes";
 import { PENDING_EMAIL_KEY } from "./CheckEmail";
 
+/** Each slide drives both the image on the right and the heading on the left */
 const CAROUSEL_SLIDES = [
-  { id: 1, src: "/get-started-couple.jpg", alt: "Happy couple celebrating their wedding" },
-  { id: 2, src: "/get-started-couple-2.jpg", alt: "Bride and groom smiling on their wedding day" },
-  { id: 3, src: "/get-started-couple-3.jpg", alt: "Wedding guests celebrating at the reception" },
-  { id: 4, src: "/get-started-couple-4.jpg", alt: "Wedding venue decorated for the celebration" },
+  {
+    id: 1,
+    src: "/get-started-couple.jpg",
+    alt: "Bride and groom smiling at each other on their wedding day",
+    title: "Your love story deserves a beautiful beginning.",
+    description:
+      "Create a wedding experience that feels entirely yours. From your wedding website and guest list to RSVPs and gifts, bring every detail of your special day together in one beautiful place.",
+  },
+  {
+    id: 2,
+    // TODO(design): swap for the calendar image from the design
+    src: "/get-started-couple-2.png",
+    alt: "Calendar with dates pinned for upcoming weddings",
+    title: "Great celebrations begin with great planning.",
+    description:
+      "Bring your clients' visions to life with less complexity and more control. Manage wedding projects, coordinate guest experiences, and keep every important detail organized from the first conversation to the final celebration.",
+  },
+  {
+    id: 3,
+    // TODO(design): swap for the bridal mannequins image from the design
+    src: "/get-started-couple-3.png",
+    alt: "Wedding gowns on display in a bridal boutique",
+    title: "Let your work find its next big moment.",
+    description:
+      "Your creativity deserves to be seen. Showcase your services, build your professional presence, and connect with couples and planners looking for the people who make extraordinary celebrations possible.",
+  },
+  {
+    id: 4,
+    // TODO(design): swap for the guest list dashboard image from the design
+    src: "/get-started-couple-4.png",
+    alt: "Canto guest list dashboard showing confirmed and pending guests",
+    title: "Know who's coming. Plan with confidence.",
+    description:
+      "Manage your guest list, track responses, and keep every invitation accounted for. A more organized way to bring your people together.",
+  },
 ];
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/** "Remember me" keeps only the email address on this device, so it's pre-filled next time */
+const REMEMBERED_EMAIL_KEY = "cantox:remembered-email";
 
 export default function GetStarted() {
   const router = useRouter();
@@ -26,6 +61,7 @@ export default function GetStarted() {
   const [paused, setPaused] = useState(false);
 
   const [email, setEmail] = useState("");
+  const [rememberMe, setRememberMe] = useState(true);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [requestMagicLink, { isLoading, error: requestError, reset }] = useRequestMagicLinkMutation();
 
@@ -39,10 +75,23 @@ export default function GetStarted() {
     return () => clearInterval(id);
   }, [paused]);
 
-  // Back to the previous page; home if there isn't one (opened in a new tab or from a link)
-  const handleBack = () => {
-    if (window.history.length > 1) router.back();
-    else router.push("/");
+  // Pre-fill a remembered email (after mount, so the first render matches the server)
+  useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem(REMEMBERED_EMAIL_KEY);
+      if (saved) setEmail(saved);
+    } catch {
+      // Storage blocked: start with an empty field
+    }
+  }, []);
+
+  const saveRememberedEmail = (address: string) => {
+    try {
+      if (rememberMe) window.localStorage.setItem(REMEMBERED_EMAIL_KEY, address);
+      else window.localStorage.removeItem(REMEMBERED_EMAIL_KEY);
+    } catch {
+      // Storage blocked: nothing to remember
+    }
   };
 
   const sendLink = async (address: string) => {
@@ -67,39 +116,40 @@ export default function GetStarted() {
       return;
     }
     setEmailError(null);
+    saveRememberedEmail(trimmed);
     sendLink(trimmed);
   };
 
   const apiError = requestError ? getErrorMessage(requestError) : null;
+  const slide = CAROUSEL_SLIDES[currentSlide];
 
   return (
     <div className="py-4">
       <div className="relative min-h-[calc(100vh-2rem)] overflow-hidden maxContainer bg-white px-5 sm:px-[5%]">
-        <button
-          type="button"
-          onClick={handleBack}
-          aria-label="Go back to previous page"
-          className="group absolute left-5 top-6 z-20 flex items-center gap-1.5 text-[#11151D] transition-colors hover:text-[#11151d80] sm:left-[5vw] sm:top-7"
-        >
-          <ArrowLeft className="transition-transform group-hover:-translate-x-0.5" aria-hidden="true" />
-          <span className="font-['Cal_Sans',sans-serif] md:text-[24px]">Back</span>
-        </button>
+        <Link href="/" aria-label="Canto home" className="absolute left-5 top-6 z-20 sm:left-[5vw] sm:top-8">
+          <Image src="/logo.svg" alt="Canto" width={150} height={20} priority className="h-auto w-[96px] sm:w-[150px]" />
+        </Link>
 
         <div className="grid min-h-[calc(100vh-2rem)] grid-cols-1 lg:grid-cols-[45%_55%]">
           {/* LEFT — FORM */}
-          <section className="relative z-10 flex items-center pb-16 pt-20 lg:pt-10">
+          <section className="relative z-10 flex items-center pb-16 pt-20 lg:pt-28">
             <div className="w-full max-w-[467px]">
-              {/* Heading */}
-              <div className="mb-7">
-                <div className="flex flex-nowrap items-center gap-1.5">
-                  <h1 className="text-[20px] leading-tight tracking-[-0.005em] sm:text-[32px]">Do more with</h1>
-                  <Link href="/">
-                    <Image src="/logo.svg" alt="Canto" width={174} height={32} priority />
-                  </Link>
-                </div>
-                <p className="mt-2 max-w-[447px] text-[12px] leading-5 text-[#060D18]">
-                  Create beautiful wedding invitations and manage your special moments with Canto.
-                </p>
+              {/* Heading: changes with the carousel slide (min height stops the form jumping) */}
+              <div className="mb-5 min-h-[150px] sm:min-h-[170px]" aria-live="polite">
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={slide.id}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
+                  >
+                    <h1 className="max-w-[440px] text-[24px] leading-tight tracking-[-0.01em] text-[#060D18] sm:text-[32px]">
+                      {slide.title}
+                    </h1>
+                    <p className="mt-3 text-[12px] leading-5 text-[#6B7280]">{slide.description}</p>
+                  </motion.div>
+                </AnimatePresence>
               </div>
 
               {/* ---------- Sign-in options ---------- */}
@@ -115,7 +165,7 @@ export default function GetStarted() {
                       type="email"
                       autoComplete="email"
                       inputMode="email"
-                      placeholder="you@example.com"
+                      placeholder="youremail@gmail.com"
                       value={email}
                       onChange={(event) => {
                         setEmail(event.target.value);
@@ -152,12 +202,28 @@ export default function GetStarted() {
                     {isLoading && <Spinner />}
                     {isLoading ? "Sending link…" : "Continue"}
                   </button>
+
+                  <label className="flex w-fit cursor-pointer select-none items-center gap-2 pt-1 text-[11px] text-[#5B616B]">
+                    <input
+                      type="checkbox"
+                      checked={rememberMe}
+                      onChange={(event) => setRememberMe(event.target.checked)}
+                      className="peer sr-only"
+                    />
+                    <span
+                      aria-hidden="true"
+                      className="flex h-4 w-4 items-center justify-center rounded-[3px] border border-[#D9DDE3] bg-white text-white transition-colors peer-checked:border-[#90A1B9] peer-checked:bg-[#90A1B9] peer-focus-visible:ring-2 peer-focus-visible:ring-[#90A1B9]/30"
+                    >
+                      {rememberMe && <Check className="h-3 w-3" strokeWidth={3} />}
+                    </span>
+                    Remember me
+                  </label>
                 </form>
 
                 {/* Divider */}
                 <div className="my-5 flex items-center gap-3">
                   <div className="h-px flex-1 bg-[#E5E7EB]" />
-                  <span className="text-xs text-[#9CA1A9]">or</span>
+                  <span className="text-[14px] text-[#9CA1A9] font-medium">or</span>
                   <div className="h-px flex-1 bg-[#E5E7EB]" />
                 </div>
 
@@ -188,7 +254,7 @@ export default function GetStarted() {
           {/* RIGHT — ANIMATED CAROUSEL */}
           <section
             aria-roledescription="carousel"
-            aria-label="Wedding moments"
+            aria-label="What you can do with Canto"
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
             className="relative hidden h-full overflow-hidden rounded-md lg:block"
@@ -197,11 +263,11 @@ export default function GetStarted() {
               className="flex h-full w-full transition-transform duration-700 ease-in-out motion-reduce:transition-none"
               style={{ transform: `translateX(-${currentSlide * 100}%)` }}
             >
-              {CAROUSEL_SLIDES.map((slide, index) => (
-                <div key={slide.id} aria-hidden={index !== currentSlide} className="relative h-full w-full flex-shrink-0">
+              {CAROUSEL_SLIDES.map((item, index) => (
+                <div key={item.id} aria-hidden={index !== currentSlide} className="relative h-full w-full flex-shrink-0">
                   <Image
-                    src={slide.src}
-                    alt={slide.alt}
+                    src={item.src}
+                    alt={item.alt}
                     fill
                     priority={index === 0}
                     className="object-cover object-center"

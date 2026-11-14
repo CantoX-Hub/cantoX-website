@@ -1,3 +1,4 @@
+import type { AuthUser } from "@/app/types/onboarding.types";
 import type { OnboardingState } from "./onboardingSlice";
 
 const KEY = "cantox:onboarding-draft";
@@ -43,5 +44,33 @@ export function saveOnboardingDraft(state: OnboardingState) {
     window.sessionStorage.setItem(KEY, JSON.stringify(draft));
   } catch {
     // Storage blocked or full — the flow still works in memory.
+  }
+}
+
+/* ---------- Signed-in user (display data only) ---------- */
+
+const USER_KEY = "cantox:user";
+// Only harmless display fields are kept; never tokens or ID numbers.
+const USER_FIELDS = ["id", "email", "role", "onboarded", "planId", "fullName", "partnerName", "businessName", "avatarUrl", "verified"];
+
+export function loadUser(): AuthUser | null {
+  try {
+    const raw = window.localStorage.getItem(USER_KEY);
+    return raw ? (JSON.parse(raw) as AuthUser) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function saveUser(user: AuthUser | null) {
+  try {
+    if (!user) {
+      window.localStorage.removeItem(USER_KEY);
+      return;
+    }
+    const safe = Object.fromEntries(Object.entries(user).filter(([k]) => USER_FIELDS.includes(k)));
+    window.localStorage.setItem(USER_KEY, JSON.stringify(safe));
+  } catch {
+    // Storage blocked — the dashboard falls back to demo data.
   }
 }

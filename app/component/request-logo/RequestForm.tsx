@@ -2,6 +2,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import toast from "react-hot-toast";
 
 import LogoPreview from "../logo-request/LogoPreview";
 import RequestFormField from "../logo-request/RequestFormField";
@@ -86,29 +87,44 @@ export default function RequestForm() {
   ) {
     event.preventDefault();
 
-    if (isSubmitting || !validate()) return;
+    if (isSubmitting) return;
+    if (!validate()) {
+      toast.error("Please fix the highlighted fields.");
+      return;
+    }
 
     setIsSubmitting(true);
+    const toastId = toast.loading("Sending your request...");
 
     try {
-      // TODO: Replace with your actual API request.
-      console.log("Logo request:", {
-        ...form,
-        coupleName: form.coupleName.trim(),
-        email: form.email.trim(),
-        logoName: form.logoName.trim(),
-        hashtag: form.hashtag.trim(),
-        brief: form.brief.trim(),
+      const res = await fetch("/api/logo-request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...form,
+          coupleName: form.coupleName.trim(),
+          email: form.email.trim(),
+          logoName: form.logoName.trim(),
+          hashtag: form.hashtag.trim(),
+          brief: form.brief.trim(),
+        }),
       });
 
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        throw new Error(body?.error);
+      }
+
+      toast.success("Request sent! Check your inbox for a confirmation.", { id: toastId });
       setSubmitted(true);
       setForm(initialForm);
       setErrors({});
-    } catch {
-      setErrors((previous) => ({
-        ...previous,
-        brief: "Unable to submit your request. Please try again.",
-      }));
+    } catch (err) {
+      toast.error(
+        (err instanceof Error && err.message) ||
+          "Unable to submit your request. Please try again.",
+        { id: toastId },
+      );
     } finally {
       setIsSubmitting(false);
     }
