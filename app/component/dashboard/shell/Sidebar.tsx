@@ -47,7 +47,7 @@ function NavList({ collapsed, onNavigate }: { collapsed: boolean; onNavigate?: (
               active ? "bg-white/[0.08] text-white" : "text-white/55 hover:bg-white/[0.04] hover:text-white/90",
             ].join(" ")}
           >
-            {/* {active && <span aria-hidden className="absolute left-0 top-2 h-6 w-[3px] rounded-r bg-[#C99532]" />} */}
+           
             <Icon size={18} className={active ? "text-[#]" : ""} />
             {!collapsed && <span>{label}</span>}
           </Link>
