@@ -44,7 +44,7 @@ function Breadcrumb() {
       {crumb && (
         <>
           <ChevronRight size={14} className="shrink-0 text-[#C4C4CC]" aria-hidden />
-          <span className="flex min-w-0 items-center gap-1.5 font-medium text-[#0F0F0F]" aria-current="page">
+          <span className="flex min-w-0 items-center gap-1.5 font-bold text-[#0F0F0F]" aria-current="page">
             <crumb.icon size={14} className="shrink-0" />
             <span className="truncate">{crumb.label}</span>
           </span>
@@ -66,10 +66,10 @@ function Notifications() {
         <IconButton
           onClick={(e) => setAnchor(e.currentTarget)}
           aria-label={unread ? `Notifications, ${unread} unread` : "Notifications"}
-          sx={{ border: "1px solid", borderColor: "divider", borderRadius: 2, width: 40, height: 40 }}
+          sx={{ border: "1px solid", borderColor: "divider", borderRadius: 1, width: 40, height: 40 }}
         >
           <Badge color="error" variant="dot" invisible={!unread} overlap="circular">
-            <Bell size={18} className={unread ? "text-[#E5484D]" : "text-[#0F0F0F]"} />
+            <Bell size={18} className= "text-[#0F0F0F]" />
           </Badge>
         </IconButton>
       </Tooltip>
@@ -231,7 +231,7 @@ function ProfileMenu() {
 export default function Topbar() {
   const { setMobileOpen } = useDashboard();
   return (
-    <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-[#E8E8EC] bg-white/90 px-4 backdrop-blur sm:px-6">
+    <header className="sticky top-0 z-20 flex h-16 mx-5 items-center gap-3 border-b border-[#E8E8EC] bg-white px-4 backdrop-blur sm:px-6">
       <IconButton onClick={() => setMobileOpen(true)} aria-label="Open menu" sx={{ display: { lg: "none" }, ml: -1 }}>
         <MenuIcon size={20} />
       </IconButton>

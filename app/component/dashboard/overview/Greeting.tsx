@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Chip, Tooltip } from "@mui/material";
-import { BadgeCheck, CalendarDays, Clock3, ShieldAlert } from "lucide-react";
+import { BadgeCheck, Calendar, Clock3, ShieldAlert } from "lucide-react";
 import { planLabel, useDashboard } from "../DashboardContext";
 
 function partOfDay(hour: number) {
@@ -38,14 +38,14 @@ export default function Greeting() {
   return (
     <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
       <div className="min-w-0">
-        <p className="text-[14px] font-medium text-[#C99532]" suppressHydrationWarning>
+        <h2 className="text-[14px] md:text-[20px] text-[#C4D4E0]" suppressHydrationWarning>
           {now ? partOfDay(now.getHours()) : " "}
-        </p>
-        <h1 className="mt-1 truncate text-[28px] leading-tight text-[#0F0F0F] sm:text-[32px]">{heading}</h1>
-        <p className="mt-1 text-[14px] text-[#6B7280]">{SUBTITLE[role]}</p>
-        <div className="mt-3 flex flex-wrap items-center gap-2 text-[13px] text-[#6B7280]">
-          <span>Plan:</span>
-          <Chip label={plan.label} size="small" sx={{ bgcolor: "#F3F4F6", fontWeight: 600, height: 24 }} />
+        </h2>
+        <h1 className="mt-1 truncate text-[24px] leading-tight text-[#0F0F0F] sm:text-[32px]">{heading}</h1>
+        <p className="mt-1 text-[14px] text-[#5A80A8] font-medium">{SUBTITLE[role]}</p>
+        <div className="mt-3 flex flex-wrap items-center gap-2 text-[14px] text-[#6B7280]">
+          <span className="font-medium">Plan:</span>
+          <Chip label={plan.label} size="small" sx={{ bgcolor: "#F1F5F9", fontWeight: 600, height: 24 }} />
           {plan.free && (
             <Link href="/pricing" className="font-medium text-[#C99532] underline-offset-2 hover:underline">
               Upgrade
@@ -72,16 +72,16 @@ export default function Greeting() {
         </div>
       </div>
 
-      <div className="flex shrink-0 items-center gap-4 text-[13px] text-[#4B5563]" aria-live="off">
+      <div className="flex shrink-0 items-center gap-4 text-[14px] text-[#07111F] font-medium" aria-live="off">
         <span className="flex items-center gap-1.5">
-          <Clock3 size={15} className="text-[#9CA3AF]" />
+          <Clock3 size={15} className="text-[#07111F]" />
           <span className="tabular-nums" suppressHydrationWarning>
             {now ? now.toLocaleTimeString("en-NG", { hour: "2-digit", minute: "2-digit" }) : "--:--"}
           </span>
           <NigeriaFlag />
         </span>
         <span className="flex items-center gap-1.5">
-          <CalendarDays size={15} className="text-[#9CA3AF]" />
+          <Calendar size={15} className="text-[#07111F]" />
           <span suppressHydrationWarning>
             {now ? now.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" }) : ""}
           </span>
