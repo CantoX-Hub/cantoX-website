@@ -1,33 +1,41 @@
+import type { ComponentType } from "react";
 import {
-  CalendarDays,
-  Heart,
-  LayoutDashboard,
-  LayoutTemplate,
-  ListTodo,
+  LayoutGrid,
   MessageSquareText,
   PartyPopper,
   Settings,
   Star,
-  Store,
-  Users,
-  type LucideIcon,
+  Store
 } from "lucide-react";
+import {
+  PiCalendarBlank,
+  PiCheckSquareOffset,
+  PiCopySimple,
+  PiShootingStarLight,
+  PiStorefront,
+  PiFolderUserDuotone
+} from "react-icons/pi";
 import type { Role } from "@/app/types/dashboard.types";
+
+export type NavIcon = ComponentType<{
+  className?: string;
+  size?: number | string;
+}>;
 
 export interface NavItem {
   label: string;
   href: string;
-  icon: LucideIcon;
+  icon: NavIcon;
 }
 
-const overview: NavItem = { label: "Overview", href: "/dashboard", icon: LayoutDashboard };
+const overview: NavItem = { label: "Overview", href: "/dashboard", icon: LayoutGrid };
 const events: NavItem = { label: "Events", href: "/dashboard/events", icon: PartyPopper };
-const templates: NavItem = { label: "Templates", href: "/dashboard/templates", icon: LayoutTemplate };
-const wishlist: NavItem = { label: "Wishlist", href: "/dashboard/wishlist", icon: Heart };
-const guests: NavItem = { label: "Guests", href: "/dashboard/guests", icon: Users };
-const vendors: NavItem = { label: "Vendors", href: "/dashboard/vendors", icon: Store };
-const todo: NavItem = { label: "To-do list", href: "/dashboard/todo", icon: ListTodo };
-const calendar: NavItem = { label: "Calendar", href: "/dashboard/calendar", icon: CalendarDays };
+const templates: NavItem = { label: "Templates", href: "/dashboard/templates", icon: PiCopySimple };
+const wishlist: NavItem = { label: "Wishlist", href: "/dashboard/wishlist", icon: PiShootingStarLight };
+const guests: NavItem = { label: "Guests", href: "/dashboard/guests", icon: PiFolderUserDuotone };
+const vendors: NavItem = { label: "Vendors", href: "/dashboard/vendors", icon: PiStorefront };
+const todo: NavItem = { label: "To-do list", href: "/dashboard/todo", icon: PiCheckSquareOffset };
+const calendar: NavItem = { label: "Calendar", href: "/dashboard/calendar", icon: PiCalendarBlank };
 /** Opened from the profile menu, not the sidebar */
 const settings: NavItem = { label: "Settings", href: "/dashboard/settings", icon: Settings };
 
