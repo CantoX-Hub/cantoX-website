@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Star } from "lucide-react";
 import { Template } from "@/app/types/index.types";
 import { RiExpandDiagonalLine } from "react-icons/ri";
+import { FREE_FEATURES, PREMIUM_FEATURES } from "@/app/data/wedding-templates/shared";
 import { TemplatePreviewPanel } from "../templates/TemplatePreviewPanel";
 export function TemplateCard({ template }: { template: Template }) {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
@@ -98,9 +99,18 @@ export function TemplateCard({ template }: { template: Template }) {
         {card}
       </div>
       <TemplatePreviewPanel
-        template={template}
         open={isPreviewOpen}
         onClose={() => setIsPreviewOpen(false)}
+        name={template.name}
+        tier={template.category}
+        rating={template.rating}
+        previewUrl={template.previewUrl}
+        features={FREE_FEATURES}
+        exclusiveFeatures={PREMIUM_FEATURES}
+        action={{
+          label: template.category === "Premium" ? "Get access" : "Edit template",
+          href: "/get-started",
+        }}
       />
     </>
   );
