@@ -1,0 +1,66 @@
+import type { ComponentType } from "react";
+import {
+  LayoutGrid,
+  MessageSquareText,
+  PartyPopper,
+  Settings,
+  Star,
+  Store
+} from "lucide-react";
+import {
+  PiCalendarBlank,
+  PiCheckSquareOffset,
+  PiCopySimple,
+  PiShootingStarLight,
+  PiStorefront,
+  PiFolderUserDuotone
+} from "react-icons/pi";
+import type { Role } from "@/app/types/dashboard.types";
+
+export type NavIcon = ComponentType<{
+  className?: string;
+  size?: number | string;
+}>;
+
+export interface NavItem {
+  label: string;
+  href: string;
+  icon: NavIcon;
+}
+
+const overview: NavItem = { label: "Overview", href: "/dashboard", icon: LayoutGrid };
+const events: NavItem = { label: "Events", href: "/dashboard/events", icon: PartyPopper };
+const templates: NavItem = { label: "Templates", href: "/dashboard/templates", icon: PiCopySimple };
+const wishlist: NavItem = { label: "Wishlist", href: "/dashboard/wishlist", icon: PiShootingStarLight };
+const guests: NavItem = { label: "Guests", href: "/dashboard/guests", icon: PiFolderUserDuotone };
+const vendors: NavItem = { label: "Vendors", href: "/dashboard/vendors", icon: PiStorefront };
+const todo: NavItem = { label: "To-do list", href: "/dashboard/todo", icon: PiCheckSquareOffset };
+const calendar: NavItem = { label: "Calendar", href: "/dashboard/calendar", icon: PiCalendarBlank };
+/** Opened from the profile menu, not the sidebar */
+const settings: NavItem = { label: "Settings", href: "/dashboard/settings", icon: Settings };
+
+export const NAV_BY_ROLE: Record<Role, NavItem[]> = {
+  couple: [overview, templates, wishlist, guests, vendors, todo, calendar],
+  planner: [overview, events, templates, wishlist, guests, vendors, todo, calendar],
+  // No vendor dashboard design yet — inferred from the other two.
+  vendor: [
+    overview,
+    { label: "My storefront", href: "/dashboard/storefront", icon: Store },
+    { label: "Enquiries", href: "/dashboard/enquiries", icon: MessageSquareText },
+    { label: "Reviews", href: "/dashboard/reviews", icon: Star },
+    todo,
+    calendar,
+  ],
+};
+
+/** Breadcrumb label for the current path */
+export function crumbFor(pathname: string, role: Role): NavItem | null {
+  if (pathname === "/dashboard") return null;
+  if (pathname.startsWith("/dashboard/vendors/")) return { ...vendors, label: "Vendor" };
+  const all = [...NAV_BY_ROLE[role], events, templates, wishlist, guests, vendors, todo, calendar, settings];
+  return all.find((item) => item.href !== "/dashboard" && pathname.startsWith(item.href)) ?? null;
+}
+
+export function isActive(pathname: string, href: string) {
+  return href === "/dashboard" ? pathname === "/dashboard" : pathname === href || pathname.startsWith(`${href}/`);
+}

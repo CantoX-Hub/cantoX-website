@@ -1,13 +1,14 @@
-import React from 'react'
-import GetStarted from '../component/auth/GetStarted'
+import type { Metadata } from "next";
+import GetStarted from "../component/auth/GetStarted";
 
-const GetStartedPage = () => {
+export const metadata: Metadata = {
+  title: "Get started | CantoX",
+};
+
+export default function GetStartedPage() {
   return (
     <main className="min-h-screen">
-          <GetStarted/>
-         
+      <GetStarted />
     </main>
-  )
+  );
 }
-
-export default GetStartedPage

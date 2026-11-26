@@ -11,7 +11,7 @@ export const templates: Template[] = [
     image: "/template1.png",
     category: "Premium",
     rating: 5,
-    previewUrl: "/templates/itunu-stephen",
+    previewUrl: "/preview/gold-black",
   },
   {
     id: 2,
