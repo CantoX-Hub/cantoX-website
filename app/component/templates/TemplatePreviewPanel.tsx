@@ -1,22 +1,27 @@
 "use client";
 
-import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
+import Link from "next/link";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { Monitor, Smartphone, Star, X } from "lucide-react";
-import { Template } from "@/app/types/index.types";
+import { Gem, Monitor, Smartphone, Star, X } from "lucide-react";
 
 type ViewMode = "mobile" | "web";
 
 const DESKTOP_QUERY = "(min-width: 768px)";
 
-/** Size of the virtual screen the invitation is rendered at, then scaled to fit the card */
+/** Size of the virtual screen the page is rendered at, then scaled to fit the card */
 const VIEWPORT = {
   mobile: { width: 402, height: 875 },
-  web: { width: 1280, height: 1178 },
+  web: { width: 1024, height: 942 },
 };
-
-const FEATURES = ["Change names", "Add time, date and venue", "3 picture slot"];
 
 /** True when the media query matches. Server render assumes mobile. */
 function useMediaQuery(query: string) {
@@ -106,15 +111,35 @@ function ModeButton({
   );
 }
 
-export function TemplatePreviewPanel({
-  template,
-  open,
-  onClose,
-}: {
-  template: Template;
+export interface PreviewPanelAction {
+  label: string;
+  href?: string;
+  onClick?: () => void;
+}
+
+export interface TemplatePreviewPanelProps {
   open: boolean;
   onClose: () => void;
-}) {
+  name: string;
+  tier: "Free" | "Premium";
+  rating: number;
+  previewUrl: string;
+  features: string[];
+  exclusiveFeatures: string[];
+  action: PreviewPanelAction;
+}
+
+export function TemplatePreviewPanel({
+  open,
+  onClose,
+  name,
+  tier,
+  rating,
+  previewUrl,
+  features,
+  exclusiveFeatures,
+  action,
+}: TemplatePreviewPanelProps) {
   const isDesktop = useMediaQuery(DESKTOP_QUERY);
   const [mode, setMode] = useState<ViewMode>("web");
   // The portal target only exists in the browser, so wait for mount
@@ -137,9 +162,15 @@ export function TemplatePreviewPanel({
     };
   }, [open, onClose]);
 
-  if (!mounted || !template.previewUrl) return null;
+  if (!mounted) return null;
 
-  const isPremium = template.category === "Premium";
+  const isPremium = tier === "Premium";
+  const featureList = isPremium ? exclusiveFeatures : features;
+  const actionClass = `mt-7 flex h-[42px] w-full items-center justify-center rounded-[3px] text-[14px] font-semibold transition-colors ${
+    isPremium
+      ? "bg-[#C9933A] text-white hover:bg-[#B78628]"
+      : "bg-[#F1F5F9] text-[#171A20] hover:bg-[#E7EBEF]"
+  }`;
 
   return createPortal(
     <AnimatePresence>
@@ -155,7 +186,7 @@ export function TemplatePreviewPanel({
           <motion.aside
             role="dialog"
             aria-modal="true"
-            aria-label={`${template.name} template preview`}
+            aria-label={`${name} template preview`}
             className={`max-h-full w-full self-start overflow-y-auto bg-white px-3 pb-6 transition-[max-width] duration-300 ${
               activeMode === "web" ? "max-w-[750px]" : "max-w-[426px]"
             }`}
@@ -198,37 +229,31 @@ export function TemplatePreviewPanel({
               </button>
             </div>
 
-            {/* Live preview of the invitation */}
+            {/* Live preview of the template */}
             <div className="mt-6">
-              <ScaledPreview
-                src={template.previewUrl}
-                title={`${template.name} invitation preview`}
-                mode={activeMode}
-              />
+              <ScaledPreview src={previewUrl} title={`${name} preview`} mode={activeMode} />
             </div>
 
             {/* Details */}
             <div className="mt-6">
               <div className="flex items-center justify-between gap-2">
-                <h3 className="text-[24px] text-[#171A20]">{template.name}</h3>
-                <span
-                  className={`rounded-[2px] px-1.5 py-[2px] text-[12px] font-semibold ${
-                    isPremium
-                      ? "bg-[#C9933A] text-white"
-                      : "border border-[#DDE1E4] bg-[#EAF0F5] text-[#62676D]"
-                  }`}
-                >
-                  {isPremium ? "Premium" : "Essential"}
-                </span>
+                <h3 className="text-[24px] text-[#171A20]">{name}</h3>
+                {isPremium ? (
+                  <Gem aria-label="Premium" className="h-4 w-4 fill-[#C9933A] text-[#C9933A]" />
+                ) : (
+                  <span className="rounded-[2px] border border-[#DDE1E4] bg-[#EAF0F5] px-1.5 py-[2px] text-[12px] font-semibold text-[#62676D]">
+                    Essential
+                  </span>
+                )}
               </div>
 
               <p className="mt-3 text-[14px] font-medium text-[#857E75]">
-                Premium wedding template, personalize it with your pictures, logo, info and
-                gift inventory.
+                Premium wedding template, personalize it with your pictures, logo, info and gift
+                inventory.
               </p>
 
               <div className="mt-3 flex items-center gap-[2px]">
-                {Array.from({ length: template.rating }).map((_, index) => (
+                {Array.from({ length: rating }).map((_, index) => (
                   <Star
                     key={index}
                     className="h-[14px] w-[14px] fill-[#FFB800] text-[#FFB800]"
@@ -240,13 +265,24 @@ export function TemplatePreviewPanel({
                 Sample images not included
               </span>
 
-              <h4 className="mt-6 text-[16px] text-[#171A20]">features</h4>
+              <h4 className="mt-6 text-[16px] text-[#171A20]">
+                {isPremium ? "Exclusive features" : "features"}
+              </h4>
               <ul className="mt-3 flex flex-col gap-4 text-[14px] text-[#171A20]">
-                {FEATURES.map((feature) => (
+                {featureList.map((feature) => (
                   <li key={feature}>{feature}</li>
                 ))}
               </ul>
 
+              {action.href ? (
+                <Link href={action.href} onClick={action.onClick} className={actionClass}>
+                  {action.label}
+                </Link>
+              ) : (
+                <button type="button" onClick={action.onClick} className={actionClass}>
+                  {action.label}
+                </button>
+              )}
             </div>
           </motion.aside>
         </motion.div>
