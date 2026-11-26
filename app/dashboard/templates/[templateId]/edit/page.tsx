@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { notFound, useRouter } from "next/navigation";
 import { ArrowLeft, ExternalLink, Monitor, Smartphone } from "lucide-react";
-import { useToast } from "@/app/component/dashboard/Toast";
+import TemplateToast from "@/app/component/templates/TemplateToast";
 import EditorSections from "@/app/component/dashboard/templates/studio/EditorSections";
 import GoLiveModal from "@/app/component/dashboard/templates/studio/GoLiveModal";
 import StudioPreview, { type PreviewMode } from "@/app/component/dashboard/templates/studio/StudioPreview";
@@ -46,10 +46,13 @@ function Studio({ template }: { template: TemplateDefinition }) {
   const [pane, setPane] = useState<"editor" | "preview">("editor");
   const [liveUrl, setLiveUrl] = useState<string | null>(null);
   const [now, setNow] = useState(() => Date.now());
-  const notify = useToast();
+  const [toast, setToast] = useState("");
+  const [toastTone, setToastTone] = useState<"ok" | "error">("ok");
 
-  const showToast = (text: string, tone: "ok" | "error" = "ok") =>
-    notify(text, { severity: tone === "error" ? "error" : "success" });
+  const showToast = (text: string, tone: "ok" | "error" = "ok") => {
+    setToast(text);
+    setToastTone(tone);
+  };
 
   // First visit creates the wedding record
   useEffect(() => {
@@ -302,6 +305,12 @@ function Studio({ template }: { template: TemplateDefinition }) {
       </div>
 
       {liveUrl && <GoLiveModal url={liveUrl} onClose={() => setLiveUrl(null)} />}
+
+      <TemplateToast
+        message={toast}
+        tone={toastTone}
+        onClose={() => setToast("")}
+      />
     </div>
   );
 }
