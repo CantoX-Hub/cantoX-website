@@ -1,52 +1,39 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import Link from "next/link";
 import { Button, CircularProgress } from "@mui/material";
 import { CalendarCheck2 } from "lucide-react";
+import { useConnectGoogleCalendarMutation, useDisconnectGoogleCalendarMutation, useGetGoogleCalendarStatusQuery } from "@/app/services/api";
+import { getErrorMessage } from "@/app/services/baseQuery";
 import { useToast } from "../Toast";
 
-const KEY = "cantox:gcal-connected";
-
 /**
- * TODO(backend): replace the timeout with a redirect to the Google OAuth
- * endpoint (e.g. `${API_BASE}/integrations/google-calendar`) and read the
- * connected state from the user profile.
+ * Same Google Calendar connection as the Calendar page.
+ * TODO(backend): Connect becomes a redirect to GOOGLE_CALENDAR_CONNECT_URL (see services/api.ts).
  */
 export default function CalendarBanner() {
   const notify = useToast();
-  const [connected, setConnected] = useState(false);
-  const [busy, setBusy] = useState(false);
+  const { data: status } = useGetGoogleCalendarStatusQuery();
+  const [connectGoogle, { isLoading: busy }] = useConnectGoogleCalendarMutation();
+  const [disconnectGoogle] = useDisconnectGoogleCalendarMutation();
+  const connected = !!status?.connected;
 
-  useEffect(() => {
+  const connect = async () => {
     try {
-      setConnected(window.localStorage.getItem(KEY) === "1");
-    } catch {
-      /* ignore */
-    }
-  }, []);
-
-  const save = (value: boolean) => {
-    setConnected(value);
-    try {
-      if (value) window.localStorage.setItem(KEY, "1");
-      else window.localStorage.removeItem(KEY);
-    } catch {
-      /* ignore */
-    }
-  };
-
-  const connect = () => {
-    setBusy(true);
-    window.setTimeout(() => {
-      setBusy(false);
-      save(true);
+      await connectGoogle().unwrap();
       notify("Google Calendar connected");
-    }, 1200);
+    } catch (e) {
+      notify(getErrorMessage(e), { severity: "error" });
+    }
   };
 
-  const disconnect = () => {
-    save(false);
-    notify("Google Calendar disconnected", { severity: "info", actionLabel: "Undo", onAction: () => save(true) });
+  const disconnect = async () => {
+    try {
+      await disconnectGoogle().unwrap();
+      notify("Google Calendar disconnected", { severity: "info" });
+    } catch (e) {
+      notify(getErrorMessage(e), { severity: "error" });
+    }
   };
 
   return (
@@ -59,7 +46,13 @@ export default function CalendarBanner() {
               <CalendarCheck2 size={20} className="text-[#C99532]" />
               <h2 className="text-[20px] text-white sm:text-[22px]">Your Google Calendar is connected</h2>
             </div>
-            <p className="mt-1.5 text-[14px] text-white/60">New dates you add here will show up on your calendar.</p>
+            <p className="mt-1.5 text-[14px] text-white/60">
+              Choose which dates to sync from your{" "}
+              <Link href="/dashboard/calendar" className="text-white underline">
+                calendar
+              </Link>
+              .
+            </p>
             <Button onClick={disconnect} size="small" sx={{ mt: 2, color: "rgba(255,255,255,0.75)", px: 0, "&:hover": { color: "#fff", bgcolor: "transparent" } }}>
               Disconnect
             </Button>

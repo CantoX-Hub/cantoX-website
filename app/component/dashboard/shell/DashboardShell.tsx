@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { ThemeProvider } from "@mui/material/styles";
 import { useAppSelector } from "@/app/store/hooks";
@@ -14,10 +14,15 @@ import Sidebar, { SIDEBAR_COLLAPSED, SIDEBAR_WIDTH } from "./Sidebar";
 import Topbar from "./Topbar";
 import { leaving } from "./leaving";
 
+/** Pages that bring their own toolbar and fill the screen */
+const FULL_BLEED = [/^\/dashboard\/templates\/[^/]+$/];
+
 function Frame({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { status } = useAppSelector(selectAuth);
   const { collapsed, ready } = useDashboard();
+  const pathname = usePathname();
+  const fullBleed = FULL_BLEED.some((re) => re.test(pathname));
 
   // Only a confirmed "guest" is sent away. "unknown" is allowed through
   // because there is no GET /auth/me to confirm a session on page load.
@@ -31,13 +36,20 @@ function Frame({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-[#EAF0F5]" style={{ "--sidebar": `${collapsed ? SIDEBAR_COLLAPSED : SIDEBAR_WIDTH}px` } as React.CSSProperties}>
       <Sidebar />
-      <div className="flex min-h-screen flex-col transition-[padding] duration-200 lg:pl-[var(--sidebar)]">
-        <Topbar />
-        <main id="main" className="flex-1 px-5 py-5">
-          {/* Wait for the stored role so a planner never sees a couple's page flash */}
-          <div className={`bg-white w-full px-4 py-5 sm:px-6 sm:py-6 lg:px-8 max-w-[1440px] transition-opacity duration-150 ${ready ? "opacity-100" : "opacity-0"}`}>{children}</div>
+      {fullBleed ? (
+        // Template editor: own toolbar, fills the screen, no top bar or page card
+        <main id="main" className={`h-[100dvh] transition-[padding,opacity] duration-200 lg:pl-[var(--sidebar)] ${ready ? "opacity-100" : "opacity-0"}`}>
+          {children}
         </main>
-      </div>
+      ) : (
+        <div className="flex min-h-screen flex-col transition-[padding] duration-200 lg:pl-[var(--sidebar)]">
+          <Topbar />
+          <main id="main" className="flex-1 px-5 py-5">
+            {/* Wait for the stored role so a planner never sees a couple's page flash */}
+            <div className={`bg-white w-full px-4 py-5 sm:px-6 sm:py-6 lg:px-8 max-w-[1440px] transition-opacity duration-150 ${ready ? "opacity-100" : "opacity-0"}`}>{children}</div>
+          </main>
+        </div>
+      )}
     </div>
   );
 }

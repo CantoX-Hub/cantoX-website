@@ -23,7 +23,8 @@ export type EventType = "Wedding website" | "Guest" | "Wishlist";
 export interface PlannerEvent {
   id: string;
   name: string;
-  type: EventType;
+  /** What the planner set up for this event (one or more) */
+  types: EventType[];
   status: EventStatus;
   /** ISO date (yyyy-mm-dd) */
   date: string;
@@ -68,15 +69,6 @@ export interface Vendor {
   instagram?: string;
   website?: string;
   reviews: VendorReview[];
-}
-
-export interface TodoItem {
-  id: string;
-  title: string;
-  done: boolean;
-  /** ISO date, optional */
-  due?: string;
-  createdAt: number;
 }
 
 export interface DashboardNotification {

@@ -1,5 +1,5 @@
 "use client";
-
+import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { Button, Rating } from "@mui/material";
 import {
@@ -15,6 +15,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+
 /** White panel used for every dashboard block */
 export function Panel({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return <section className={`rounded-xl border border-[#E8E8EC] bg-white ${className}`}>{children}</section>;
@@ -23,7 +24,7 @@ export function Panel({ children, className = "" }: { children: React.ReactNode;
 export function PageTitle({ children, action }: { children: React.ReactNode; action?: React.ReactNode }) {
   return (
     <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-      <h1 className="text-[22px] leading-tight text-[#0F0F0F] sm:text-[24px]">{children}</h1>
+      <h1 className="text-[18px] tracking-tight text-[#0F0F0F] sm:text-[24px]">{children}</h1>
       {action}
     </div>
   );
@@ -122,28 +123,48 @@ export function VendorImage({
 }
 
 /** Empty state with the stacked-cards illustration from the designs */
-export function EmptyIllustration() {
-  return (
-    <div aria-hidden className="relative mx-auto h-[92px] w-[110px]">
-      <div className="absolute left-3 top-3 h-[70px] w-[84px] rotate-[-8deg] rounded-lg border border-[#E5E7EB] bg-[#F9FAFB]" />
-      <div className="absolute right-2 top-1 h-[70px] w-[84px] rotate-[6deg] rounded-lg border border-[#E5E7EB] bg-[#F3F4F6]" />
-      <div className="absolute left-[13px] top-[10px] flex h-[72px] w-[84px] flex-col gap-1.5 rounded-lg border border-[#E5E7EB] bg-white p-2.5 shadow-sm">
-        <span className="h-1.5 w-10 rounded bg-[#E5E7EB]" />
-        <span className="h-1.5 w-14 rounded bg-[#F0F0F2]" />
-        <span className="mt-auto flex h-6 w-6 items-center justify-center self-center rounded-full border border-[#E5E7EB] text-[11px] font-semibold text-[#9CA3AF]">0</span>
-      </div>
-    </div>
-  );
-}
+// export function EmptyIllustration() {
+//   return (
+//     <div aria-hidden className="relative mx-auto h-[92px] w-[110px]">
+//       <div className="absolute left-3 top-3 h-[70px] w-[84px] rotate-[-8deg] rounded-lg border border-[#E5E7EB] bg-[#F9FAFB]" />
+//       <div className="absolute right-2 top-1 h-[70px] w-[84px] rotate-[6deg] rounded-lg border border-[#E5E7EB] bg-[#F3F4F6]" />
+//       <div className="absolute left-[13px] top-[10px] flex h-[72px] w-[84px] flex-col gap-1.5 rounded-lg border border-[#E5E7EB] bg-white p-2.5 shadow-sm">
+//         <span className="h-1.5 w-10 rounded bg-[#E5E7EB]" />
+//         <span className="h-1.5 w-14 rounded bg-[#F0F0F2]" />
+//         <span className="mt-auto flex h-6 w-6 items-center justify-center self-center rounded-full border border-[#E5E7EB] text-[11px] font-semibold text-[#9CA3AF]">0</span>
+//       </div>
+//     </div>
+//   );
+// }
 
-export function EmptyState({ title, body }: { title: string; body: React.ReactNode }) {
-  return (
-    <div className="flex flex-1 flex-col items-center justify-center px-4 py-8 text-center">
-      <EmptyIllustration />
-      <p className="mt-4 text-[15px] font-semibold text-[#0F0F0F]">{title}</p>
-      <p className="mt-1 max-w-[240px] text-[13px] leading-5 text-[#6B7280]">{body}</p>
-    </div>
-  );
-}
+        export function EmptyState({
+          img,
+          alt = "",
+          title,
+          body,
+          imgClassName = "h-24 w-24 object-contain",
+        }: {
+          img?: string | StaticImageData;
+          alt?: string;
+          title: string;
+          body: React.ReactNode;
+          imgClassName?: string;
+        }) {
+          return (
+            <div className="flex flex-1 flex-col items-center justify-center px-4 py-8 text-center">
+              {img && (
+                <Image
+                  src={img}
+                  alt={alt || title}
+                  width={96}
+                  height={96}
+                  className={imgClassName}
+                />
+              )}
+              <p className="mt-4 font-semibold text-[#0F0F0F]">{title}</p>
+              <p className="mt-1 max-w-[240px] text-[14px] leading-5 text-[#6B7280]">{body}</p>
+            </div>
+          );
+        }
 
-export const naira = (n: number) => `₦${n.toLocaleString("en-NG")}`;
+        export const naira = (n: number) => `₦${n.toLocaleString("en-NG")}`;

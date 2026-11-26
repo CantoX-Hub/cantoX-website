@@ -45,18 +45,16 @@ export const OWN_VENDOR_ID = "enymeals";
 /* ---------- Planner events ---------- */
 
 export const EVENTS: PlannerEvent[] = [
-  { id: "ev-1", name: "Ngozi & Moyo", type: "Wedding website", status: "upcoming", date: "2027-04-12", location: "Eko Hotel, Lagos", guests: 350, couple: "Ngozi Eze & Moyo Bello" },
-  { id: "ev-2", name: "Lara Glory Ville", type: "Wedding website", status: "upcoming", date: "2027-05-03", location: "Glory Ville, Ibadan", guests: 220, couple: "Lara Ojo & Femi Glory" },
-  { id: "ev-3", name: "Eko events", type: "Guest", status: "ongoing", date: "2026-11-14", location: "Landmark Centre, Lagos", guests: 500 },
-  { id: "ev-4", name: "Jane and John", type: "Wishlist", status: "done", date: "2026-08-22", location: "Transcorp Hilton, Abuja", guests: 180, couple: "Jane Okafor & John Musa" },
-  { id: "ev-5", name: "Chioma & Kunle", type: "Guest", status: "upcoming", date: "2027-01-18", location: "Harbour Point, Lagos", guests: 300, couple: "Chioma Nwosu & Kunle Ade" },
-  { id: "ev-6", name: "Halima's traditional", type: "Wishlist", status: "ongoing", date: "2026-11-21", location: "Kano Club, Kano", guests: 260 },
-  { id: "ev-7", name: "Bisi & Dare", type: "Wedding website", status: "done", date: "2026-06-07", location: "Oriental Hotel, Lagos", guests: 410, couple: "Bisi Coker & Dare Ola" },
-  { id: "ev-8", name: "Amaka & Seyi", type: "Wedding website", status: "upcoming", date: "2027-02-27", location: "The Monarch, Lagos", guests: 280 },
-  { id: "ev-9", name: "Tari's white wedding", type: "Guest", status: "done", date: "2026-03-14", location: "Hotel Presidential, Port Harcourt", guests: 150 },
-  { id: "ev-10", name: "Kemi & Tunde", type: "Wishlist", status: "upcoming", date: "2027-06-19", location: "Lagos Continental", guests: 330 },
-  { id: "ev-11", name: "Ife & Yemi", type: "Wedding website", status: "done", date: "2026-09-05", location: "Delborough, Lagos", guests: 200 },
-  { id: "ev-12", name: "Zainab & Ahmed", type: "Guest", status: "upcoming", date: "2027-03-08", location: "Sheraton, Abuja", guests: 450 },
+  { id: "ev-1", name: "Rayo&Moyo", types: ["Wedding website", "Guest", "Wishlist"], status: "upcoming", date: "2027-06-10", location: "Eko Hotel, Lagos", guests: 350, couple: "Rayo Bello & Moyo Eze" },
+  { id: "ev-2", name: "Love Story 2026", types: ["Wedding website", "Guest"], status: "upcoming", date: "2027-05-21", location: "Glory Ville, Ibadan", guests: 220, couple: "Lara Ojo & Femi Glory" },
+  { id: "ev-3", name: "Bliss events", types: ["Guest", "Wishlist"], status: "ongoing", date: "2026-11-28", location: "Landmark Centre, Lagos", guests: 500 },
+  { id: "ev-4", name: "Jane and John", types: ["Wedding website"], status: "done", date: "2026-08-22", location: "Transcorp Hilton, Abuja", guests: 180, couple: "Jane Okafor & John Musa" },
+  { id: "ev-5", name: "Birthday guests", types: ["Guest"], status: "done", date: "2026-07-18", location: "Harbour Point, Lagos", guests: 120 },
+  { id: "ev-6", name: "Halima’s traditional", types: ["Wishlist", "Guest"], status: "ongoing", date: "2026-11-29", location: "Kano Club, Kano", guests: 260 },
+  { id: "ev-7", name: "Bisi & Dare", types: ["Wedding website"], status: "done", date: "2026-06-07", location: "Oriental Hotel, Lagos", guests: 410, couple: "Bisi Coker & Dare Ola" },
+  { id: "ev-8", name: "Eko corporate dinner", types: ["Guest"], status: "ongoing", date: "2026-11-27", location: "The Monarch, Lagos", guests: 280 },
+  { id: "ev-9", name: "Tari’s white wedding", types: ["Wedding website", "Wishlist"], status: "done", date: "2026-03-14", location: "Hotel Presidential, Port Harcourt", guests: 150 },
+  { id: "ev-10", name: "Ife & Yemi", types: ["Wedding website", "Guest"], status: "done", date: "2026-09-05", location: "Delborough, Lagos", guests: 200, couple: "Ife Ade & Yemi Ola" },
 ];
 
 /* ---------- Vendors ---------- */

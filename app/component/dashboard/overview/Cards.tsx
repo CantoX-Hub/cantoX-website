@@ -1,38 +1,72 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Checkbox, Chip } from "@mui/material";
+import { Checkbox, Chip, Skeleton } from "@mui/material";
 import { BadgeCheck } from "lucide-react";
 import { SPOTLIGHT_TEMPLATE, VENDORS } from "@/app/data/dashboard";
-import { useTodos } from "../useTodos";
+import { useGetTodoListsQuery, useToggleTodoTaskMutation } from "@/app/services/api";
+import { getErrorMessage } from "@/app/services/baseQuery";
+import type { TodoList } from "@/app/types/todo.types";
+import { useToast } from "../Toast";
 import { CardAction, EmptyState, Panel, Stars, VendorImage } from "../ui";
 
 /* ---------- To-do preview ---------- */
 
+/** Open tasks across active lists: lists with the soonest reminder first, then most recently changed */
+function upcomingTasks(lists: TodoList[]) {
+  const when = (l: TodoList) => (l.remindAt ? Date.parse(l.remindAt) : Infinity);
+  return lists
+    .filter((l) => !l.archived)
+    .sort((a, b) => when(a) - when(b) || b.updatedAt - a.updatedAt)
+    .flatMap((l) => l.tasks.filter((t) => !t.done).map((t) => ({ list: l, task: t })));
+}
+
 export function TodoPreviewCard() {
-  const { items, loaded, toggle } = useTodos();
-  const open = items.filter((t) => !t.done);
+  const notify = useToast();
+  const { data: lists, isLoading } = useGetTodoListsQuery();
+  const [toggle] = useToggleTodoTaskMutation();
+  const open = useMemo(() => upcomingTasks(lists ?? []), [lists]);
+
+  const tick = async (listId: string, taskId: string, text: string) => {
+    try {
+      await toggle({ id: listId, taskId }).unwrap();
+      notify(`Done: ${text}`, { severity: "info", actionLabel: "Undo", onAction: () => toggle({ id: listId, taskId }) });
+    } catch (e) {
+      notify(getErrorMessage(e), { severity: "error" });
+    }
+  };
 
   return (
     <Panel className="flex min-h-[340px] flex-col p-4">
-      {loaded && open.length > 0 ? (
+      {isLoading ? (
+        <div className="flex-1" aria-busy="true" aria-label="Loading tasks">
+          <Skeleton width="45%" height={26} />
+          <Skeleton width="65%" />
+          {Array.from({ length: 5 }, (_, i) => (
+            <Skeleton key={i} height={44} />
+          ))}
+        </div>
+      ) : open.length > 0 ? (
         <div className="flex-1">
-          <div className="flex items-baseline justify-between">
-            <h2 className="text-[16px]">To-do list</h2>
-            <span className="text-[13px] text-[#6B7280]">{open.length} open</span>
-          </div>
-          <ul className="mt-3 divide-y divide-[#F0F0F2]">
-            {open.slice(0, 5).map((t) => (
-              <li key={t.id} className="flex items-center gap-1 py-1.5">
-                <Checkbox size="small" checked={t.done} onChange={() => toggle(t.id)} slotProps={{ input: { "aria-label": `Mark "${t.title}" as done` } }} sx={{ ml: -1 }} />
-                <span className="min-w-0 flex-1 truncate text-[14px]">{t.title}</span>
-                {t.due && (
-                  <span className="shrink-0 text-[12px] text-[#9CA3AF]">
-                    {new Date(t.due).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}
-                  </span>
-                )}
+          <h2 className="text-[16px]" style={{ fontFamily: '"Cal Sans", "DM Sans", sans-serif' }}>
+            Upcoming tasks
+          </h2>
+          <p className="mt-1 text-[13px] text-[#6B7280]">Open items from your to-do lists</p>
+          <ul className="mt-2">
+            {open.slice(0, 5).map(({ list, task }) => (
+              <li key={task.id} className="flex min-h-[48px] items-center gap-2 border-b-[6px] border-[#F4F7FA]">
+                <Checkbox
+                  size="small"
+                  checked={false}
+                  onChange={() => tick(list.id, task.id, task.text)}
+                  slotProps={{ input: { "aria-label": `Mark “${task.text}” as done` } }}
+                  sx={{ ml: -0.5, p: 0.5, color: "#9CA3AF" }}
+                />
+                <span className="min-w-0 flex-1 truncate text-[14px] text-[#0F0F0F]" title={`${task.text} · ${list.title}`}>
+                  {task.text}
+                </span>
               </li>
             ))}
           </ul>
@@ -40,6 +74,7 @@ export function TodoPreviewCard() {
       ) : (
         <EmptyState
           title="It's empty here"
+          img="/empty-todo.svg"
           body={
             <>
               You don&apos;t have any upcoming tasks yet. Go to <span className="text-[#C99532]">To-do list</span> to get started.
@@ -62,6 +97,7 @@ export function TemplatesEmptyCard() {
   return (
     <Panel className="flex min-h-[340px] flex-col p-4">
       <EmptyState
+      img={"/empty-template.svg"}
         title="It's empty here"
         body={
           <>

@@ -1,11 +1,7 @@
-import { notFound } from "next/navigation";
 import VendorDetail from "@/app/component/dashboard/vendors/VendorDetail";
-import { VENDORS } from "@/app/data/dashboard";
 
-// TODO(backend): fetch the vendor by id instead of reading mock data.
+// The vendor is loaded client-side (dummy data for now), which also shows the "not found" state.
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const vendor = VENDORS.find((v) => v.id === id);
-  if (!vendor) notFound();
-  return <VendorDetail vendorId={vendor.id} />;
+  return <VendorDetail vendorId={decodeURIComponent(id)} />;
 }

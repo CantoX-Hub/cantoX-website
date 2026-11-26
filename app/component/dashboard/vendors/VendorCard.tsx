@@ -1,11 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import Link from "next/link";
 import { IconButton, Tooltip } from "@mui/material";
 import { BadgeCheck, Heart } from "lucide-react";
 import type { Vendor } from "@/app/types/dashboard.types";
-import { CardAction, Stars, VendorImage } from "../ui";
+import { CardAction, VendorImage } from "../ui";
+import { vendorHref } from "./VendorPanel";
+import { CategoryTag, VendorStars, heading } from "./VendorSections";
 
 const KEY = "cantox:saved-vendors";
 const EVENT = "cantox:saved-vendors-changed";
@@ -43,19 +44,22 @@ export function useSavedVendors() {
   return { saved, toggle };
 }
 
+/** Vendor tile. With `onView` the button opens the side panel; without, it links to the vendor page. */
 export default function VendorCard({
   vendor,
   saved,
   onToggleSave,
+  onView,
 }: {
   vendor: Vendor;
   saved?: boolean;
   onToggleSave?: (vendor: Vendor) => void;
+  onView?: (vendor: Vendor) => void;
 }) {
   return (
-    <article className="flex min-w-0 flex-col rounded-xl border border-[#E8E8EC] bg-white p-2 sm:p-3">
-      <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
-        <VendorImage src={vendor.image} alt={vendor.name} category={vendor.category} iconSize={36} />
+    <article className="flex min-w-0 flex-col rounded-lg border border-[#E2E5EA] bg-white p-3 sm:p-4">
+      <div className="relative aspect-square overflow-hidden rounded-[3px]">
+        <VendorImage src={vendor.image} alt={vendor.name} category={vendor.category} iconSize={40} />
         {onToggleSave && (
           <Tooltip title={saved ? "Remove from saved" : "Save vendor"}>
             <IconButton
@@ -71,16 +75,27 @@ export default function VendorCard({
         )}
       </div>
       <div className="mt-3 flex items-center gap-1.5">
-        <h3 className="truncate text-[14px] sm:text-[16px]">{vendor.name}</h3>
-        {vendor.verified && <BadgeCheck size={15} className="shrink-0 text-[#C99532]" aria-label="Verified" />}
+        <h3 className="truncate text-[15px] tracking-[-0.02em] text-[#0F0F0F] sm:text-[16px]" style={heading}>
+          {vendor.name}
+        </h3>
+        {vendor.verified && <BadgeCheck size={15} className="shrink-0 text-[#C99532]" aria-label="Verified vendor" />}
       </div>
-      <p className="mt-0.5 truncate text-[12px] text-[#6B7280] sm:text-[13px]">{vendor.category}</p>
-      <div className="mb-3 mt-1.5 flex items-center gap-1.5">
-        <Stars value={vendor.rating} />
-        <span className="hidden text-[12px] text-[#9CA3AF] sm:inline">({vendor.reviewCount})</span>
+      <div className="mt-1">
+        <CategoryTag>{vendor.category}</CategoryTag>
+      </div>
+      <div className="mb-3 mt-1">
+        <VendorStars value={vendor.rating} size={17} />
       </div>
       <div className="mt-auto">
-        <CardAction href={`/dashboard/vendors/${vendor.id}`}>View vendor</CardAction>
+        {onView ? (
+          <CardAction onClick={() => onView(vendor)}>
+            View vendor<span className="sr-only">: {vendor.name}</span>
+          </CardAction>
+        ) : (
+          <CardAction href={vendorHref(vendor.id)}>
+            View vendor<span className="sr-only">: {vendor.name}</span>
+          </CardAction>
+        )}
       </div>
     </article>
   );
