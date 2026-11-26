@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import LibraryCard from "@/app/component/dashboard/templates/LibraryCard";
-import { useToast } from "@/app/component/dashboard/Toast";
+import TemplateToast from "@/app/component/templates/TemplateToast";
 import { TemplatePreviewPanel } from "@/app/component/templates/TemplatePreviewPanel";
 import { weddingTemplates } from "@/app/data/wedding-templates";
 import {
@@ -27,7 +27,13 @@ export default function DashboardTemplatesPage() {
   const [tier, setTier] = useState<TierFilter>("All");
   const [selected, setSelected] = useState<TemplateDefinition | null>(null);
   const [open, setOpen] = useState(false);
-  const notify = useToast();
+  const [toast, setToast] = useState("");
+  const [toastTone, setToastTone] = useState<"ok" | "error">("ok");
+
+  const notify = (message: string) => {
+    setToast(message);
+    setToastTone("ok");
+  };
 
   const myTemplates = useMemo(
     () =>
@@ -185,6 +191,11 @@ export default function DashboardTemplatesPage() {
         />
       )}
 
+      <TemplateToast
+        message={toast}
+        tone={toastTone}
+        onClose={() => setToast("")}
+      />
     </div>
   );
 }
