@@ -59,7 +59,7 @@ export const api = createApi({
     }),
 
     /** rememberMe false → session cookie cleared when the browser closes; true → 7 days */
-    verifyMagicLink: build.mutation<VerifyMagicLinkResponse, { token: string; rememberMe?: boolean }>({
+    verifyMagicLink: build.mutation<VerifyMagicLinkResponse, { token: string; rememberMe: boolean }>({
       query: (body) => ({ url: "/auth/magic-link/verify", method: "POST", body }),
     }),
 

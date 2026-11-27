@@ -9,7 +9,7 @@ import { Check } from "lucide-react";
 import { GOOGLE_AUTH_URL, useRequestMagicLinkMutation } from "@/app/services/api";
 import { getErrorMessage, isWakingError, wakeBackend } from "@/app/services/baseQuery";
 import { ROUTES } from "@/app/lib/routes";
-import { saveRememberMe } from "@/app/lib/rememberMe";
+import { loadRememberMe, saveRememberMe } from "@/app/lib/rememberMe";
 import { PENDING_EMAIL_KEY } from "./CheckEmail";
 
 /** Each slide drives both the image on the right and the heading on the left */
@@ -86,8 +86,9 @@ export default function GetStarted() {
     wakeBackend();
   }, []);
 
-  // Pre-fill a remembered email (after mount, so the first render matches the server)
+  // Restore last visit's choice and email (after mount, so the first render matches the server)
   useEffect(() => {
+    setRememberMe(loadRememberMe());
     try {
       const saved = window.localStorage.getItem(REMEMBERED_EMAIL_KEY);
       if (saved) setEmail(saved);
