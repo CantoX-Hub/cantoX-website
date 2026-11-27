@@ -1,18 +1,15 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Button, FormControlLabel, InputAdornment, Menu, MenuItem, Popover, Radio, RadioGroup, Skeleton, Switch, TextField } from "@mui/material";
+import { Button, FormControlLabel, InputAdornment, Menu, MenuItem, Popover, Radio, RadioGroup, Skeleton, TextField } from "@mui/material";
 import { Check, ChevronDown, ListFilter, Search } from "lucide-react";
 import { useGetVendorsQuery } from "@/app/services/api";
 import { getErrorMessage } from "@/app/services/baseQuery";
-import type { Vendor } from "@/app/types/dashboard.types";
 import { PageTitle } from "../ui";
-import { useToast } from "../Toast";
-import VendorCard, { useSavedVendors } from "./VendorCard";
+import VendorCard, { VENDOR_GRID as GRID } from "./VendorCard";
 import VendorPanel from "./VendorPanel";
 
 const PAGE = 8;
-const GRID = "grid grid-cols-1 gap-2 min-[420px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
 type Sort = "rating" | "reviews" | "name";
 const SORTS: { id: Sort; label: string }[] = [
   { id: "rating", label: "Top rated" },
@@ -54,14 +51,11 @@ function ChoiceMenu({ label, value, options, allLabel, onChange }: { label: stri
 }
 
 export default function VendorDirectory() {
-  const notify = useToast();
   const { data: vendors = [], isLoading, error, refetch } = useGetVendorsQuery();
-  const { saved, toggle } = useSavedVendors();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
   const [location, setLocation] = useState("all");
   const [sort, setSort] = useState<Sort>("rating");
-  const [savedOnly, setSavedOnly] = useState(false);
   const [shown, setShown] = useState(PAGE);
   const [filterAnchor, setFilterAnchor] = useState<HTMLElement | null>(null);
   const [viewing, setViewing] = useState<string | null>(null);
@@ -75,29 +69,18 @@ export default function VendorDirectory() {
     return vendors
       .filter((v) => category === "all" || v.category === category)
       .filter((v) => location === "all" || v.location === location)
-      .filter((v) => !savedOnly || saved.includes(v.id))
       .filter((v) => !q || v.name.toLowerCase().includes(q) || v.category.toLowerCase().includes(q) || v.about.toLowerCase().includes(q))
       .sort((a, b) => (sort === "name" ? a.name.localeCompare(b.name) : sort === "reviews" ? b.reviewCount - a.reviewCount : b.rating - a.rating));
-  }, [vendors, query, category, location, sort, savedOnly, saved]);
+  }, [vendors, query, category, location, sort]);
 
   const resetPaging = () => setShown(PAGE);
-  const activeFilters = (sort !== "rating" ? 1 : 0) + (savedOnly ? 1 : 0);
-  const anyFilter = !!query.trim() || category !== "all" || location !== "all" || savedOnly;
-
-  const handleSave = (v: Vendor) => {
-    const nowSaved = toggle(v.id);
-    notify(nowSaved ? `${v.name} saved` : `${v.name} removed from saved`, {
-      severity: nowSaved ? "success" : "info",
-      actionLabel: "Undo",
-      onAction: () => toggle(v.id),
-    });
-  };
+  const activeFilters = sort !== "rating" ? 1 : 0;
+  const anyFilter = !!query.trim() || category !== "all" || location !== "all";
 
   const clearAll = () => {
     setQuery("");
     setCategory("all");
     setLocation("all");
-    setSavedOnly(false);
     resetPaging();
   };
 
@@ -115,7 +98,7 @@ export default function VendorDirectory() {
     body = (
       <div className={GRID} aria-busy="true" aria-label="Loading vendors">
         {Array.from({ length: PAGE }, (_, i) => (
-          <div key={i} className="rounded-lg border border-[#E2E5EA] p-4">
+          <div key={i} className="rounded-lg border border-[#E2E5EA] p-2.5 sm:p-4">
             <Skeleton variant="rectangular" sx={{ aspectRatio: "1 / 1", height: "auto" }} />
             <Skeleton width="60%" sx={{ mt: 1.5 }} />
             <Skeleton width="45%" />
@@ -127,8 +110,8 @@ export default function VendorDirectory() {
   } else if (results.length === 0) {
     body = (
       <div className="rounded-lg border border-dashed border-[#E2E5EA] px-5 py-14 text-center">
-        <p className="text-[15px] font-semibold">{savedOnly && !query && category === "all" && location === "all" ? "You haven't saved any vendors yet" : "No vendors match"}</p>
-        <p className="mt-1 text-[13px] text-[#6B7280]">{savedOnly ? "Tap the heart on a vendor to save it." : "Try another search, category or location."}</p>
+        <p className="text-[15px] font-semibold">No vendors match</p>
+        <p className="mt-1 text-[13px] text-[#6B7280]">Try another search, category or location.</p>
         <Button sx={{ mt: 2 }} onClick={clearAll}>
           Show all vendors
         </Button>
@@ -139,7 +122,7 @@ export default function VendorDirectory() {
       <>
         <div className={GRID}>
           {results.slice(0, shown).map((v) => (
-            <VendorCard key={v.id} vendor={v} saved={saved.includes(v.id)} onToggleSave={handleSave} onView={(x) => setViewing(x.id)} />
+            <VendorCard key={v.id} vendor={v} onView={(x) => setViewing(x.id)} />
           ))}
         </div>
         {results.length > shown && (
@@ -233,22 +216,6 @@ export default function VendorDirectory() {
             <FormControlLabel key={s.id} value={s.id} control={<Radio size="small" />} label={s.label} slotProps={{ typography: { sx: { fontSize: 14 } } }} />
           ))}
         </RadioGroup>
-        <div className="mt-2 border-t border-[#E8E8EC] pt-2">
-          <FormControlLabel
-            control={
-              <Switch
-                size="small"
-                checked={savedOnly}
-                onChange={() => {
-                  setSavedOnly((v) => !v);
-                  resetPaging();
-                }}
-              />
-            }
-            label={`Saved only (${saved.length})`}
-            slotProps={{ typography: { sx: { fontSize: 14 } } }}
-          />
-        </div>
       </Popover>
 
       <p className="sr-only" aria-live="polite">

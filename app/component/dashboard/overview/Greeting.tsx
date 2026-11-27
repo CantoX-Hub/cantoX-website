@@ -72,7 +72,7 @@ export default function Greeting() {
         </div>
       </div>
 
-      <div className="flex shrink-0 items-center gap-4 text-[14px] text-[#07111F] font-medium" aria-live="off">
+      <div className="flex shrink-0 flex-wrap items-center gap-4 text-[12px] sm:text-[14px] text-[#07111F] font-medium" aria-live="off">
         <span className="flex items-center gap-1.5">
           <Clock3 size={15} className="text-[#07111F]" />
           <span className="tabular-nums" suppressHydrationWarning>
