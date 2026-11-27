@@ -41,7 +41,7 @@ export default function VendorPanel({ vendorId, onClose }: { vendorId: string | 
               </IconButton>
             </Tooltip>
           )}
-          <h2 id={titleId} className="flex-1 text-[18px] font-semibold text-[#0F0F0F]">
+          <h2 id={titleId} className="flex-1 sm:text-[18px] text-[#0F0F0F]">
             View vendor
           </h2>
           <IconButton onClick={onClose} aria-label="Close" sx={{ mr: 1, color: "#0F0F0F" }}>

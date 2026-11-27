@@ -77,6 +77,8 @@ export default function EventsPage() {
   }, [events, status, type, query, order]);
 
   const visible = rows.slice(0, shown);
+  // With a type filter on, each row shows only that type (as in the design)
+  const typesOf = (e: PlannerEvent) => (type === "All" ? e.types : [type]);
 
   const changeStatus = (next: StatusTab) => {
     setStatus(next);
@@ -130,17 +132,17 @@ export default function EventsPage() {
           <table className="w-full table-fixed border-collapse text-left">
             <caption className="sr-only">Events. Select an event name to see its details.</caption>
             <thead>
-              <tr className="bg-[#F8F9FB] text-[14px] text-[#4B5563]">
-                <th scope="col" className="px-4 py-7 font-medium">
+              <tr className="bg-[#F8F9FB] text-[14px] text-[#62748E]">
+                <th scope="col" className="px-4 py-7 font-semibold">
                   Event[s]
                 </th>
-                <th scope="col" className="px-4 py-7 font-medium">
-                  Type
+                <th scope="col" className="px-4 py-7 font-semibold">
+                  Table
                 </th>
-                <th scope="col" className="px-4 py-7 font-medium">
+                <th scope="col" className="px-4 py-7 font-semibold">
                   Status
                 </th>
-                <th scope="col" className="px-4 py-7 font-medium" aria-sort={order === "asc" ? "ascending" : "descending"}>
+                <th scope="col" className="px-4 py-7 font-semibold" aria-sort={order === "asc" ? "ascending" : "descending"}>
                   <button
                     type="button"
                     onClick={() => setOrder((o) => (o === "asc" ? "desc" : "asc"))}
@@ -155,7 +157,7 @@ export default function EventsPage() {
             </thead>
             <tbody>
               {visible.map((e) => (
-                <tr key={e.id} onClick={() => setOpen(e)} className="h-[116px] cursor-pointer border-b border-[#E8E8EC] text-[14px] text-[#0F0F0F] transition-colors hover:bg-[#FAFBFC]">
+                <tr key={e.id} onClick={() => setOpen(e)} className="h-[116px] cursor-pointer border-b border-[#E8E8EC] text-[14px] font-medium text-[#0F0F0F] transition-colors hover:bg-[#FAFBFC]">
                   <td className="px-4">
                     <button
                       type="button"
@@ -170,7 +172,7 @@ export default function EventsPage() {
                   </td>
                   <td className="px-4 py-3">
                     <span className="flex max-w-[160px] flex-wrap gap-1">
-                      {e.types.map((t) => (
+                      {typesOf(e).map((t) => (
                         <TypeChip key={t} type={t} />
                       ))}
                     </span>
@@ -196,7 +198,7 @@ export default function EventsPage() {
                 </span>
                 <span className="text-[13px] tabular-nums text-[#6B7280]">{fmtDate(e.date)}</span>
                 <span className="flex flex-wrap gap-1">
-                  {e.types.map((t) => (
+                  {typesOf(e).map((t) => (
                     <TypeChip key={t} type={t} />
                   ))}
                 </span>
@@ -227,7 +229,7 @@ export default function EventsPage() {
           aria-label="Event status"
           variant="scrollable"
           scrollButtons={false}
-          sx={{ "& .MuiTabs-indicator": { bgcolor: "#0F0F0F", height: 2 }, "& .MuiTab-root": { textTransform: "none", fontSize: 15, color: "#6B7280", minHeight: 64, px: 2 }, "& .Mui-selected": { color: "#0F0F0F !important", fontWeight: 600 } }}
+          sx={{ "& .MuiTabs-indicator": { bgcolor: "#0F0F0F", height: 2 }, "& .MuiTab-root": { textTransform: "none", fontSize: 15, fontWeight: 400, color: "#6B7280", minHeight: 64, px: 2 }, "& .Mui-selected": { color: "#0F0F0F !important", fontWeight: 600 } }}
         >
           {STATUS_TABS.map((t) => (
             <Tab
@@ -236,7 +238,13 @@ export default function EventsPage() {
               label={
                 <span className="flex items-center gap-2">
                   {t.label}
-                  <span className="rounded-full bg-[#F1F4F8] px-2 py-px text-[11px] font-semibold tabular-nums text-[#0F0F0F]">{counts[t.id]}</span>
+                  <span
+                    className={`rounded-full bg-[#F1F4F8] px-2 py-px text-[11px] tabular-nums ${
+                      status === t.id ? "font-semibold text-[#0F0F0F]" : "font-medium text-[#4B5563]"
+                    }`}
+                  >
+                    {counts[t.id]}
+                  </span>
                 </span>
               }
             />

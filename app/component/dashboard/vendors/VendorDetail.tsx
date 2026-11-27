@@ -7,7 +7,7 @@ import { ArrowUpRight, ChevronLeft } from "lucide-react";
 import { useGetVendorQuery, useGetVendorsQuery } from "@/app/services/api";
 import { getErrorMessage, hasStatus } from "@/app/services/baseQuery";
 import { useDashboard } from "../DashboardContext";
-import VendorCard from "./VendorCard";
+import VendorCard, { VENDOR_GRID } from "./VendorCard";
 import { AboutBlock, ContactBlock, GalleryLightbox, GalleryTile, MoqBlock, OfferingsBlock, ProfileCard, ReviewsBlock, heading } from "./VendorSections";
 
 const MORE_COUNT = 4;
@@ -110,7 +110,7 @@ export default function VendorDetail({ vendorId }: { vendorId: string }) {
               See more <ArrowUpRight size={16} />
             </Link>
           </div>
-          <div className="grid grid-cols-1 gap-2 min-[420px]:grid-cols-2 xl:grid-cols-4">
+          <div className={VENDOR_GRID}>
             {more.map((v) => (
               <VendorCard key={v.id} vendor={v} />
             ))}
